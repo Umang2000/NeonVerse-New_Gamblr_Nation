@@ -1,10 +1,11 @@
+
 "use client";
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Gamepad2Icon, MessageSquareIcon, HomeIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import ThemeToggle from './ThemeToggle'; // Import ThemeToggle
+import ThemeToggle from './ThemeToggle';
 
 const navItems = [
   { name: 'Home', href: '/', icon: HomeIcon },
@@ -24,7 +25,11 @@ const Navbar: React.FC = () => {
           </Link>
           <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => {
-              const isActive = item.href === '/' ? pathname === item.href : pathname.startsWith(item.href); // Adjusted for hash links
+              // Simplified active state logic: only 'Home' uses path for active.
+              // Hash links (#games, #forums) would need scroll-based or hash-change logic for robust active state.
+              const isStrictMatch = pathname === item.href;
+              const isActive = item.href === '/' ? isStrictMatch : false; 
+
               return (
                 <Link
                   key={item.name}
@@ -35,20 +40,22 @@ const Navbar: React.FC = () => {
                   )}
                 >
                   {item.name}
-                  <span
+                  <span // Underline: thicker for better visibility
                     className={cn(
-                      "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
+                      "absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
                       isActive ? "scale-x-100" : ""
                     )}
                   />
-                  {isActive && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary neon-shadow-primary opacity-50" />}
+                  {isActive && ( // Glowing dot: larger, more opaque, and slightly repositioned for the thicker underline
+                    <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-primary neon-shadow-primary opacity-90" />
+                  )}
                 </Link>
               );
             })}
-             <ThemeToggle /> {/* Add ThemeToggle here */}
+             <ThemeToggle />
           </div>
           <div className="md:hidden flex items-center space-x-4">
-             <ThemeToggle /> {/* Add ThemeToggle for mobile view as well, or implement a mobile menu */}
+             <ThemeToggle />
             {/* Mobile menu button can be added here if needed */}
           </div>
         </div>
