@@ -73,7 +73,7 @@ export default function HomePage() {
         {/* Chat Sidebar */}
         <aside
           className={cn(
-            "fixed top-0 right-0 h-full bg-card border-l border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-l-lg", 
+            "fixed top-0 right-0 h-full bg-card border border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-l-lg", 
             "w-full md:w-96", 
             isChatSidebarOpen ? "translate-x-0" : "translate-x-full"
           )}
@@ -84,7 +84,7 @@ export default function HomePage() {
             className="absolute top-[calc(5rem+0.75rem)] right-3 p-2 text-primary hover:text-accent z-50 rounded-md hover:bg-primary/10 transition-colors"
             aria-label="Close chat sidebar"
           >
-            <XIcon className="h-5 w-5" />
+            <XIcon className="h-5 w-5 icon-glow-primary" />
           </button>
           <ChatInterface />
         </aside>
@@ -97,3 +97,4 @@ export default function HomePage() {
     </div>
   );
 }
+
