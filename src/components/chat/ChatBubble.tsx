@@ -20,15 +20,20 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
   const nameGradientClass = user.nameGradient === 'purple-orange' ? 'text-gradient-purple-orange' : 'bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent';
 
   const avatarBaseClasses = "w-10 h-10 border-2";
-  const avatarOnlineClasses = user.isOnline 
-    ? (user.isCurrentUser ? "avatar-online-primary" : "avatar-online-accent") 
-    : (user.isCurrentUser ? "shadow-neon-primary" : "shadow-neon-accent");
-  const avatarBorderColor = user.isCurrentUser ? "border-primary" : "border-accent";
+  
+  const avatarStatusClasses = user.isOnline
+    ? cn(
+        user.isCurrentUser ? "avatar-online-primary" : "avatar-online-accent",
+        "border-transparent" 
+      )
+    : cn(
+        user.isCurrentUser ? "shadow-neon-primary border-primary" : "shadow-neon-accent border-accent"
+      );
 
   return (
     <div className={cn("flex items-start gap-3 my-4", user.isCurrentUser ? "justify-end" : "")}>
       {!user.isCurrentUser && (
-        <Avatar className={cn(avatarBaseClasses, avatarBorderColor, avatarOnlineClasses)}>
+        <Avatar className={cn(avatarBaseClasses, avatarStatusClasses)}>
           <AvatarImage src={user.avatarUrl || `https://placehold.co/40x40.png`} alt={user.name} data-ai-hint="profile avatar" />
           <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
@@ -48,7 +53,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
         </div>
       </div>
       {user.isCurrentUser && (
-         <Avatar className={cn(avatarBaseClasses, avatarBorderColor, avatarOnlineClasses)}>
+         <Avatar className={cn(avatarBaseClasses, avatarStatusClasses)}>
           <AvatarImage src={user.avatarUrl || `https://placehold.co/40x40.png`} alt={user.name} data-ai-hint="profile avatar" />
           <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
@@ -58,3 +63,5 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
 };
 
 export default ChatBubble;
+
+    
