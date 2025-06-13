@@ -24,8 +24,8 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
   
   const avatarStatusClasses = user.isOnline
     ? cn(
-        user.isCurrentUser ? "avatar-online-primary" : "avatar-online-accent", 
-        "border-transparent" 
+        user.isCurrentUser ? "avatar-online-primary" : "avatar-online-accent"
+        // Removed "border-transparent" to allow CSS to color and glow the border
       )
     : cn( // For offline users, apply a static, non-pulsing shadow based on user type
         user.isCurrentUser ? "shadow-neon-primary border-primary" : "shadow-neon-accent border-accent"
