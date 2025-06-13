@@ -1,3 +1,65 @@
-export default function Home() {
-  return <></>;
+import AnimatedBackground from '@/components/ui/AnimatedBackground';
+import Navbar from '@/components/layout/Navbar';
+import GameCard from '@/components/game/GameCard';
+import ChatInterface from '@/components/chat/ChatInterface';
+import { Button } from '@/components/ui/button';
+import { ArrowRightIcon } from 'lucide-react';
+
+const games = [
+  { id: '1', title: 'Cosmic Drift Racer', imageUrl: 'https://placehold.co/600x400/003366/00cfff.png', category: 'Racing', dataAiHint: 'space race' },
+  { id: '2', title: 'Synthwave Striker', imageUrl: 'https://placehold.co/600x400/4B0082/a855f7.png', category: 'Action', dataAiHint: 'synthwave action' },
+  { id: '3', title: 'Neon Grid Runner', imageUrl: 'https://placehold.co/600x400/FF4500/ff6a00.png', category: 'Arcade', dataAiHint: 'neon grid' },
+  { id: '4', title: 'Galaxy Guardians', imageUrl: 'https://placehold.co/600x400/1E90FF/00cfff.png', category: 'Strategy', dataAiHint: 'galaxy strategy' },
+];
+
+export default function HomePage() {
+  return (
+    <div className="relative min-h-screen flex flex-col">
+      <AnimatedBackground />
+      <Navbar />
+
+      <main className="flex-grow pt-20 z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+        <section className="py-16 md:py-24 text-center">
+          <h1 className="text-5xl md:text-7xl font-headline font-bold mb-6">
+            Welcome to <span className="text-primary">Neon</span><span className="text-accent">Verse</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
+            Dive into a universe of high-octane games, vibrant communities, and retro-futuristic vibes.
+          </p>
+          <Button variant="cta" size="lg" className="text-lg px-8 py-4">
+            Join The Universe <ArrowRightIcon className="ml-2 h-5 w-5" />
+          </Button>
+        </section>
+
+        {/* Game Cards Section */}
+        <section id="games" className="py-12">
+          <h2 className="text-4xl font-headline font-bold text-center mb-10">Featured Games</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {games.map((game) => (
+              <GameCard 
+                key={game.id} 
+                title={game.title} 
+                imageUrl={game.imageUrl}
+                category={game.category}
+                dataAiHint={game.dataAiHint}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Forum & Chat Section */}
+        <section id="forums" className="py-12">
+          <h2 className="text-4xl font-headline font-bold text-center mb-10">Community Hub</h2>
+          <ChatInterface />
+        </section>
+        
+        {/* Footer section (simple) */}
+        <footer className="py-8 text-center text-muted-foreground border-t border-border/20 mt-12">
+          <p>&copy; {new Date().getFullYear()} NeonVerse. All rights reserved.</p>
+          <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
+        </footer>
+      </main>
+    </div>
+  );
 }
