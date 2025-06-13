@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Gamepad2Icon, MessageSquareIcon, HomeIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ThemeToggle from './ThemeToggle'; // Import ThemeToggle
 
 const navItems = [
   { name: 'Home', href: '/', icon: HomeIcon },
@@ -23,7 +24,7 @@ const Navbar: React.FC = () => {
           </Link>
           <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => {
-              const isActive = item.href === '/' ? pathname === item.href : pathname.startsWith(item.href);
+              const isActive = item.href === '/' ? pathname === item.href : pathname.startsWith(item.href); // Adjusted for hash links
               return (
                 <Link
                   key={item.name}
@@ -44,9 +45,11 @@ const Navbar: React.FC = () => {
                 </Link>
               );
             })}
+             <ThemeToggle /> {/* Add ThemeToggle here */}
           </div>
-          <div className="md:hidden">
-            {/* Mobile menu button can be added here */}
+          <div className="md:hidden flex items-center space-x-4">
+             <ThemeToggle /> {/* Add ThemeToggle for mobile view as well, or implement a mobile menu */}
+            {/* Mobile menu button can be added here if needed */}
           </div>
         </div>
       </div>
