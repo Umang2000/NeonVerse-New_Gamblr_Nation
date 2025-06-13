@@ -1,8 +1,10 @@
+
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Navbar from '@/components/layout/Navbar';
 import GameCard from '@/components/game/GameCard';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { Button } from '@/components/ui/button';
+import FooterYear from '@/components/layout/FooterYear';
 import { ArrowRightIcon } from 'lucide-react';
 
 const games = [
@@ -56,7 +58,7 @@ export default function HomePage() {
         
         {/* Footer section (simple) */}
         <footer className="py-8 text-center text-muted-foreground border-t border-border/20 mt-12">
-          <p>&copy; {new Date().getFullYear()} NeonVerse. All rights reserved.</p>
+          <p>&copy; <FooterYear /> NeonVerse. All rights reserved.</p>
           <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
         </footer>
       </main>
