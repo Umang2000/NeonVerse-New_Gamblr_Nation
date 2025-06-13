@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md shadow-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="text-3xl font-headline font-bold text-primary hover:text-primary/80 transition-colors">
@@ -25,9 +25,9 @@ const Navbar: React.FC = () => {
           </Link>
           <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => {
-              // Simplified active state logic: only 'Home' uses path for active.
-              // Hash links (#games, #forums) would need scroll-based or hash-change logic for robust active state.
               const isStrictMatch = pathname === item.href;
+              // For now, only "Home" link shows a persistent active state based on path.
+              // Hash links (#games, #forums) active state would require scroll-based logic.
               const isActive = item.href === '/' ? isStrictMatch : false; 
 
               return (
@@ -42,12 +42,13 @@ const Navbar: React.FC = () => {
                   {item.name}
                   <span // Underline:
                     className={cn(
-                      "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
-                      isActive ? "scale-x-100" : ""
+                      "absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
+                      isActive ? "scale-x-100" : "",
+                      "group-hover:neon-shadow-primary" // Added glow on hover
                     )}
                   />
-                  {isActive && ( // Glowing dot:
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary neon-shadow-primary opacity-50" />
+                  {isActive && ( // Glowing dot for active "Home" link:
+                  <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-primary neon-shadow-primary opacity-75" />
                  )}
                 
                 </Link>
