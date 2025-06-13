@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -77,7 +78,7 @@ const ChatInterface: React.FC = () => {
   }, [messages]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-card rounded-lg shadow-2xl border border-border/50 flex flex-col h-[70vh] overflow-hidden my-8">
+    <div className="flex flex-col h-full w-full"> {/* Adjusted classes for fitting into the new container */}
       <div className="p-4 border-b border-border/30">
         <h2 className="text-xl font-headline text-center text-primary">Live Chat Lobby</h2>
       </div>

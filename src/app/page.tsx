@@ -1,11 +1,12 @@
 
+
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Navbar from '@/components/layout/Navbar';
 import GameCard from '@/components/game/GameCard';
-import ChatInterface from '@/components/chat/ChatInterface';
 import { Button } from '@/components/ui/button';
 import FooterYear from '@/components/layout/FooterYear';
 import { ArrowRightIcon } from 'lucide-react';
+import FloatingChatButton from '@/components/chat/FloatingChatButton';
 
 const games = [
   { id: '1', title: 'Cosmic Drift Racer', imageUrl: 'https://placehold.co/600x400/003366/00cfff.png', category: 'Racing', dataAiHint: 'space race' },
@@ -29,7 +30,7 @@ export default function HomePage() {
           <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
             Dive into a universe of high-octane games, vibrant communities, and retro-futuristic vibes.
           </p>
-          <Button variant="cta" size="lg" className="text-lg px-8 py-4">
+          <Button variant="cta" size="lg" className="text-lg px-8 py-4 group">
             Join The Universe <ArrowRightIcon className="ml-2 h-5 w-5" />
           </Button>
         </section>
@@ -49,12 +50,6 @@ export default function HomePage() {
             ))}
           </div>
         </section>
-
-        {/* Forum & Chat Section */}
-        <section id="forums" className="py-12">
-          <h2 className="text-4xl font-headline font-bold text-center mb-10">Community Hub</h2>
-          <ChatInterface />
-        </section>
         
         {/* Footer section (simple) */}
         <footer className="py-8 text-center text-muted-foreground border-t border-border/20 mt-12">
@@ -62,6 +57,7 @@ export default function HomePage() {
           <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
         </footer>
       </main>
+      <FloatingChatButton />
     </div>
   );
 }
