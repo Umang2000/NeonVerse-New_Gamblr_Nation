@@ -1,12 +1,16 @@
 
+"use client";
 
+import { useState } from 'react';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Navbar from '@/components/layout/Navbar';
 import GameCard from '@/components/game/GameCard';
 import { Button } from '@/components/ui/button';
 import FooterYear from '@/components/layout/FooterYear';
-import { ArrowRightIcon } from 'lucide-react';
+import { ArrowRightIcon, PanelRightClose } from 'lucide-react'; // PanelRightOpen will be used in FloatingChatButton
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
+import ChatInterface from '@/components/chat/ChatInterface';
+import { cn } from '@/lib/utils';
 
 const games = [
   { id: '1', title: 'Cosmic Drift Racer', imageUrl: 'https://placehold.co/600x400/003366/00cfff.png', category: 'Racing', dataAiHint: 'space race' },
@@ -16,48 +20,81 @@ const games = [
 ];
 
 export default function HomePage() {
+  const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
+
   return (
     <div className="relative min-h-screen flex flex-col">
       <AnimatedBackground />
       <Navbar />
 
-      <main className="flex-grow pt-20 z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section */}
-        <section className="py-16 md:py-24 text-center">
-          <h1 className="text-5xl md:text-7xl font-headline font-bold mb-6">
-            Welcome to <span className="text-primary">Neon</span><span className="text-accent">Verse</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-            Dive into a universe of high-octane games, vibrant communities, and retro-futuristic vibes.
-          </p>
-          <Button variant="cta" size="lg" className="text-lg px-8 py-4 group">
-            Join The Universe <ArrowRightIcon className="ml-2 h-5 w-5" />
-          </Button>
-        </section>
+      <div className="flex flex-1 pt-20"> {/* pt-20 for navbar height */}
+        <main
+          className={cn(
+            "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out",
+            isChatSidebarOpen ? "md:mr-[384px]" : "mr-0" // 384px is w-96 for sidebar on md+
+          )}
+        >
+          {/* Hero Section */}
+          <section className="py-16 md:py-24 text-center">
+            <h1 className="text-5xl md:text-7xl font-headline font-bold mb-6">
+              Welcome to <span className="text-primary">Neon</span><span className="text-accent">Verse</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
+              Dive into a universe of high-octane games, vibrant communities, and retro-futuristic vibes.
+            </p>
+            <Button variant="cta" size="lg" className="text-lg px-8 py-4 group">
+              Join The Universe <ArrowRightIcon className="ml-2 h-5 w-5" />
+            </Button>
+          </section>
 
-        {/* Game Cards Section */}
-        <section id="games" className="py-12">
-          <h2 className="text-4xl font-headline font-bold text-center mb-10">Featured Games</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {games.map((game) => (
-              <GameCard 
-                key={game.id} 
-                title={game.title} 
-                imageUrl={game.imageUrl}
-                category={game.category}
-                dataAiHint={game.dataAiHint}
-              />
-            ))}
-          </div>
-        </section>
-        
-        {/* Footer section (simple) */}
-        <footer className="py-8 text-center text-muted-foreground border-t border-border/20 mt-12">
-          <p>&copy; <FooterYear /> NeonVerse. All rights reserved.</p>
-          <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
-        </footer>
-      </main>
-      <FloatingChatButton />
+          {/* Game Cards Section */}
+          <section id="games" className="py-12">
+            <h2 className="text-4xl font-headline font-bold text-center mb-10">Featured Games</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {games.map((game) => (
+                <GameCard
+                  key={game.id}
+                  title={game.title}
+                  imageUrl={game.imageUrl}
+                  category={game.category}
+                  dataAiHint={game.dataAiHint}
+                />
+              ))}
+            </div>
+          </section>
+
+          {/* Footer section (simple) */}
+          <footer className="py-8 text-center text-muted-foreground border-t border-border/20 mt-12">
+            <p>&copy; <FooterYear /> NeonVerse. All rights reserved.</p>
+            <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
+          </footer>
+        </main>
+
+        {/* Chat Sidebar */}
+        <aside
+          className={cn(
+            "fixed top-0 right-0 h-full bg-card border-l border-border/50 shadow-2xl z-30 transition-transform duration-300 ease-in-out flex flex-col",
+            "w-full md:w-96", // Full width on mobile, w-96 on md+
+            isChatSidebarOpen ? "translate-x-0" : "translate-x-full"
+          )}
+          // The Navbar is h-20 (5rem). Apply this padding to the sidebar content area.
+          style={{ paddingTop: '5rem' }} 
+        >
+           <button 
+            onClick={() => setIsChatSidebarOpen(false)} 
+            className="md:hidden absolute top-[calc(5rem+0.5rem)] right-2 p-2 text-primary hover:text-accent z-50" // Position relative to actual content start
+            aria-label="Close chat sidebar"
+          >
+            <PanelRightClose className="h-6 w-6" />
+          </button>
+          <ChatInterface />
+        </aside>
+      </div>
+
+      <FloatingChatButton 
+        onToggle={() => setIsChatSidebarOpen(!isChatSidebarOpen)} 
+        isOpen={isChatSidebarOpen} 
+      />
     </div>
   );
 }
