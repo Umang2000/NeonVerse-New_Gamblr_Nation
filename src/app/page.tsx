@@ -31,7 +31,7 @@ export default function HomePage() {
         <main
           className={cn(
             "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out",
-            isChatSidebarOpen ? "md:mr-[384px]" : "mr-0" // 384px is w-96 for sidebar on md+
+            isChatSidebarOpen ? "md:mr-[384px]" : "" // Ensure mx-auto centers when no specific margin is set
           )}
         >
           {/* Hero Section */}
@@ -73,19 +73,18 @@ export default function HomePage() {
         {/* Chat Sidebar */}
         <aside
           className={cn(
-            "fixed top-0 right-0 h-full bg-card border-l border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col", // Changed shadow-2xl to shadow-xl
-            "w-full md:w-96", // Full width on mobile, w-96 on md+
+            "fixed top-0 right-0 h-full bg-card border-l border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-l-lg", 
+            "w-full md:w-96", 
             isChatSidebarOpen ? "translate-x-0" : "translate-x-full"
           )}
-          // The Navbar is h-20 (5rem). Apply this padding to the sidebar content area.
           style={{ paddingTop: '5rem' }} 
         >
            <button 
             onClick={() => setIsChatSidebarOpen(false)} 
-            className="md:hidden absolute top-[calc(5rem+0.5rem)] right-2 p-2 text-primary hover:text-accent z-50" // Position relative to actual content start
+            className="absolute top-[calc(5rem+0.75rem)] right-3 p-2 text-primary hover:text-accent z-50 rounded-md hover:bg-primary/10 transition-colors"
             aria-label="Close chat sidebar"
           >
-            <PanelRightClose className="h-6 w-6" />
+            <PanelRightClose className="h-5 w-5" />
           </button>
           <ChatInterface />
         </aside>
