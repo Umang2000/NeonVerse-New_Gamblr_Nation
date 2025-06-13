@@ -2,13 +2,16 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
+interface ChatBubbleUser {
+  name: string;
+  avatarUrl?: string;
+  isCurrentUser?: boolean;
+  nameGradient?: 'purple-orange' | 'blue-purple';
+  isOnline?: boolean;
+}
+
 interface ChatBubbleProps {
-  user: {
-    name: string;
-    avatarUrl?: string;
-    isCurrentUser?: boolean;
-    nameGradient?: 'purple-orange' | 'blue-purple';
-  };
+  user: ChatBubbleUser;
   message: string;
   timestamp: string;
 }
@@ -16,10 +19,16 @@ interface ChatBubbleProps {
 const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => {
   const nameGradientClass = user.nameGradient === 'purple-orange' ? 'text-gradient-purple-orange' : 'bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent';
 
+  const avatarBaseClasses = "w-10 h-10 border-2";
+  const avatarOnlineClasses = user.isOnline 
+    ? (user.isCurrentUser ? "avatar-online-primary" : "avatar-online-accent") 
+    : (user.isCurrentUser ? "shadow-neon-primary" : "shadow-neon-accent");
+  const avatarBorderColor = user.isCurrentUser ? "border-primary" : "border-accent";
+
   return (
     <div className={cn("flex items-start gap-3 my-4", user.isCurrentUser ? "justify-end" : "")}>
       {!user.isCurrentUser && (
-        <Avatar className="w-10 h-10 border-2 border-accent shadow-neon-accent">
+        <Avatar className={cn(avatarBaseClasses, avatarBorderColor, avatarOnlineClasses)}>
           <AvatarImage src={user.avatarUrl || `https://placehold.co/40x40.png`} alt={user.name} data-ai-hint="profile avatar" />
           <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
@@ -39,7 +48,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
         </div>
       </div>
       {user.isCurrentUser && (
-         <Avatar className="w-10 h-10 border-2 border-primary shadow-neon-primary">
+         <Avatar className={cn(avatarBaseClasses, avatarBorderColor, avatarOnlineClasses)}>
           <AvatarImage src={user.avatarUrl || `https://placehold.co/40x40.png`} alt={user.name} data-ai-hint="profile avatar" />
           <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>

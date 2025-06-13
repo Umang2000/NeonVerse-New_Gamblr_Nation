@@ -160,3 +160,32 @@
   z-index: 0;
   pointer-events: none;
 }
+
+/* Profile Aura Animations */
+@keyframes pulse-aura-primary {
+  0%, 100% { 
+    border-color: hsl(var(--primary)); 
+    box-shadow: 0 0 8px hsl(var(--primary) / 0.6), 0 0 16px hsl(var(--primary) / 0.3);
+  }
+  50% { 
+    border-color: hsl(var(--primary) / 0.7); 
+    box-shadow: 0 0 12px hsl(var(--primary) / 0.8), 0 0 24px hsl(var(--primary) / 0.5);
+  }
+}
+.avatar-online-primary {
+  animation: pulse-aura-primary 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse-aura-accent {
+  0%, 100% { 
+    border-color: hsl(var(--accent)); 
+    box-shadow: 0 0 8px hsl(var(--accent) / 0.6), 0 0 16px hsl(var(--accent) / 0.3);
+  }
+  50% { 
+    border-color: hsl(var(--accent) / 0.7); 
+    box-shadow: 0 0 12px hsl(var(--accent) / 0.8), 0 0 24px hsl(var(--accent) / 0.5);
+  }
+}
+.avatar-online-accent {
+  animation: pulse-aura-accent 2.5s infinite ease-in-out;
+}

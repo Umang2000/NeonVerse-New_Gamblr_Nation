@@ -5,14 +5,17 @@ import ChatBubble from './ChatBubble';
 import ChatInput from './ChatInput';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
+interface User {
+  name: string;
+  avatarUrl?: string;
+  isCurrentUser?: boolean;
+  nameGradient?: 'purple-orange' | 'blue-purple';
+  isOnline?: boolean; 
+}
+
 interface Message {
   id: string;
-  user: {
-    name: string;
-    avatarUrl?: string;
-    isCurrentUser?: boolean;
-    nameGradient?: 'purple-orange' | 'blue-purple';
-  };
+  user: User;
   message: string;
   timestamp: string;
 }
@@ -20,21 +23,27 @@ interface Message {
 const initialMessages: Message[] = [
   {
     id: '1',
-    user: { name: 'NeonPlayerX', avatarUrl: 'https://placehold.co/40x40/00cfff/0e0e0e.png?text=NX', nameGradient: 'blue-purple' },
+    user: { name: 'NeonPlayerX', avatarUrl: 'https://placehold.co/40x40/00cfff/0e0e0e.png?text=NX', nameGradient: 'blue-purple', isOnline: true },
     message: 'Hey everyone! This NeonVerse theme is sick! 🔥',
     timestamp: '10:00 AM',
   },
   {
     id: '2',
-    user: { name: 'SynthWaveRider', avatarUrl: 'https://placehold.co/40x40/a855f7/0e0e0e.png?text=SR', nameGradient: 'purple-orange', isCurrentUser: true },
+    user: { name: 'SynthWaveRider', avatarUrl: 'https://placehold.co/40x40/a855f7/0e0e0e.png?text=SR', nameGradient: 'purple-orange', isCurrentUser: true, isOnline: true },
     message: 'Totally agree! The glows are amazing. ✨',
     timestamp: '10:01 AM',
   },
   {
     id: '3',
-    user: { name: 'BytePioneer', avatarUrl: 'https://placehold.co/40x40/ff6a00/0e0e0e.png?text=BP', nameGradient: 'blue-purple' },
+    user: { name: 'BytePioneer', avatarUrl: 'https://placehold.co/40x40/ff6a00/0e0e0e.png?text=BP', nameGradient: 'blue-purple', isOnline: false },
     message: 'Anyone up for a match in "Cosmic Drift"? The new update is live!',
     timestamp: '10:02 AM',
+  },
+   {
+    id: '4',
+    user: { name: 'GlitchMaster', avatarUrl: 'https://placehold.co/40x40/00cfff/0e0e0e.png?text=GM', nameGradient: 'blue-purple', isOnline: true },
+    message: 'Just joined! Loving the vibes here.',
+    timestamp: '10:03 AM',
   },
 ];
 
@@ -50,6 +59,7 @@ const ChatInterface: React.FC = () => {
         avatarUrl: 'https://placehold.co/40x40/a855f7/0e0e0e.png?text=SR',
         isCurrentUser: true,
         nameGradient: 'purple-orange',
+        isOnline: true,
       },
       message: newMessageText,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
