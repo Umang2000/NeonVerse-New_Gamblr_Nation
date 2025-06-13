@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ChatBubble from './ChatBubble';
 import ChatInput from './ChatInput';
 import { ScrollArea } from '@/components/ui/scroll-area';
-// Removed cn as it's not used here after simplifying the outer div
+import { cn } from '@/lib/utils';
 
 interface User {
   name: string;
@@ -79,9 +79,10 @@ const ChatInterface: React.FC = () => {
   }, [messages]);
 
   return (
-    // Ensure this component fills its parent (the aside sidebar)
-    // The bg-card is now on the <aside> element in page.tsx
-    <div className="flex flex-col h-full w-full overflow-hidden"> 
+    <div className={cn(
+      "flex flex-col h-full w-full overflow-hidden",
+      "pt-20" // Added pt-20 to account for Navbar height
+    )}> 
       <div className="p-4 border-b border-border/30">
         <h2 className="text-xl font-headline text-center text-primary">Live Chat Lobby</h2>
       </div>

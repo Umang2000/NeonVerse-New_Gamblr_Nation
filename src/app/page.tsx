@@ -77,7 +77,7 @@ export default function HomePage() {
             "w-full md:w-96", 
             isChatSidebarOpen ? "translate-x-0" : "translate-x-full"
           )}
-          style={{ paddingTop: '5rem' }} 
+          // Removed style={{ paddingTop: '5rem' }}
         >
            <button 
             onClick={() => setIsChatSidebarOpen(false)} 
@@ -97,4 +97,3 @@ export default function HomePage() {
     </div>
   );
 }
-
