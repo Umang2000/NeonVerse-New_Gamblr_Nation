@@ -43,7 +43,10 @@ const ThemeToggle: React.FC = () => {
               onCheckedChange={handleThemeChange}
               aria-label={isPulseMode ? "Switch to standard glow" : "Switch to enhanced glow"}
             />
-            <Label htmlFor="theme-mode" className="cursor-pointer bg-transparent">
+            <Label 
+              htmlFor="theme-mode" 
+              className="cursor-pointer bg-transparent p-0 flex items-center justify-center"
+            >
               {isPulseMode ? (
                 <SparklesIcon className="text-destructive neon-shadow-destructive bg-transparent" />
               ) : (
@@ -61,3 +64,4 @@ const ThemeToggle: React.FC = () => {
 };
 
 export default ThemeToggle;
+
