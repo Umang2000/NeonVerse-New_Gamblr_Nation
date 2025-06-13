@@ -43,8 +43,7 @@ const Navbar: React.FC = () => {
                   <span // Underline:
                     className={cn(
                       "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
-                      isActive ? "scale-x-100" : "",
-                      "group-hover:neon-shadow-primary" // Added glow on hover
+                      isActive ? "scale-x-100 neon-shadow-primary" : "group-hover:neon-shadow-primary"
                     )}
                   />
                   {isActive && ( // Glowing dot for active "Home" link:

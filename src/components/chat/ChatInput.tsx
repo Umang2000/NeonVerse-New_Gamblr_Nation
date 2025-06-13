@@ -24,9 +24,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="sticky bottom-0 mt-auto p-4 bg-background/80 backdrop-blur-md border-t border-border shadow-lg" // Changed shadow-2xl to shadow-lg
+      className="sticky bottom-0 mt-auto p-4 bg-background/80 backdrop-blur-md border-t border-border shadow-lg"
     >
-      <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm border border-border/30 rounded-lg p-2 inner-shadow focus-within:ring-2 focus-within:ring-primary">
+      <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm border border-border/30 rounded-lg p-2 inner-shadow focus-within:ring-2 focus-within:ring-primary focus-within:shadow-neon-primary">
         <Input
           type="text"
           value={message}
