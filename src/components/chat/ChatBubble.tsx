@@ -24,10 +24,10 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
   
   const avatarStatusClasses = user.isOnline
     ? cn(
-        user.isCurrentUser ? "avatar-online-primary animate-pulse-aura-primary" : "avatar-online-accent animate-pulse-aura-accent", // Apply animation class directly
+        user.isCurrentUser ? "avatar-online-primary" : "avatar-online-accent", 
         "border-transparent" 
       )
-    : cn(
+    : cn( // For offline users, apply a static, non-pulsing shadow based on user type
         user.isCurrentUser ? "shadow-neon-primary border-primary" : "shadow-neon-accent border-accent"
       );
 
