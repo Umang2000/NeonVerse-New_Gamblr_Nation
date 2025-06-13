@@ -7,7 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import GameCard from '@/components/game/GameCard';
 import { Button } from '@/components/ui/button';
 import FooterYear from '@/components/layout/FooterYear';
-import { ArrowRightIcon, PanelRightClose } from 'lucide-react'; // PanelRightOpen will be used in FloatingChatButton
+import { ArrowRightIcon, PanelRightClose } from 'lucide-react'; 
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { cn } from '@/lib/utils';
@@ -73,7 +73,7 @@ export default function HomePage() {
         {/* Chat Sidebar */}
         <aside
           className={cn(
-            "fixed top-0 right-0 h-full bg-card border-l border-border/50 shadow-2xl z-30 transition-transform duration-300 ease-in-out flex flex-col",
+            "fixed top-0 right-0 h-full bg-card border-l border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col", // Changed shadow-2xl to shadow-xl
             "w-full md:w-96", // Full width on mobile, w-96 on md+
             isChatSidebarOpen ? "translate-x-0" : "translate-x-full"
           )}
