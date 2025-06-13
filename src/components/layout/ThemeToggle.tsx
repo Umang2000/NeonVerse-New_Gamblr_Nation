@@ -7,6 +7,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { MoonIcon, SparklesIcon } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
 const ThemeToggle: React.FC = () => {
   const [isPulseMode, setIsPulseMode] = useState(false);
@@ -45,16 +46,15 @@ const ThemeToggle: React.FC = () => {
             />
             <Label
               htmlFor="theme-mode"
-              className="cursor-pointer p-0 flex items-center justify-center bg-transparent"
+              className={cn(
+                "cursor-pointer p-0 flex items-center justify-center bg-transparent", // Base styles for the label
+                isPulseMode ? "icon-glow-destructive" : "icon-glow-primary" // Apply drop-shadow glow to the label
+              )}
             >
               {isPulseMode ? (
-                <span className="inline-block neon-shadow-destructive bg-transparent">
-                  <SparklesIcon className="text-destructive h-5 w-5" />
-                </span>
+                <SparklesIcon className="text-destructive h-5 w-5" />
               ) : (
-                <span className="inline-block neon-shadow-primary bg-transparent">
-                  <MoonIcon className="text-primary h-5 w-5" />
-                </span>
+                <MoonIcon className="text-primary h-5 w-5" />
               )}
             </Label>
           </div>
