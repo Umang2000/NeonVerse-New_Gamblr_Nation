@@ -1,3 +1,4 @@
+
 // src/components/layout/ThemeToggle.tsx
 "use client";
 
@@ -42,11 +43,11 @@ const ThemeToggle: React.FC = () => {
               onCheckedChange={handleThemeChange}
               aria-label={isPulseMode ? "Switch to standard glow" : "Switch to enhanced glow"}
             />
-            <Label htmlFor="theme-mode" className="cursor-pointer">
+            <Label htmlFor="theme-mode" className="cursor-pointer bg-transparent">
               {isPulseMode ? (
-                <SparklesIcon className="text-destructive neon-shadow-destructive" />
+                <SparklesIcon className="text-destructive neon-shadow-destructive bg-transparent" />
               ) : (
-                <MoonIcon className="text-primary neon-shadow-primary" />
+                <MoonIcon className="text-primary neon-shadow-primary bg-transparent" />
               )}
             </Label>
           </div>
