@@ -43,14 +43,18 @@ const ThemeToggle: React.FC = () => {
               onCheckedChange={handleThemeChange}
               aria-label={isPulseMode ? "Switch to standard glow" : "Switch to enhanced glow"}
             />
-            <Label 
-              htmlFor="theme-mode" 
-              className="cursor-pointer bg-transparent p-0 flex items-center justify-center"
+            <Label
+              htmlFor="theme-mode"
+              className="cursor-pointer p-0 flex items-center justify-center bg-transparent"
             >
               {isPulseMode ? (
-                <SparklesIcon className="text-destructive neon-shadow-destructive bg-transparent" />
+                <span className="inline-block neon-shadow-destructive bg-transparent">
+                  <SparklesIcon className="text-destructive h-5 w-5" />
+                </span>
               ) : (
-                <MoonIcon className="text-primary neon-shadow-primary bg-transparent" />
+                <span className="inline-block neon-shadow-primary bg-transparent">
+                  <MoonIcon className="text-primary h-5 w-5" />
+                </span>
               )}
             </Label>
           </div>
@@ -64,4 +68,3 @@ const ThemeToggle: React.FC = () => {
 };
 
 export default ThemeToggle;
-
