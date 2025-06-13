@@ -135,9 +135,11 @@
 
   /* Avatar online static glows for standard mode */
   .avatar-online-primary {
+    border-color: hsl(var(--primary)); 
     box-shadow: 0 0 6px hsl(var(--primary) / 0.5), 0 0 10px hsl(var(--primary) / 0.25);
   }
-  .avatar-online-accent {
+  .avatar-online-accent {    
+    border-color: hsl(var(--accent)); 
     box-shadow: 0 0 6px hsl(var(--accent) / 0.5), 0 0 10px hsl(var(--accent) / 0.25);
   }
 
