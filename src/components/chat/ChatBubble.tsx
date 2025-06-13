@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -23,7 +24,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
   
   const avatarStatusClasses = user.isOnline
     ? cn(
-        user.isCurrentUser ? "avatar-online-primary" : "avatar-online-accent",
+        user.isCurrentUser ? "avatar-online-primary animate-pulse-aura-primary" : "avatar-online-accent animate-pulse-aura-accent", // Apply animation class directly
         "border-transparent" 
       )
     : cn(
@@ -63,5 +64,3 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
 };
 
 export default ChatBubble;
-
-    

@@ -19,7 +19,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent/20 hover:text-accent-foreground text-primary hover:shadow-neon-primary",
         link: "text-primary underline-offset-4 hover:underline",
-        cta: "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:animate-pulse-neon"
+        cta: "bg-destructive text-destructive-foreground shadow-neon-destructive animate-pulse-neon" // Always apply animate-pulse-neon
       },
       size: {
         default: "h-10 px-4 py-2",
