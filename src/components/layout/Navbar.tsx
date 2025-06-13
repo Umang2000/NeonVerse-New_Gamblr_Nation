@@ -42,13 +42,13 @@ const Navbar: React.FC = () => {
                   {item.name}
                   <span // Underline:
                     className={cn(
-                      "absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
+                      "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
                       isActive ? "scale-x-100" : "",
                       "group-hover:neon-shadow-primary" // Added glow on hover
                     )}
                   />
                   {isActive && ( // Glowing dot for active "Home" link:
-                  <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-primary neon-shadow-primary opacity-75" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary neon-shadow-primary opacity-50" />
                  )}
                 
                 </Link>
