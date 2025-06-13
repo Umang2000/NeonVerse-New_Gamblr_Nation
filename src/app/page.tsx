@@ -7,7 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import GameCard from '@/components/game/GameCard';
 import { Button } from '@/components/ui/button';
 import FooterYear from '@/components/layout/FooterYear';
-import { ArrowRightIcon, PanelRightClose } from 'lucide-react'; 
+import { ArrowRightIcon, XIcon } from 'lucide-react'; 
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { cn } from '@/lib/utils';
@@ -31,7 +31,7 @@ export default function HomePage() {
         <main
           className={cn(
             "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out",
-            isChatSidebarOpen ? "md:mr-[384px]" : "" // Ensure mx-auto centers when no specific margin is set
+            isChatSidebarOpen ? "md:mr-[384px]" : "" 
           )}
         >
           {/* Hero Section */}
@@ -84,7 +84,7 @@ export default function HomePage() {
             className="absolute top-[calc(5rem+0.75rem)] right-3 p-2 text-primary hover:text-accent z-50 rounded-md hover:bg-primary/10 transition-colors"
             aria-label="Close chat sidebar"
           >
-            <PanelRightClose className="h-5 w-5" />
+            <XIcon className="h-5 w-5" />
           </button>
           <ChatInterface />
         </aside>
