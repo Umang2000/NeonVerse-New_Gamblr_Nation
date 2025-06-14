@@ -1,4 +1,5 @@
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -172,14 +173,14 @@
 
   .scroll-animated-item {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(40px) scale(0.95); /* Added scale for a subtle zoom out */
     transition-property: opacity, transform;
     transition-duration: 0.6s;
     transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
   .scroll-animated-item.is-visible {
     opacity: 1;
-    transform: translateY(0px);
+    transform: translateY(0px) scale(1); /* Zoom back to normal */
   }
 
   /* Planet Journey Styles */
@@ -187,11 +188,10 @@
     @apply text-center py-8 md:py-12; 
   }
 
-  .planet-image-container { /* New class for SVG containers */
+  .planet-image-container { 
     @apply mx-auto mb-6 transition-all duration-500 ease-out hover:scale-105;
-    /* Default size, can be overridden by Tailwind width/height utilities on the element itself */
   }
-  /* Apply neon shadow on hover to the container */
+  
   .planet-image-container:hover {
      filter: drop-shadow(0 0 10px hsl(var(--primary) / 0.6)) drop-shadow(0 0 20px hsl(var(--primary) / 0.3));
   }
@@ -205,14 +205,31 @@
   }
   
   .journey-path-segment {
-    @apply w-1.5 mx-auto; /* Slightly thicker line */
+    @apply w-1.5 mx-auto; 
     background: repeating-linear-gradient(
       to bottom,
-      currentColor, /* Dash color, set by text-primary, text-accent etc. */
-      currentColor 10px, /* Dash length */
-      transparent 10px, /* Gap start */
-      transparent 22px /* Gap end (dash + gap) */
+      currentColor, 
+      currentColor 10px, 
+      transparent 10px, 
+      transparent 22px 
     );
+  }
+
+  /* Styling for the rocket SVG itself */
+  .rocket-svg {
+    /* Base size is controlled by w-X h-X on the element */
+    /* fill: hsl(var(--foreground)); /* Default fill for rocket body */
+    /* stroke: hsl(var(--primary)); /* Default stroke for trail */ 
+    /* stroke-width: 2;
+    stroke-dasharray: 4, 4; */
+    /* The above commented out styles are better handled directly in the SVG or via trailColorClass prop */
+    transition: transform 0.3s ease-out; /* For hover effects or programmatic rotation */
+  }
+  .rocket-svg:hover {
+    filter: drop-shadow(0 0 5px currentColor); /* Glow with its trail color */
+  }
+  .theme-night-pulse .rocket-svg:hover {
+     filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 15px currentColor);
   }
 }
 
@@ -285,5 +302,7 @@
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
 }
+
+    
 
     

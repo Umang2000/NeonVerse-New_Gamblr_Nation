@@ -2,7 +2,6 @@
 "use client";
 
 import Link from 'next/link';
-// SVGs will be inlined, so Image import might only be needed if other images persist
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Navbar from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
@@ -14,7 +13,7 @@ import { useSupport } from '@/context/SupportContext';
 import { cn } from '@/lib/utils';
 import ScrollAnimate from '@/components/ui/ScrollAnimate';
 
-// Planet SVGs as functional components for clarity, or directly inlined
+// Planet SVGs as functional components
 const NeonPrimeSVG = () => (
   <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
     <defs>
@@ -97,6 +96,37 @@ const TheNexusSVG = () => (
   </svg>
 );
 
+const RocketWithTrailSVG = ({ className, trailColorClass = "text-primary" }: { className?: string; trailColorClass?: string; }) => (
+  <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" className={cn("w-32 h-16 md:w-40 md:h-20", className)}>
+    <defs>
+       <filter id="rocketGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    {/* Rocket Body */}
+    <path d="M150 50 Q145 30 120 25 L115 20 Q125 10 140 10 Q165 20 170 45 L175 60 Q165 70 140 70 Q125 70 115 65 L120 60 Q145 55 150 50Z" fill="hsl(var(--foreground) / 0.9)" stroke="hsl(var(--card-foreground))" strokeWidth="1" filter="url(#rocketGlow)" />
+    {/* Window */}
+    <circle cx="155" cy="48" r="7" fill="hsl(var(--primary))" stroke="hsl(var(--background))" strokeWidth="1.5" />
+    {/* Fins */}
+    <path d="M120 25 L100 10 L110 23 Z" fill="hsl(var(--muted))" />
+    <path d="M120 60 L100 75 L110 62 Z" fill="hsl(var(--muted))" />
+    <path d="M130 35 L120 30 L125 48 L120 55 L130 50 Z" fill="hsl(var(--destructive))" />
+    {/* Dashed Trail */}
+    <path 
+      d="M20 50 C40 30, 70 30, 90 50 S110 70, 130 50" 
+      stroke="currentColor" 
+      strokeWidth="3" 
+      fill="none" 
+      strokeDasharray="8, 8" 
+      className={cn("opacity-75", trailColorClass)}
+    />
+  </svg>
+);
+
 
 export default function HomePage() {
   const { setContactModalOpen } = useSupport();
@@ -108,7 +138,7 @@ export default function HomePage() {
 
       <main
         className={cn(
-          "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8"
+          "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden" // Added overflow-hidden to main
         )}
       >
         {/* Initial Path Segment - "Mission Start" */}
@@ -118,10 +148,15 @@ export default function HomePage() {
             <div className="journey-path-segment text-primary mx-auto" style={{ height: '60px' }}></div>
           </div>
         </ScrollAnimate>
+        
+        <ScrollAnimate transitionDelay="50ms" className="flex justify-start -mt-8 ml-4 md:ml-12 opacity-80">
+            <RocketWithTrailSVG className="-rotate-[15deg]" trailColorClass="text-primary" />
+        </ScrollAnimate>
+
 
         {/* Planet 1: Neon Prime (Hero Section) */}
         <ScrollAnimate transitionDelay="100ms">
-          <section className="planet-section text-center">
+          <section id="home" className="planet-section text-center">
             <div className="planet-image-container w-48 h-48 md:w-60 md:h-60">
               <NeonPrimeSVG />
             </div>
@@ -144,6 +179,10 @@ export default function HomePage() {
           <div className="journey-path-segment text-accent mx-auto" style={{ height: '100px' }}></div>
         </ScrollAnimate>
 
+        <ScrollAnimate transitionDelay="250ms" className="flex justify-end -mt-10 mr-4 md:mr-16 opacity-90">
+            <RocketWithTrailSVG className="rotate-[5deg]" trailColorClass="text-accent" />
+        </ScrollAnimate>
+
         {/* Planet 2: Streamer's Orbit (Twitch Livestream Section) */}
         <ScrollAnimate transitionDelay="300ms">
           <section id="livestream" className="planet-section">
@@ -163,6 +202,11 @@ export default function HomePage() {
         <ScrollAnimate transitionDelay="400ms">
           <div className="journey-path-segment text-destructive mx-auto" style={{ height: '100px' }}></div>
         </ScrollAnimate>
+        
+        <ScrollAnimate transitionDelay="450ms" className="flex justify-center -mt-8 opacity-80">
+            <RocketWithTrailSVG className="rotate-[0deg]" trailColorClass="text-destructive" />
+        </ScrollAnimate>
+
 
         {/* Planet 3: Help Hub Xylos (FAQ Section) */}
         <ScrollAnimate transitionDelay="500ms">
@@ -213,5 +257,6 @@ export default function HomePage() {
     </div>
   );
 }
+    
 
     
