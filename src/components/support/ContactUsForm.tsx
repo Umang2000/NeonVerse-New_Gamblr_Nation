@@ -86,7 +86,6 @@ export default function ContactUsForm() {
       <CardFooter>
         <Button 
           type="submit" 
-          variant="cta" 
           size="lg" 
           disabled={isSubmitting} 
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground shadow-neon-accent"
@@ -99,3 +98,4 @@ export default function ContactUsForm() {
     </form>
   );
 }
+
