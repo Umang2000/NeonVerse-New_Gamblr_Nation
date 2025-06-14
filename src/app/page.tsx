@@ -97,7 +97,7 @@ const TheNexusSVG = () => (
 );
 
 const RocketWithTrailSVG = ({ className, trailColorClass = "text-primary" }: { className?: string; trailColorClass?: string; }) => (
-  <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" className={cn("w-32 h-16 md:w-40 md:h-20", className)}>
+  <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" className={cn("w-32 h-16 md:w-40 md:h-20 rocket-svg", className)}>
     <defs>
        <filter id="rocketGlow" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
@@ -107,23 +107,19 @@ const RocketWithTrailSVG = ({ className, trailColorClass = "text-primary" }: { c
         </feMerge>
       </filter>
     </defs>
-    {/* Rocket Body */}
+    {/* Rocket Body - Points right (nose at x=170), rear at x=115-120 */}
     <path d="M150 50 Q145 30 120 25 L115 20 Q125 10 140 10 Q165 20 170 45 L175 60 Q165 70 140 70 Q125 70 115 65 L120 60 Q145 55 150 50Z" fill="hsl(var(--foreground) / 0.9)" stroke="hsl(var(--card-foreground))" strokeWidth="1" filter="url(#rocketGlow)" />
     {/* Window */}
     <circle cx="155" cy="48" r="7" fill="hsl(var(--primary))" stroke="hsl(var(--background))" strokeWidth="1.5" />
     {/* Fins */}
-    <path d="M120 25 L100 10 L110 23 Z" fill="hsl(var(--muted))" />
-    <path d="M120 60 L100 75 L110 62 Z" fill="hsl(var(--muted))" />
-    <path d="M130 35 L120 30 L125 48 L120 55 L130 50 Z" fill="hsl(var(--destructive))" />
-    {/* Dashed Trail */}
-    <path 
-      d="M20 50 C40 30, 70 30, 90 50 S110 70, 130 50" 
-      stroke="currentColor" 
-      strokeWidth="3" 
-      fill="none" 
-      strokeDasharray="8, 8" 
-      className={cn("opacity-75", trailColorClass)}
-    />
+    <path d="M120 25 L100 10 L110 23 Z" fill="hsl(var(--muted))" /> {/* Top fin, points back-left from body */}
+    <path d="M120 60 L100 75 L110 62 Z" fill="hsl(var(--muted))" /> {/* Bottom fin, points back-left from body */}
+    <path d="M130 35 L120 30 L125 48 L120 55 L130 50 Z" fill="hsl(var(--destructive))" /> {/* Side fin detail */}
+    
+    {/* Revised Trail - Emanates from rocket's rear (around x=115) towards the left */}
+    <line x1="115" y1="45" x2="65" y2="35" stroke="currentColor" strokeWidth="2.5" strokeDasharray="4,4" className={cn("opacity-80", trailColorClass)} />
+    <line x1="118" y1="50" x2="50" y2="50" stroke="currentColor" strokeWidth="3" strokeDasharray="5,5"   className={cn("opacity-90", trailColorClass)} />
+    <line x1="115" y1="55" x2="65" y2="65" stroke="currentColor" strokeWidth="2.5" strokeDasharray="4,4" className={cn("opacity-80", trailColorClass)} />
   </svg>
 );
 
@@ -257,6 +253,4 @@ export default function HomePage() {
     </div>
   );
 }
-    
-
     
