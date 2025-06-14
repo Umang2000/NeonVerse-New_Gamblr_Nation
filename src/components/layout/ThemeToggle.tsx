@@ -38,25 +38,21 @@ const ThemeToggle: React.FC = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <div className="flex items-center space-x-2">
+          <MoonIcon className={cn("h-5 w-5", isPulseMode ? "text-gray-500" : "text-primary")} />
             <Switch
-              id="theme-mode"
               checked={isPulseMode}
               onCheckedChange={handleThemeChange}
               aria-label={isPulseMode ? "Switch to standard glow" : "Switch to enhanced glow"}
-            />
+              className={isPulseMode ? 'data-[state=checked]:icon-glow-destructive' : 'data-[state=unchecked]:icon-glow-primary'}           
+           />
             <Label
               htmlFor="theme-mode"
               className={cn(
                 "cursor-pointer p-0 flex items-center justify-center bg-transparent", // Base styles for the label
-                isPulseMode ? "icon-glow-destructive" : "icon-glow-primary" // Apply drop-shadow glow to the label
               )}
             >
-              {isPulseMode ? (
-                <SparklesIcon className="text-destructive h-5 w-5" />
-              ) : (
-                <MoonIcon className="text-primary h-5 w-5" />
-              )}
             </Label>
+            <SparklesIcon className={cn("h-5 w-5", isPulseMode ? "text-destructive" : "text-gray-500")} />
           </div>
         </TooltipTrigger>
         <TooltipContent>
