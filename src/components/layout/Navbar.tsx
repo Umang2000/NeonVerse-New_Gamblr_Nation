@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation'; // Import useRouter
+import { usePathname, useRouter } from 'next/navigation';
 import { Gamepad2Icon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon, TvIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
@@ -27,7 +27,7 @@ const navItems = [
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
   const { user, loading, signOutUser, setAuthModalType } = useAuth();
   const [currentHash, setCurrentHash] = useState('');
 
@@ -44,19 +44,22 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
-  // Update currentHash if pathname changes, or if component re-renders
+  // Update currentHash if pathname changes (e.g. navigation from other pages back to home)
   useEffect(() => {
     setCurrentHash(window.location.hash);
   }, [pathname]);
 
   const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // If on homepage and there's a hash, clear it by navigating to '/'
     if (pathname === '/' && window.location.hash && window.location.hash !== '#') {
       e.preventDefault();
+      // Use router.push to clear the hash.
+      // Explicitly pushing to '/' should clear the hash.
+      // { shallow: true } attempts to prevent full reload if already on the page.
       router.push('/', { shallow: true });
     }
-    // Otherwise, allow default Link behavior
+    // Allow default Link behavior for navigating to / from other pages
   };
+
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md shadow-lg">
@@ -69,13 +72,10 @@ const Navbar: React.FC = () => {
             {navItems.map((item) => {
               let isActive;
               if (item.href === '/') {
-                // Home is active if path is '/' AND no other specific section hash is active.
                 isActive = pathname === '/' && (currentHash === '' || currentHash === '#');
               } else if (item.href.startsWith('#')) {
-                // Section link is active if path is '/' AND its hash matches the current hash.
                 isActive = pathname === '/' && currentHash === item.href;
               } else {
-                // For any other non-hash, non-root links (if they exist in future)
                 isActive = pathname === item.href;
               }
 
@@ -88,9 +88,9 @@ const Navbar: React.FC = () => {
                 <Link
                   key={item.name}
                   href={item.href}
-                  onClick={item.href === '/' ? handleHomeClick : undefined} // Add onClick for Home link
+                  onClick={item.href === '/' ? handleHomeClick : undefined}
                   className={cn(
-                    "relative px-3 py-2 text-lg font-medium text-foreground hover:text-primary transition-colors group",
+                    "relative inline-flex items-center justify-center px-3 py-2 text-lg font-medium text-foreground hover:text-primary transition-colors group",
                     isActive ? "text-primary" : ""
                   )}
                 >
