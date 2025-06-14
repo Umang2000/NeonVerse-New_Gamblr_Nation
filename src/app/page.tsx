@@ -6,7 +6,7 @@ import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Navbar from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
 import FooterYear from '@/components/layout/FooterYear';
-import { ArrowRightIcon, MailIcon } from 'lucide-react';
+import { ArrowRightIcon, MailIcon, Twitch as TwitchIconLucide } from 'lucide-react'; // Renamed Twitch
 import TwitchEmbed from '@/components/media/TwitchEmbed';
 import FAQSection from '@/components/page/FAQSection';
 import { useSupport } from '@/context/SupportContext';
@@ -18,7 +18,14 @@ import {
   HelpHubXylosSVG, 
   TheNexusSVG, 
   VerticalRocketSVG 
-} from '@/components/common/PlanetSVGs'; // Import SVGs
+} from '@/components/common/PlanetSVGs';
+import {
+  KickLogo,
+  TelegramLogo,
+  DiscordLogo,
+  XLogo
+} from '@/components/common/SocialMediaIcons';
+
 
 const ROCKET_HEIGHT_PX = 38; // Height of VerticalRocketSVG
 
@@ -38,6 +45,14 @@ export default function HomePage() {
     if (textColorClass === 'text-destructive') return 'hsl(var(--destructive))';
     return 'hsl(var(--primary))'; // Default
   };
+
+  const socialLinks = [
+    { name: 'Kick', Icon: KickLogo, href: '#' , dataAiHint: "kick logo"},
+    { name: 'Twitch', Icon: TwitchIconLucide, href: '#', dataAiHint: "twitch logo" },
+    { name: 'Telegram', Icon: TelegramLogo, href: '#', dataAiHint: "telegram logo" },
+    { name: 'X/Twitter', Icon: XLogo, href: '#', dataAiHint: "X logo" },
+    { name: 'Discord', Icon: DiscordLogo, href: '#', dataAiHint: "discord logo" },
+  ];
 
   return (
     <div className="relative min-h-screen flex flex-col">
@@ -80,7 +95,7 @@ export default function HomePage() {
         <ScrollAnimate className={journeySegments[0].colorClass} style={{ '--segment-height': journeySegments[0].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
             <div className="journey-segment-container" style={{ height: journeySegments[0].segmentHeight }}>
                 <div className="journey-track-revealed"></div>
-                <div className="journey-rocket-container">
+                <div className="journey-rocket-container p-2">
                     <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[0].colorClass)} />
                 </div>
             </div>
@@ -105,7 +120,7 @@ export default function HomePage() {
         <ScrollAnimate className={journeySegments[1].colorClass} style={{ '--segment-height': journeySegments[1].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
             <div className="journey-segment-container" style={{ height: journeySegments[1].segmentHeight }}>
                 <div className="journey-track-revealed"></div>
-                <div className="journey-rocket-container">
+                <div className="journey-rocket-container p-3">
                      <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[1].colorClass)} />
                 </div>
             </div>
@@ -138,7 +153,7 @@ export default function HomePage() {
 
         {/* Planet 4: The Nexus (Footer section) */}
         <ScrollAnimate>
-          <footer className="planet-section text-center text-muted-foreground border-t border-border/20 mt-12 pb-12 md:pb-16">
+          <footer id="page-footer" className="planet-section text-center text-muted-foreground border-t border-border/20 mt-12 pb-12 md:pb-16">
             <div className="planet-image-container w-32 h-32 md:w-36 md:h-36 opacity-80">
               <TheNexusSVG />
             </div>
@@ -155,6 +170,24 @@ export default function HomePage() {
               </Button>
             </div>
             <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
+            
+            {/* Social Media Icons */}
+            <div className="flex justify-center items-center space-x-5 mt-6">
+              {socialLinks.map(({ name, Icon, href, dataAiHint }) => (
+                <a
+                  key={name}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`NeonVerse on ${name}`}
+                  className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                  data-ai-hint={dataAiHint}
+                >
+                  <Icon className="h-7 w-7" />
+                </a>
+              ))}
+            </div>
+
             {/* Final smaller decorative journey segment */}
             <div className={cn("journey-segment-container mx-auto mt-10", journeySegments[3].colorClass)} style={{ height: '40px', opacity: 0.6 }}>
                 <div className="journey-track-revealed" style={{animationDelay: '0.1s', animationDuration: '0.5s', height: '100%'}}></div>
@@ -169,3 +202,6 @@ export default function HomePage() {
     </div>
   );
 }
+
+
+    
