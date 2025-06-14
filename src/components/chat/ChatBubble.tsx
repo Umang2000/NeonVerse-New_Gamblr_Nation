@@ -51,7 +51,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
             <span className={cn("font-bold text-sm", nameGradientClass)}>{user.name}</span>
             <span className="text-xs text-muted-foreground ml-2">{timestamp}</span>
           </div>
-          <p className="text-foreground text-sm leading-relaxed font-body break-words">{message}</p>
+          <p className="text-foreground text-sm leading-relaxed font-body break-all">{message}</p> {/* Changed break-words to break-all */}
         </div>
       </div>
       {user.isCurrentUser && (
@@ -65,3 +65,4 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
 };
 
 export default ChatBubble;
+
