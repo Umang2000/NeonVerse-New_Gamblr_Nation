@@ -33,15 +33,21 @@ interface Message {
 const initialMessages: Message[] = [
   {
     id: '1',
-    user: { name: 'NeonPlayerX', avatarUrl: 'https://placehold.co/40x40/00cfff/0e0e0e.png?text=NX', nameGradient: 'blue-purple', isOnline: true },
+    user: { name: 'NeonPlayerX', avatarUrl: 'https://placehold.co/40x40/00cfff/0e0e0e.png?text=NX', nameGradient: 'blue-purple', isOnline: true, dataAiHint: "profile avatar" },
     message: 'Hey everyone! This NeonVerse theme is sick! 🔥',
     timestamp: '10:00 AM',
   },
   {
     id: '2',
-    user: { name: 'SynthWaveRider', avatarUrl: 'https://placehold.co/40x40/a855f7/0e0e0e.png?text=SR', nameGradient: 'purple-orange', isCurrentUser: true, isOnline: true },
+    user: { name: 'SynthWaveRider', avatarUrl: 'https://placehold.co/40x40/a855f7/0e0e0e.png?text=SR', nameGradient: 'purple-orange', isCurrentUser: true, isOnline: true, dataAiHint: "profile avatar" },
     message: 'Totally agree! The glows are amazing. ✨',
     timestamp: '10:01 AM',
+  },
+    {
+    id: '3',
+    user: { name: 'PixelProwler', avatarUrl: 'https://placehold.co/40x40/ff6a00/0e0e0e.png?text=PP', nameGradient: 'blue-purple', isOnline: false, dataAiHint: "profile avatar" },
+    message: 'Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong message to test wrapping behavior.',
+    timestamp: '10:02 AM',
   },
 ];
 
@@ -135,15 +141,18 @@ const ChatInterface: React.FC = () => {
     )}>
       {/* Header */}
       <div className="p-4 border-b border-border/30 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <ShieldIcon className="h-6 w-6 text-primary icon-glow-primary" />
-          <h2 className="text-xl font-headline text-primary">DEGEN CHAT</h2>
+        {/* Grouped Left Part: Title and Online Count */}
+        <div className="flex items-center gap-x-3 sm:gap-x-4"> {/* Adjusted gap for responsiveness */}
+          <div className="flex items-center gap-2"> {/* Degen Chat title + Icon */}
+            <ShieldIcon className="h-6 w-6 text-primary icon-glow-primary" />
+            <h2 className="text-xl font-headline text-primary">DEGEN CHAT</h2>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground"> {/* Online count */}
+            <UsersIcon className="h-4 w-4 text-accent icon-glow-accent" />
+            <span>{onlineUsers} Online</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <UsersIcon className="h-4 w-4 text-accent icon-glow-accent" />
-          <span>{onlineUsers} Online</span>
-        </div>
-        {/* The X button to close the sidebar is in page.tsx, positioned absolutely */}
+        {/* The X button to close the sidebar is in page.tsx, positioned absolutely relative to the sidebar */}
       </div>
 
       <ScrollArea className="flex-grow p-1" ref={scrollAreaRef}> {/* Reduced p-4 to p-1 for ScrollArea */}
@@ -216,7 +225,7 @@ const ChatInterface: React.FC = () => {
           >
             <InfoIcon className="h-3 w-3" /> Chat Rules
           </Button>
-          <span>{remainingChars}/{MAX_CHARS}</span>
+          <span>{remainingChars}/{MAX_CHARS}{isCooldown && ` (Wait ${cooldownTimeLeft}s)`}</span>
         </div>
       </form>
       <ChatRulesModal isOpen={isRulesModalOpen} onOpenChange={setIsRulesModalOpen} />
@@ -225,3 +234,4 @@ const ChatInterface: React.FC = () => {
 };
 
 export default ChatInterface;
+
