@@ -3,17 +3,15 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import ChatBubble from './ChatBubble';
-// ChatInput is removed, its functionality is now in this component
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { ShieldIcon, UsersIcon, SmileIcon, SendHorizonalIcon, InfoIcon, Loader2, XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { v4 as uuidv4 } from 'uuid';
 import ChatRulesModal from './ChatRulesModal';
-
+import { useChat } from '@/context/ChatContext'; // Import useChat
 
 interface User {
   name: string;
@@ -21,6 +19,7 @@ interface User {
   isCurrentUser?: boolean;
   nameGradient?: 'purple-orange' | 'blue-purple';
   isOnline?: boolean;
+  dataAiHint?: string;
 }
 
 interface Message {
@@ -43,7 +42,7 @@ const initialMessages: Message[] = [
     message: 'Totally agree! The glows are amazing. ✨',
     timestamp: '10:01 AM',
   },
-    {
+  {
     id: '3',
     user: { name: 'PixelProwler', avatarUrl: 'https://placehold.co/40x40/ff6a00/0e0e0e.png?text=PP', nameGradient: 'blue-purple', isOnline: false, dataAiHint: "profile avatar" },
     message: 'Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong message to test wrapping behavior.',
@@ -57,6 +56,7 @@ const COOLDOWN_DURATION_SECONDS = 3;
 const ChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { setIsChatSidebarOpen } = useChat(); // Get setIsChatSidebarOpen from context
 
   const [newMessageText, setNewMessageText] = useState('');
   const [remainingChars, setRemainingChars] = useState(MAX_CHARS);
@@ -66,7 +66,6 @@ const ChatInterface: React.FC = () => {
 
   const onlineUsers = 2; // Mocked data
   const emojis = ['😀', '😂', '👍', '❤️', '🔥', '🎉', '💀', '👽'];
-
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const text = event.target.value;
@@ -137,26 +136,33 @@ const ChatInterface: React.FC = () => {
   return (
     <div className={cn(
       "flex flex-col h-full w-full overflow-hidden",
-      "pt-20" 
+      "pt-20" // Padding top to account for global Navbar height (if any fixed navbar exists)
+             // Or can be adjusted if this chat interface is always full height from top of viewport
     )}>
       {/* Header */}
-      <div className="px-4 py-3 border-b border-border/30 flex items-center justify-between"> {/* Changed p-4 to px-4 py-3 */}
-        {/* Grouped Left Part: Title and Online Count */}
-        <div className="flex items-center gap-x-3"> {/* Inter-group gap */}
-          <div className="flex items-center gap-2"> {/* Degen Chat title + Icon, intra-group gap */}
+      <div className="px-4 py-3 border-b border-border/30 flex items-center justify-between relative"> {/* Added relative for X button positioning */}
+        <div className="flex items-center gap-x-3">
+          <div className="flex items-center gap-2">
             <ShieldIcon className="h-6 w-6 text-primary icon-glow-primary" />
             <h2 className="text-xl font-headline text-primary">DEGEN CHAT</h2>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground"> {/* Online count + Icon, intra-group gap */}
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <UsersIcon className="h-4 w-4 text-accent icon-glow-accent" />
             <span>{onlineUsers} Online</span>
           </div>
         </div>
-        {/* The X button to close the sidebar is in page.tsx, positioned absolutely relative to the sidebar */}
+        {/* Close button for the sidebar, uses context to close */}
+        <button
+          onClick={() => setIsChatSidebarOpen(false)} // Use context function
+          className="absolute top-1/2 -translate-y-1/2 right-3 p-2 text-primary hover:text-accent z-50 rounded-full hover:bg-primary/10 transition-colors h-8 w-8 flex items-center justify-center"
+          aria-label="Close chat sidebar"
+        >
+          <XIcon className="h-5 w-5 icon-glow-primary" />
+        </button>
       </div>
 
-      <ScrollArea className="flex-grow" ref={scrollAreaRef}> {/* Removed p-1 */}
-        <div className="space-y-0 p-0"> {/* Changed from space-y-2 p-3. ChatBubble's my-4 handles vertical spacing. ChatBubble's px handles horizontal. */}
+      <ScrollArea className="flex-grow" ref={scrollAreaRef}>
+        <div className="space-y-0 p-0">
           {messages.map((msg) => (
             <ChatBubble
               key={msg.id}
@@ -168,7 +174,6 @@ const ChatInterface: React.FC = () => {
         </div>
       </ScrollArea>
 
-      {/* Input Section */}
       <form
         onSubmit={handleSubmit}
         className="mt-auto p-3 bg-background/80 backdrop-blur-md border-t border-border/50 shadow-lg space-y-2"
@@ -193,10 +198,10 @@ const ChatInterface: React.FC = () => {
               <PopoverContent className="w-auto p-2 bg-popover border-border shadow-xl">
                 <div className="grid grid-cols-4 gap-1">
                   {emojis.map(emoji => (
-                    <Button 
-                      key={emoji} 
-                      variant="ghost" 
-                      size="icon" 
+                    <Button
+                      key={emoji}
+                      variant="ghost"
+                      size="icon"
                       onClick={() => handleEmojiSelect(emoji)}
                       className="text-xl hover:bg-primary/10"
                     >
@@ -207,19 +212,19 @@ const ChatInterface: React.FC = () => {
               </PopoverContent>
             </Popover>
           </div>
-          <Button 
-            type="submit" 
-            size="icon" 
-            className="w-10 h-10 bg-primary hover:bg-primary/90 text-primary-foreground shadow-neon-primary" 
+          <Button
+            type="submit"
+            size="icon"
+            className="w-10 h-10 bg-primary hover:bg-primary/90 text-primary-foreground shadow-neon-primary"
             disabled={isCooldown || !newMessageText.trim()}
           >
             {isCooldown ? <Loader2 className="h-5 w-5 animate-spin" /> : <SendHorizonalIcon className="h-5 w-5" />}
           </Button>
         </div>
         <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
-          <Button 
-            variant="link" 
-            size="sm" 
+          <Button
+            variant="link"
+            size="sm"
             onClick={() => setIsRulesModalOpen(true)}
             className="p-0 h-auto text-muted-foreground hover:text-primary text-xs flex items-center gap-1"
           >
@@ -234,4 +239,3 @@ const ChatInterface: React.FC = () => {
 };
 
 export default ChatInterface;
-
