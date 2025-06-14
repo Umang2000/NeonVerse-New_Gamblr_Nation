@@ -11,8 +11,8 @@ import { ArrowRightIcon, MailIcon, XIcon } from 'lucide-react';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatInterface from '@/components/chat/ChatInterface';
 import TwitchEmbed from '@/components/media/TwitchEmbed';
-import FAQSection from '@/components/page/FAQSection'; // Added
-import { useSupport } from '@/context/SupportContext'; // Added
+import FAQSection from '@/components/page/FAQSection';
+import { useSupport } from '@/context/SupportContext';
 import { cn } from '@/lib/utils';
 
 const games = [
@@ -24,15 +24,14 @@ const games = [
 
 export default function HomePage() {
   const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
-  const { setContactModalOpen } = useSupport(); // Added
+  const { setContactModalOpen } = useSupport();
 
   const getMarginClasses = () => {
     let mlClass = "";
-    // Only chat sidebar (left) affects margin now
     if (isChatSidebarOpen) {
       mlClass = "md:ml-[384px] lg:ml-[480px]";
     }
-    return mlClass; // Only mlClass is returned
+    return mlClass;
   };
 
   return (
@@ -123,22 +122,19 @@ export default function HomePage() {
         >
            <button 
             onClick={() => setIsChatSidebarOpen(false)} 
-            className="absolute top-[calc(5rem+0.75rem)] right-3 p-2 text-primary hover:text-accent z-50 rounded-md hover:bg-primary/10 transition-colors"
+            className="absolute top-[calc(5rem+0.75rem)] right-3 p-2 text-primary hover:text-accent z-50 rounded-full hover:bg-primary/10 transition-colors h-8 w-8 flex items-center justify-center" // Made it rounder, smaller
             aria-label="Close chat sidebar"
           >
             <XIcon className="h-5 w-5 icon-glow-primary" />
           </button>
           <ChatInterface />
         </aside>
-
-        {/* Support Sidebar (Right) - REMOVED */}
       </div>
 
       <FloatingChatButton 
         onToggle={() => setIsChatSidebarOpen(!isChatSidebarOpen)} 
         isOpen={isChatSidebarOpen} 
       />
-      {/* FloatingSupportButton - REMOVED */}
     </div>
   );
 }
