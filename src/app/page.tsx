@@ -96,7 +96,6 @@ const TheNexusSVG = () => (
   </svg>
 );
 
-// Updated VerticalRocketSVG to better match the user-provided image
 const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))" }: { className?: string; accentColor?: string; }) => (
   <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-6 h-[38px] rocket-svg", className)}>
     {/* Fins */}
@@ -106,17 +105,30 @@ const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))" }: { 
     <path d="M6 32 C6 34, 8 36, 12 36 C16 36, 18 34, 18 32 L18 10 C18 4, 12 1, 12 1 C12 1, 6 4, 6 10 Z" fill="#D3D3D3" />
     {/* Nose Cone */}
     <path d="M12 1 C12 1, 15 5, 15 10 L9 10 C9 5, 12 1, 12 1 Z" fill="#FFFFFF" />
-    {/* Window (optional, small detail) */}
-    {/* <circle cx="12" cy="14" r="2" fill="#87CEEB" /> */}
     {/* Thruster detail (circle at the bottom) */}
     <circle cx="12" cy="33" r="3.5" fill={accentColor} stroke="#4A4A4A" strokeWidth="0.5" />
     <circle cx="12" cy="33" r="1.5" fill="hsl(var(--background))" opacity="0.7"/>
   </svg>
 );
 
+const ROCKET_HEIGHT_PX = 38; // Height of VerticalRocketSVG
 
 export default function HomePage() {
   const { setContactModalOpen } = useSupport();
+
+  const journeySegments = [
+    { colorClass: 'text-primary', segmentHeight: '120px' },
+    { colorClass: 'text-accent', segmentHeight: '120px' },
+    { colorClass: 'text-destructive', segmentHeight: '120px' },
+    { colorClass: 'text-primary', segmentHeight: '120px' },
+  ];
+
+  const getAccentColorFromTextColor = (textColorClass: string) => {
+    if (textColorClass === 'text-primary') return 'hsl(var(--primary))';
+    if (textColorClass === 'text-accent') return 'hsl(var(--accent))';
+    if (textColorClass === 'text-destructive') return 'hsl(var(--destructive))';
+    return 'hsl(var(--primary))'; // Default
+  };
 
   return (
     <div className="relative min-h-screen flex flex-col">
@@ -132,13 +144,7 @@ export default function HomePage() {
         <ScrollAnimate transitionDelay="0ms">
           <div className="text-center pt-24 pb-8 md:pt-28 md:pb-12">
             <h2 className="text-4xl md:text-5xl font-headline mb-4 text-gradient-purple-orange">Mission Start</h2>
-            <div className="journey-segment-container text-primary" style={{ height: '60px' }}>
-                <div className="journey-track"></div>
-                <div className="journey-filler bg-primary"></div>
-                <div className="journey-rocket-container">
-                    <VerticalRocketSVG accentColor="hsl(var(--primary))"/>
-                </div>
-            </div>
+            {/* Optional: Add a small, static visual cue for start if desired */}
           </div>
         </ScrollAnimate>
         
@@ -163,12 +169,11 @@ export default function HomePage() {
           </section>
         </ScrollAnimate>
 
-        <ScrollAnimate transitionDelay="200ms">
-            <div className="journey-segment-container text-accent" style={{ height: '120px' }}>
-                <div className="journey-track"></div>
-                <div className="journey-filler bg-accent"></div>
+        <ScrollAnimate transitionDelay="200ms" className={journeySegments[0].colorClass} style={{ '--segment-height': journeySegments[0].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
+            <div className="journey-segment-container" style={{ height: journeySegments[0].segmentHeight }}>
+                <div className="journey-track-revealed"></div>
                 <div className="journey-rocket-container">
-                    <VerticalRocketSVG accentColor="hsl(var(--accent))"/>
+                    <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[0].colorClass)} />
                 </div>
             </div>
         </ScrollAnimate>
@@ -189,12 +194,11 @@ export default function HomePage() {
           </section>
         </ScrollAnimate>
 
-        <ScrollAnimate transitionDelay="400ms">
-             <div className="journey-segment-container text-destructive" style={{ height: '120px' }}>
-                <div className="journey-track"></div>
-                <div className="journey-filler bg-destructive"></div>
+        <ScrollAnimate transitionDelay="400ms" className={journeySegments[1].colorClass} style={{ '--segment-height': journeySegments[1].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
+            <div className="journey-segment-container" style={{ height: journeySegments[1].segmentHeight }}>
+                <div className="journey-track-revealed"></div>
                 <div className="journey-rocket-container">
-                     <VerticalRocketSVG accentColor="hsl(var(--destructive))"/>
+                     <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[1].colorClass)} />
                 </div>
             </div>
         </ScrollAnimate>
@@ -215,12 +219,11 @@ export default function HomePage() {
           </section>
         </ScrollAnimate>
 
-        <ScrollAnimate transitionDelay="600ms">
-             <div className="journey-segment-container text-primary" style={{ height: '120px' }}>
-                <div className="journey-track"></div>
-                <div className="journey-filler bg-primary"></div>
+        <ScrollAnimate transitionDelay="600ms" className={journeySegments[2].colorClass} style={{ '--segment-height': journeySegments[2].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
+            <div className="journey-segment-container" style={{ height: journeySegments[2].segmentHeight }}>
+                <div className="journey-track-revealed"></div>
                 <div className="journey-rocket-container">
-                    <VerticalRocketSVG accentColor="hsl(var(--primary))"/>
+                    <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[2].colorClass)}/>
                 </div>
             </div>
         </ScrollAnimate>
@@ -244,9 +247,9 @@ export default function HomePage() {
               </Button>
             </div>
             <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
-            <div className="journey-segment-container text-accent mx-auto mt-10" style={{ height: '40px', opacity: 0.6 }}>
-                <div className="journey-track"></div>
-                <div className="journey-filler bg-accent"></div>
+            {/* Final smaller decorative journey segment */}
+            <div className={cn("journey-segment-container mx-auto mt-10", journeySegments[3].colorClass)} style={{ height: '40px', opacity: 0.6 }}>
+                <div className="journey-track-revealed" style={{animationDelay: '0.1s', animationDuration: '0.5s', height: '100%'}}></div>
                  {/* No rocket for the final small segment, or a very small one if desired */}
             </div>
             <div className="text-center pt-8 pb-4">
@@ -258,4 +261,6 @@ export default function HomePage() {
     </div>
   );
 }
+    
+
     

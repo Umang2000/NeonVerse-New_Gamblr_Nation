@@ -199,7 +199,6 @@
      filter: drop-shadow(0 0 15px hsl(var(--primary) / 0.8)) drop-shadow(0 0 30px hsl(var(--primary) / 0.5));
   }
 
-
   .planet-name {
     @apply text-3xl md:text-4xl font-headline mb-8 text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-destructive;
   }
@@ -215,53 +214,49 @@
      filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 15px currentColor);
   }
 
-  /* New Journey Path Styles for "Filling Progress Bar" */
+  /* New Journey Path Styles for "Revealing Dashed Track" (Downward Motion) */
   .journey-segment-container {
     @apply relative mx-auto my-8 md:my-12;
-    width: 6px; /* Width of the track/filler, increased for prominence */
+    width: 6px; /* Width of the track */
+    /* Height is set inline via style prop in page.tsx */
   }
 
-  .journey-track {
-    @apply absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-transparent;
-    /* Dashed line effect using repeating gradient - more visible */
+  .journey-track-revealed {
+    @apply absolute top-0 left-1/2 -translate-x-1/2 w-full origin-top;
+    /* currentColor will be from parent (.text-primary, .text-accent etc.) */
     background-image: repeating-linear-gradient(
-      transparent,
-      transparent 7px, /* shorter transparent part */
-      hsl(var(--border) / 0.5), /* more visible track color */
-      hsl(var(--border) / 0.5) 15px /* shorter dash part */
+      transparent, /* Gap first */
+      transparent 3px, /* 3px gap */
+      currentColor 3px, /* Dash starts */
+      currentColor 10px /* Dash ends (7px dash length) */
     );
+    background-size: 100% 10px; /* Pattern repeats every 10px vertically */
+    height: 0%; /* Initial state: no track visible */
+    transition: height 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    box-shadow: 0 0 6px currentColor, 0 0 12px currentColor; /* Glow for the track */
+  }
+  .theme-night-pulse .journey-track-revealed {
+    box-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+  
+  .scroll-animated-item.is-visible .journey-track-revealed {
+    height: 100%; /* Animate to full height when visible */
   }
 
-  .journey-filler {
-    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-full origin-bottom;
-    /* Color will be set by utility classes like bg-primary, bg-accent */
-    height: 0%;
-    transition: height 0.8s cubic-bezier(0.25, 0.1, 0.25, 1); /* Fill animation */
-    /* Add a stronger glow to the filler to match image */
-    box-shadow: 0 0 8px currentColor, 0 0 16px currentColor, 0 0 2px currentColor; /* Inner sharp glow */
-  }
-  .theme-night-pulse .journey-filler { /* Even stronger glow for pulse theme */
-    box-shadow: 0 0 12px currentColor, 0 0 24px currentColor, 0 0 3px currentColor, 0 0 36px currentColor;
-  }
-
-
-  .scroll-animated-item.is-visible .journey-filler {
-    height: 100%;
-  }
-
-  .journey-rocket-container { /* Wrapper for the vertical rocket */
-    @apply absolute left-1/2 -translate-x-1/2;
-    bottom: -8px; /* Start rocket slightly below the base of the track, adjust as needed */
+  .journey-rocket-container {
+    @apply absolute left-1/2;
+    top: 0%; /* Start at the top of the segment */
     opacity: 0;
-    /* Animate from bottom upwards with the line */
-    transform: translateY(100%) scale(0.9); /* Start at the bottom of where the line will fill */
-    transition: opacity 0.4s ease-out 0.3s, transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s; /* Rocket animation follows line fill */
+    /* Rocket points down, so its Y transform is from 0 to (segment_height - rocket_height) */
+    /* The CSS variables --segment-height and --rocket-height are set inline on ScrollAnimate */
+    transform: translate(-50%, 0px) rotate(180deg); 
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s, opacity 0.4s ease-out; /* Slight delay for opacity */
   }
 
   .scroll-animated-item.is-visible .journey-rocket-container {
     opacity: 1;
-    transform: translateY(-100%) scale(1); /* Moves to the top of the 100% filled line */
-    /* If segment height is e.g. 120px, rocket moves up to effectively top:0 of that 120px line */
+    /* Moves rocket's top edge from 0% to (segment_height - rocket_height) from the top */
+    transform: translate(-50%, calc(var(--segment-height) - var(--rocket-height))) rotate(180deg);
   }
 }
 
@@ -334,9 +329,11 @@
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
 }
-
     
 
     
+
+    
+
 
     
