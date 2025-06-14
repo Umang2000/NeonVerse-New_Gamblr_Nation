@@ -6,20 +6,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 inner-shadow",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.98]",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-neon-primary",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-neon-primary active:shadow-sm",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:shadow-neon-destructive",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-md hover:shadow-neon-destructive active:shadow-sm",
         outline:
-          "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground hover:shadow-neon-accent",
+          "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground shadow-md hover:shadow-neon-accent active:shadow-sm",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent/20 hover:text-accent-foreground text-primary hover:shadow-neon-primary",
-        link: "text-primary underline-offset-4 hover:underline",
-        cta: "bg-destructive text-destructive-foreground shadow-neon-destructive animate-pulse-neon" // Always apply animate-pulse-neon
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-md active:shadow-sm",
+        ghost: "hover:bg-accent/20 hover:text-accent-foreground text-primary hover:shadow-neon-primary shadow-none active:shadow-none active:brightness-95",
+        link: "text-primary underline-offset-4 hover:underline shadow-none active:shadow-none active:brightness-95",
+        cta: "bg-destructive text-destructive-foreground shadow-neon-destructive animate-pulse-neon active:brightness-90" // CTA already has strong shadow, uses brightness for click
       },
       size: {
         default: "h-10 px-4 py-2",
