@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Gamepad2Icon, MessageSquareIcon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon, TvIcon } from 'lucide-react'; // Added TvIcon
+import { Gamepad2Icon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon, TvIcon } from 'lucide-react'; // Removed MessageSquareIcon
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
@@ -21,8 +21,8 @@ import { Button } from '../ui/button';
 const navItems = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Games', href: '#games', icon: Gamepad2Icon },
-  { name: 'Livestream', href: '#livestream', icon: TvIcon }, // Added Livestream
-  { name: 'Forums', href: '#forums', icon: MessageSquareIcon },
+  { name: 'Livestream', href: '#livestream', icon: TvIcon },
+  // { name: 'Forums', href: '#forums', icon: MessageSquareIcon }, // Removed Forums
 ];
 
 const Navbar: React.FC = () => {
