@@ -10,6 +10,7 @@ import FooterYear from '@/components/layout/FooterYear';
 import { ArrowRightIcon, XIcon } from 'lucide-react'; 
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatInterface from '@/components/chat/ChatInterface';
+import TwitchEmbed from '@/components/media/TwitchEmbed'; // Import the new component
 import { cn } from '@/lib/utils';
 
 const games = [
@@ -60,6 +61,16 @@ export default function HomePage() {
                   dataAiHint={game.dataAiHint}
                 />
               ))}
+            </div>
+          </section>
+
+          {/* Twitch Livestream Section */}
+          <section id="livestream" className="py-12">
+            <h2 className="text-4xl font-headline font-bold text-center mb-10">
+              Live <span className="text-destructive">Now</span>
+            </h2>
+            <div className="max-w-4xl mx-auto px-4">
+              <TwitchEmbed channel="afterhoursaz" />
             </div>
           </section>
 
