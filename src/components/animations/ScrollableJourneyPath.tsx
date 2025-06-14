@@ -4,9 +4,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
-// Rocket SVG (moved here for encapsulation, can be a separate component too)
+// Rocket SVG (points upwards by default)
 const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))", rocketColor = "#D3D3D3", noseColor = "#FFFFFF", finColor = "#B0B0B0" }: { className?: string; accentColor?: string; rocketColor?: string; noseColor?: string; finColor?: string; }) => (
-  <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-5 h-[32px] overflow-visible", className)}> {/* Adjusted size */}
+  <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-5 h-[32px] overflow-visible", className)}> {/* Base size defined by classes */}
     {/* Fins */}
     <path d={`M4 28 L1 36 L5 34 Z`} fill={finColor} />
     <path d={`M20 28 L23 36 L19 34 Z`} fill={finColor} />
@@ -38,44 +38,57 @@ const ScrollableJourneyPath: React.FC = () => {
       const length = revealedPathRef.current.getTotalLength();
       setPathLength(length);
       revealedPathRef.current.style.strokeDasharray = `${length} ${length}`;
-      revealedPathRef.current.style.strokeDashoffset = `${length}`;
+      revealedPathRef.current.style.strokeDashoffset = `${length}`; // Initially hide the revealed path
     }
-  }, [pathData]); // Recalculate if pathData changes
+  }, [pathData]);
 
   useEffect(() => {
     if (!revealedPathRef.current || !rocketRef.current || pathLength === 0) return;
 
     const pathNode = revealedPathRef.current;
     const rocketNode = rocketRef.current;
+    
+    // Correct rotationAdjustment for an upward-pointing SVG to follow the path's tangent
+    const rotationAdjustment = 90; // Degrees to add to atan2 result
+    const scaleFactor = 0.75; // Factor to scale the rocket size
 
     const handleScroll = () => {
-      const scrollPercentage = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      // Calculate scroll percentage (0 to 1)
+      const scrollY = window.scrollY || window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercentage = docHeight > 0 ? Math.min(1, Math.max(0, scrollY / docHeight)) : 0;
+      
       const drawLength = scrollPercentage * pathLength;
       
-      // Animate path drawing
+      // Animate path drawing: make strokeDashoffset go from pathLength to 0
       pathNode.style.strokeDashoffset = `${pathLength - drawLength}`;
 
       // Animate rocket position and rotation
-      // Ensure drawLength does not exceed pathLength or go below 0
-      const currentPointLength = Math.max(0, Math.min(drawLength, pathLength));
+      const currentPointLength = Math.max(0, Math.min(drawLength, pathLength - 0.01)); // Subtract a tiny bit to avoid getPointAtLength error at exact end
       const point = pathNode.getPointAtLength(currentPointLength);
       
       // For rotation, get a point slightly ahead to calculate the angle
-      const lookAheadLength = Math.min(currentPointLength + 1, pathLength);
+      const lookAheadLength = Math.min(currentPointLength + 1, pathLength); // Ensure lookAhead doesn't exceed pathLength
       const nextPoint = pathNode.getPointAtLength(lookAheadLength);
       
       let angle = 0;
-      if (point && nextPoint) {
+      if (point && nextPoint && (nextPoint.x !== point.x || nextPoint.y !== point.y)) {
         angle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * (180 / Math.PI);
+      } else if (point) {
+        // Fallback for the very start/end of the path if nextPoint is same as point
+        // Or, get a point slightly behind if at the very end
+        const lookBehindLength = Math.max(0, currentPointLength - 1);
+        const prevPoint = pathNode.getPointAtLength(lookBehindLength);
+        if (prevPoint && (point.x !== prevPoint.x || point.y !== prevPoint.y)) {
+           angle = Math.atan2(point.y - prevPoint.y, point.x - prevPoint.x) * (180 / Math.PI);
+        }
       }
-      // Rocket SVG points upwards (0 deg is right). Add 90 deg if SVG is vertical up.
-      // Since our VerticalRocketSVG points upwards (towards its Y=0), and SVG angle 0 is X-axis positive
-      // an angle calculated from points needs adjustment. If rocket points up, add -90.
-      const rotationAdjustment = -90; 
-      rocketNode.style.transform = `translate(${point.x}px, ${point.y}px) rotate(${angle + rotationAdjustment}deg)`;
+      
+      // Apply transform with scaling
+      rocketNode.style.transform = `translate(${point.x}px, ${point.y}px) rotate(${angle + rotationAdjustment}deg) scale(${scaleFactor})`;
     };
 
-    // Initial position
+    // Initial position and orientation
     handleScroll(); 
 
     window.addEventListener('scroll', handleScroll);
@@ -112,9 +125,9 @@ const ScrollableJourneyPath: React.FC = () => {
           stroke="hsl(var(--primary))" // Theme color
           strokeWidth="3.5" // Slightly thicker to overlay nicely
           strokeLinecap="round" // Nicer ends for dashes
-          strokeDasharray="6 6" // Will be overridden by JS for drawing animation, but keeps dashed style
+          // strokeDasharray will be set by JS
         />
-        {/* Rocket - pointing upwards by default, rotation applied by JS */}
+        {/* Rocket - pointing upwards by default, rotation and scale applied by JS */}
         <g ref={rocketRef} style={{ transformOrigin: 'center center' }}> {/* transform-origin for rocket itself */}
           <VerticalRocketSVG accentColor="hsl(var(--primary))" />
         </g>
