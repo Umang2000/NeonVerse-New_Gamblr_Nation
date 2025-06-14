@@ -106,6 +106,7 @@ export default function HomePage() {
     <div className="relative min-h-screen flex flex-col">
       <AnimatedBackground />
       <Navbar />
+      {/* ScrollableJourneyPath component is present but its visibility logic will be handled later */}
       <ScrollableJourneyPath /> 
 
       <div className="relative z-10 flex-grow"> 
@@ -140,7 +141,7 @@ export default function HomePage() {
             </section>
           </ScrollAnimate>
 
-          <ScrollAnimate>
+          <ScrollAnimate threshold={0.25}>
             <section id="livestream" className="planet-section">
               <div className="planet-image-container w-44 h-44 md:w-52 md:h-52">
                 <StreamersOrbitSVG />
@@ -155,7 +156,7 @@ export default function HomePage() {
             </section>
           </ScrollAnimate>
           
-          <ScrollAnimate>
+          <ScrollAnimate threshold={0.25}>
             <section id="faq" className="planet-section">
               <div className="planet-image-container w-40 h-40 md:w-48 md:h-48">
                 <HelpHubXylosSVG />
