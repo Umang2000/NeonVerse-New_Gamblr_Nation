@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Gamepad2Icon, MessageSquareIcon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon } from 'lucide-react';
+import { Gamepad2Icon, MessageSquareIcon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon, TvIcon } from 'lucide-react'; // Added TvIcon
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
@@ -21,6 +21,7 @@ import { Button } from '../ui/button';
 const navItems = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Games', href: '#games', icon: Gamepad2Icon },
+  { name: 'Livestream', href: '#livestream', icon: TvIcon }, // Added Livestream
   { name: 'Forums', href: '#forums', icon: MessageSquareIcon },
 ];
 
@@ -38,8 +39,14 @@ const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
               const isStrictMatch = pathname === item.href;
-              const isActive = item.href === '/' ? isStrictMatch : (item.href !== '/' && pathname.startsWith(item.href)); // Adjusted for # links potentially
-              
+              // For hash links, active state relies on observing scroll position,
+              // which is more complex. For now, basic active state if it's the current page
+              // and the hash matches, or if it's a simple path match.
+              // A more robust solution for hash links would involve IntersectionObserver.
+              const isActive = item.href.startsWith('#')
+                ? (typeof window !== "undefined" && window.location.hash === item.href && pathname === '/') // Basic hash check on home
+                : pathname === item.href;
+
               const underlineClass = cn(
                 "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
                 isActive ? "scale-x-100 neon-shadow-primary" : "group-hover:neon-shadow-primary"
