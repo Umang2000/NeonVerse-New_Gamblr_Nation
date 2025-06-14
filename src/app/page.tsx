@@ -31,7 +31,7 @@ export default function HomePage() {
         <main
           className={cn(
             "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out",
-            isChatSidebarOpen ? "md:mr-[384px]" : "" 
+            isChatSidebarOpen ? "md:mr-[384px] lg:mr-[480px]" : "" 
           )}
         >
           {/* Hero Section */}
@@ -74,10 +74,9 @@ export default function HomePage() {
         <aside
           className={cn(
             "fixed top-0 right-0 h-full bg-card border border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-l-lg", 
-            "w-full md:w-96", 
+            "w-full md:w-96 lg:w-[480px]", 
             isChatSidebarOpen ? "translate-x-0" : "translate-x-full"
           )}
-          // Removed style={{ paddingTop: '5rem' }}
         >
            <button 
             onClick={() => setIsChatSidebarOpen(false)} 

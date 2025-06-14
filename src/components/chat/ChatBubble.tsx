@@ -32,7 +32,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ user, message, timestamp }) => 
       );
 
   return (
-    <div className={cn("flex items-start gap-3 my-4", user.isCurrentUser ? "justify-end" : "")}>
+    <div className={cn("flex items-start gap-3 my-4 px-4 md:px-6 lg:px-8", "py-2 md:py-3", user.isCurrentUser ? "justify-end" : "")}>  {/* Responsive horizontal padding */}
       {!user.isCurrentUser && (
         <Avatar className={cn(avatarBaseClasses, avatarStatusClasses)}>
           <AvatarImage src={user.avatarUrl || `https://placehold.co/40x40.png`} alt={user.name} data-ai-hint="profile avatar" />
