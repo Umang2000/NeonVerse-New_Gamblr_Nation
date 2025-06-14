@@ -186,21 +186,32 @@
   .planet-section {
     @apply text-center py-8 md:py-12; 
   }
-  .planet-image {
-    @apply rounded-full mb-6 shadow-xl transition-all duration-500 ease-out hover:shadow-neon-primary hover:scale-105;
+
+  .planet-image-container { /* New class for SVG containers */
+    @apply mx-auto mb-6 transition-all duration-500 ease-out hover:scale-105;
+    /* Default size, can be overridden by Tailwind width/height utilities on the element itself */
   }
+  /* Apply neon shadow on hover to the container */
+  .planet-image-container:hover {
+     filter: drop-shadow(0 0 10px hsl(var(--primary) / 0.6)) drop-shadow(0 0 20px hsl(var(--primary) / 0.3));
+  }
+  .theme-night-pulse .planet-image-container:hover {
+     filter: drop-shadow(0 0 15px hsl(var(--primary) / 0.8)) drop-shadow(0 0 30px hsl(var(--primary) / 0.5));
+  }
+
+
   .planet-name {
     @apply text-3xl md:text-4xl font-headline mb-8 text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-destructive;
   }
+  
   .journey-path-segment {
-    @apply w-1 mx-auto; /* Slimmer line, adjust width (e.g., w-1.5) if too thin */
-    /* currentColor will be set by Tailwind text color utility (e.g., text-primary) */
+    @apply w-1.5 mx-auto; /* Slightly thicker line */
     background: repeating-linear-gradient(
       to bottom,
-      currentColor,
-      currentColor 8px, /* dash length */
-      transparent 8px, /* gap start */
-      transparent 16px /* gap end (dash length + gap length), making dash and gap equal */
+      currentColor, /* Dash color, set by text-primary, text-accent etc. */
+      currentColor 10px, /* Dash length */
+      transparent 10px, /* Gap start */
+      transparent 22px /* Gap end (dash + gap) */
     );
   }
 }
@@ -274,3 +285,5 @@
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
 }
+
+    

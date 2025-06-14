@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import Image from 'next/image'; // Import next/image
+// SVGs will be inlined, so Image import might only be needed if other images persist
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Navbar from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,90 @@ import FAQSection from '@/components/page/FAQSection';
 import { useSupport } from '@/context/SupportContext';
 import { cn } from '@/lib/utils';
 import ScrollAnimate from '@/components/ui/ScrollAnimate';
+
+// Planet SVGs as functional components for clarity, or directly inlined
+const NeonPrimeSVG = () => (
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+    <defs>
+      <radialGradient id="neonPrimeGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+        <stop offset="0%" style={{ stopColor: 'hsl(var(--primary))', stopOpacity: 1 }} />
+        <stop offset="60%" style={{ stopColor: 'hsl(var(--accent))', stopOpacity: 0.8 }} />
+        <stop offset="100%" style={{ stopColor: 'hsl(var(--background))', stopOpacity: 0.3 }} />
+      </radialGradient>
+      <filter id="neonPrimeGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    <circle cx="50" cy="50" r="40" fill="url(#neonPrimeGradient)" filter="url(#neonPrimeGlow)" />
+    <circle cx="50" cy="50" r="42" stroke="hsl(var(--primary) / 0.5)" strokeWidth="1.5" fill="none" />
+  </svg>
+);
+
+const StreamersOrbitSVG = () => (
+  <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+    <defs>
+      <radialGradient id="streamerOrbitGradient" cx="50%" cy="50%" r="70%">
+        <stop offset="0%" style={{ stopColor: 'hsl(var(--accent))' }} />
+        <stop offset="100%" style={{ stopColor: 'hsl(var(--destructive))' }} />
+      </radialGradient>
+      <filter id="streamerOrbitGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    <ellipse cx="60" cy="50" rx="55" ry="18" stroke="hsl(var(--primary) / 0.8)" strokeWidth="2.5" fill="none" transform="rotate(-15 60 50)" />
+    <ellipse cx="60" cy="50" rx="50" ry="12" stroke="hsl(var(--primary) / 0.4)" strokeWidth="2" fill="none" transform="rotate(-15 60 50) translate(0, 2)" />
+    <circle cx="60" cy="50" r="28" fill="url(#streamerOrbitGradient)" filter="url(#streamerOrbitGlow)" />
+  </svg>
+);
+
+const HelpHubXylosSVG = () => (
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+    <defs>
+      <linearGradient id="xylosGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style={{ stopColor: 'hsl(var(--primary) / 0.8)' }} />
+        <stop offset="100%" style={{ stopColor: 'hsl(var(--accent) / 0.8)' }} />
+      </linearGradient>
+      <filter id="xylosGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    <path d="M50 5 L95 25 L95 75 L50 95 L5 75 L5 25 Z" fill="url(#xylosGradient)" stroke="hsl(var(--foreground) / 0.7)" strokeWidth="2" filter="url(#xylosGlow)" />
+    <line x1="50" y1="5" x2="50" y2="95" stroke="hsl(var(--foreground) / 0.3)" strokeWidth="1" />
+    <line x1="5" y1="25" x2="95" y2="75" stroke="hsl(var(--foreground) / 0.3)" strokeWidth="1" />
+    <line x1="5" y1="75" x2="95" y2="25" stroke="hsl(var(--foreground) / 0.3)" strokeWidth="1" />
+  </svg>
+);
+
+const TheNexusSVG = () => (
+  <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+     <defs>
+        <filter id="nexusGlowSmall" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+    <circle cx="40" cy="40" r="30" fill="hsl(var(--primary) / 0.3)" filter="url(#nexusGlowSmall)" />
+    <circle cx="40" cy="40" r="22" fill="hsl(var(--accent) / 0.5)" />
+    <circle cx="40" cy="40" r="14" fill="hsl(var(--destructive))" />
+    <circle cx="40" cy="40" r="6" fill="hsl(var(--foreground))" />
+  </svg>
+);
+
 
 export default function HomePage() {
   const { setContactModalOpen } = useSupport();
@@ -38,14 +122,9 @@ export default function HomePage() {
         {/* Planet 1: Neon Prime (Hero Section) */}
         <ScrollAnimate transitionDelay="100ms">
           <section className="planet-section text-center">
-            <Image 
-              src="https://placehold.co/250x250.png" 
-              alt="Neon Prime" 
-              width={250} 
-              height={250} 
-              className="planet-image mx-auto" 
-              data-ai-hint="futuristic home city planet" 
-            />
+            <div className="planet-image-container w-48 h-48 md:w-60 md:h-60">
+              <NeonPrimeSVG />
+            </div>
             <h2 className="planet-name">Neon Prime</h2>
             <h1 className="text-5xl md:text-7xl font-headline font-bold mb-6">
               Welcome to <span className="text-primary">Neon</span><span className="text-accent">Verse</span>
@@ -62,20 +141,15 @@ export default function HomePage() {
         </ScrollAnimate>
 
         <ScrollAnimate transitionDelay="200ms">
-          <div className="journey-path-segment text-accent mx-auto my-8 md:my-12"></div>
+          <div className="journey-path-segment text-accent mx-auto" style={{ height: '100px' }}></div>
         </ScrollAnimate>
 
         {/* Planet 2: Streamer's Orbit (Twitch Livestream Section) */}
         <ScrollAnimate transitionDelay="300ms">
           <section id="livestream" className="planet-section">
-            <Image 
-              src="https://placehold.co/200x200.png" 
-              alt="Streamer's Orbit" 
-              width={200} 
-              height={200} 
-              className="planet-image mx-auto"
-              data-ai-hint="satellite network planet"
-            />
+             <div className="planet-image-container w-44 h-44 md:w-52 md:h-52">
+              <StreamersOrbitSVG />
+            </div>
             <h2 className="planet-name">Streamer's Orbit</h2>
             <h3 className="text-4xl font-headline font-bold text-center mb-10 text-foreground">
               Live <span className="text-destructive">Now</span>
@@ -87,20 +161,15 @@ export default function HomePage() {
         </ScrollAnimate>
 
         <ScrollAnimate transitionDelay="400ms">
-          <div className="journey-path-segment text-destructive mx-auto my-8 md:my-12"></div>
+          <div className="journey-path-segment text-destructive mx-auto" style={{ height: '100px' }}></div>
         </ScrollAnimate>
 
         {/* Planet 3: Help Hub Xylos (FAQ Section) */}
         <ScrollAnimate transitionDelay="500ms">
           <section id="faq" className="planet-section">
-            <Image 
-              src="https://placehold.co/200x200.png" 
-              alt="Help Hub Xylos" 
-              width={200} 
-              height={200} 
-              className="planet-image mx-auto"
-              data-ai-hint="crystalline knowledge planet"
-            />
+            <div className="planet-image-container w-40 h-40 md:w-48 md:h-48">
+              <HelpHubXylosSVG />
+            </div>
             <h2 className="planet-name">Help Hub Xylos</h2>
             <h3 className="text-4xl font-headline font-bold text-center mb-10 text-foreground">
               Frequently Asked <span className="text-accent">Questions</span>
@@ -112,20 +181,15 @@ export default function HomePage() {
         </ScrollAnimate>
 
         <ScrollAnimate transitionDelay="600ms">
-          <div className="journey-path-segment text-primary mx-auto my-8 md:my-12"></div>
+          <div className="journey-path-segment text-primary mx-auto" style={{ height: '100px' }}></div>
         </ScrollAnimate>
 
         {/* Planet 4: The Nexus (Footer section) */}
         <ScrollAnimate transitionDelay="700ms">
           <footer className="planet-section text-center text-muted-foreground border-t border-border/20 mt-12 pb-12 md:pb-16">
-            <Image 
-              src="https://placehold.co/150x150.png" 
-              alt="The Nexus" 
-              width={150} 
-              height={150} 
-              className="planet-image mx-auto opacity-80"
-              data-ai-hint="cosmic central hub"
-            />
+            <div className="planet-image-container w-32 h-32 md:w-36 md:h-36 opacity-80">
+              <TheNexusSVG />
+            </div>
             <h2 className="planet-name">The Nexus</h2>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
               <p>&copy; <FooterYear /> NeonVerse. All rights reserved.</p>
@@ -140,9 +204,14 @@ export default function HomePage() {
             </div>
             <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
             <div className="journey-path-segment text-accent mx-auto mt-10" style={{ height: '40px', opacity: 0.6 }}></div>
+            <div className="text-center pt-8 pb-4">
+              <p className="text-3xl md:text-4xl font-headline text-gradient-purple-orange">Journey's End</p>
+            </div>
           </footer>
         </ScrollAnimate>
       </main>
     </div>
   );
 }
+
+    
