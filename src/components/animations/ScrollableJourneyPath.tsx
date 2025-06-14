@@ -52,7 +52,7 @@ const ScrollableJourneyPath: React.FC = () => {
     // For an upward-pointing SVG, +90 degrees aligns its "up" with the path's tangent
     const rotationAdjustment = 90; 
     const scaleFactor = 0.2; // Rocket scale factor
-
+ 
     const handleScroll = () => {
       // Calculate scroll percentage (0 to 1)
       const scrollY = window.scrollY || window.pageYOffset;
@@ -87,7 +87,7 @@ const ScrollableJourneyPath: React.FC = () => {
       
       // Apply transform with scaling
       // The rocket SVG itself is 24 units wide, 38 units high. transform-origin is center.
-      rocketNode.style.transform = `translate(${point.x}px, ${point.y}px) rotate(${angle + rotationAdjustment}deg) scale(${scaleFactor})`;
+      rocketNode.style.transform = `translate(${point.x - 200}px, ${point.y - 460}px) rotate(${angle + rotationAdjustment}deg) scale(${scaleFactor})`;
     };
 
     // Initial position and orientation
