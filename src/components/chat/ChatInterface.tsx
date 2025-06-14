@@ -155,8 +155,8 @@ const ChatInterface: React.FC = () => {
         {/* The X button to close the sidebar is in page.tsx, positioned absolutely relative to the sidebar */}
       </div>
 
-      <ScrollArea className="flex-grow p-1" ref={scrollAreaRef}> {/* Reduced p-4 to p-1 for ScrollArea */}
-        <div className="space-y-2 p-3"> {/* Added p-3 here for ChatBubble spacing */}
+      <ScrollArea className="flex-grow" ref={scrollAreaRef}> {/* Removed p-1 */}
+        <div className="space-y-0 p-0"> {/* Changed from space-y-2 p-3. ChatBubble's my-4 handles vertical spacing. ChatBubble's px handles horizontal. */}
           {messages.map((msg) => (
             <ChatBubble
               key={msg.id}
