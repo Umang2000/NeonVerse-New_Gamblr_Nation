@@ -10,7 +10,7 @@ import FooterYear from '@/components/layout/FooterYear';
 import { ArrowRightIcon, XIcon } from 'lucide-react'; 
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatInterface from '@/components/chat/ChatInterface';
-import TwitchEmbed from '@/components/media/TwitchEmbed'; // Import the new component
+import TwitchEmbed from '@/components/media/TwitchEmbed';
 import { cn } from '@/lib/utils';
 
 const games = [
@@ -32,7 +32,7 @@ export default function HomePage() {
         <main
           className={cn(
             "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out",
-            isChatSidebarOpen ? "md:mr-[384px] lg:mr-[480px]" : "" 
+            isChatSidebarOpen ? "md:ml-[384px] lg:ml-[480px]" : "" 
           )}
         >
           {/* Hero Section */}
@@ -84,9 +84,9 @@ export default function HomePage() {
         {/* Chat Sidebar */}
         <aside
           className={cn(
-            "fixed top-0 right-0 h-full bg-card border border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-l-lg", 
+            "fixed top-0 left-0 h-full bg-card border border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-r-lg", 
             "w-full md:w-96 lg:w-[480px]", 
-            isChatSidebarOpen ? "translate-x-0" : "translate-x-full"
+            isChatSidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
            <button 
