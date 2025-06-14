@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Gamepad2Icon, HomeIcon, UserCircle2Icon, TvIcon, LogOutIcon, LogInIcon } from 'lucide-react';
+import { Gamepad2Icon, HomeIcon, UserCircle2Icon, TvIcon, LogOutIcon, LogInIcon, HelpCircle } from 'lucide-react'; // Added HelpCircle
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
@@ -23,6 +23,7 @@ const navItems = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Games', href: '#games', icon: Gamepad2Icon },
   { name: 'Livestream', href: '#livestream', icon: TvIcon },
+  { name: 'FAQ', href: '#faq', icon: HelpCircle }, // Added FAQ link
 ];
 
 const Navbar: React.FC = () => {
@@ -47,7 +48,10 @@ const Navbar: React.FC = () => {
   const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (pathname === '/' && window.location.hash && window.location.hash !== '#') {
       e.preventDefault();
+      // Use router.push to ensure hash is cleared and component re-evaluates
       router.push('/', { shallow: true }); 
+      // Manually set hash to empty for immediate UI update if router.push doesn't trigger listener fast enough
+      // setCurrentHash(''); // This line might be redundant if router.push triggers hashchange reliably
     }
   };
 
@@ -57,7 +61,6 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center text-primary hover:text-primary/80 transition-colors" onClick={handleHomeClick}>
-            {/* Space for logo */}
             <div className="mr-3"> 
               {/* You can place an <Image /> component or an icon here later */}
             </div>
