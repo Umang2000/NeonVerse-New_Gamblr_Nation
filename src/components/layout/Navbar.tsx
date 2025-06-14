@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Gamepad2Icon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon, TvIcon } from 'lucide-react';
+import { Gamepad2Icon, HomeIcon, UserCircle2Icon, TvIcon, LogOutIcon, LogInIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
@@ -42,12 +42,12 @@ const Navbar: React.FC = () => {
     return () => {
       window.removeEventListener('hashchange', handleHashChange, false);
     };
-  }, [pathname]); // Added pathname to dependency array
+  }, [pathname]); 
 
   const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (pathname === '/' && window.location.hash && window.location.hash !== '#') {
       e.preventDefault();
-      router.push('/', { shallow: true });
+      router.push('/', { shallow: true }); 
     }
   };
 
@@ -56,8 +56,14 @@ const Navbar: React.FC = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md shadow-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="text-3xl font-headline font-bold text-primary hover:text-primary/80 transition-colors" onClick={handleHomeClick}>
-            Gamblr Nation
+          <Link href="/" className="flex items-center text-primary hover:text-primary/80 transition-colors" onClick={handleHomeClick}>
+            {/* Space for logo */}
+            <div className="mr-3"> 
+              {/* You can place an <Image /> component or an icon here later */}
+            </div>
+            <span className="text-3xl font-headline font-bold">
+              Gamblr Nation
+            </span>
           </Link>
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
