@@ -142,7 +142,7 @@ const ChatInterface: React.FC = () => {
       {/* Header */}
       <div className="p-4 border-b border-border/30 flex items-center justify-between">
         {/* Grouped Left Part: Title and Online Count */}
-        <div className="flex items-center gap-x-4 sm:gap-x-5"> {/* Increased gap here */}
+        <div className="flex items-center gap-x-3"> {/* Adjusted gap here */}
           <div className="flex items-center gap-2"> {/* Degen Chat title + Icon */}
             <ShieldIcon className="h-6 w-6 text-primary icon-glow-primary" />
             <h2 className="text-xl font-headline text-primary">DEGEN CHAT</h2>
