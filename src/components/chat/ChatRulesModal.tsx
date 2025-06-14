@@ -46,29 +46,30 @@ const ChatRulesModal: React.FC<ChatRulesModalProps> = ({ isOpen, onOpenChange })
             // Base positioning, animation, and default styling from shadcn/ui DialogContent
             "fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
             // Custom styles for this specific ChatRulesModal
-            "sm:max-w-md bg-background/95 backdrop-blur-sm border border-primary/20 neon-shadow-primary p-0 rounded-lg"
+            "sm:max-w-md bg-background/95 backdrop-blur-sm border border-primary/20 neon-shadow-primary p-0 rounded-lg",
+            "max-h-[90vh] overflow-y-auto md:max-h-[calc(100vh-4rem)]" // Ensure modal itself scrolls if content overflows
             // No explicit 'gap-4' as padding is handled internally by header/footer/content
             // The X button normally rendered by DialogContent is intentionally omitted here
           )}
         >
-          <DialogHeader className="flex flex-row justify-between items-center pt-6 px-6 pb-4 border-b border-border/30">
+          <DialogHeader className="flex flex-row justify-between items-center pt-6 px-4 sm:px-6 pb-4 border-b border-border/30">
             <DialogTitle className="font-headline text-3xl font-bold text-foreground">
               CHAT RULES
             </DialogTitle>
             <FileTextIcon className="h-7 w-7 text-accent icon-glow-accent" />
           </DialogHeader>
           
-          <ScrollArea className="max-h-[50vh] px-6 py-4"> 
+          <ScrollArea className="max-h-[50vh] px-4 sm:px-6 py-4"> 
               <div className="space-y-3">
               {rules.map((rule, index) => (
-                <div key={index} className="bg-card p-3.5 rounded-lg shadow-md text-accent-foreground text-sm">
+                <div key={index} className="bg-accent p-3 sm:p-3.5 rounded-lg shadow-neon-accent text-accent-foreground text-sm">
                       {rule}
                   </div>
               ))}
               </div>
           </ScrollArea>
           
-          <DialogFooter className="px-6 pb-6 pt-4 border-t border-border/30">
+          <DialogFooter className="px-4 sm:px-6 pb-6 pt-4 border-t border-border/30">
             <DialogClose asChild>
               <Button 
                 type="button" 

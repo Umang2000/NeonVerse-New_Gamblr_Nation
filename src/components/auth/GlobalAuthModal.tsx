@@ -1,3 +1,4 @@
+
 // src/components/auth/GlobalAuthModal.tsx
 "use client";
 
@@ -53,7 +54,7 @@ const GlobalAuthModal: React.FC = () => {
             description={descriptionText}
             showBackButton={false}
         >
-            <div className="relative min-h-[480px]"> {/* Container for smooth transition and consistent height */}
+            <div className="relative"> {/* Container for smooth transition - min-h-[480px] removed for better responsiveness on short screens */}
               <div
                 className={cn(
                   "transition-opacity duration-300 ease-in-out",

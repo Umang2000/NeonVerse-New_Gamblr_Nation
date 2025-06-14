@@ -76,7 +76,7 @@ export default function ContactUsForm() {
             placeholder="Describe your issue or question in detail..." 
             value={message} 
             onChange={(e) => setMessage(e.target.value)} 
-            rows={5} 
+            rows={4} // Reduced from 5 to 4 for better fit on small screens
             required 
             className="bg-card/50 border-input focus:shadow-neon-primary focus:border-primary transition-all"
             disabled={isSubmitting}
@@ -98,4 +98,3 @@ export default function ContactUsForm() {
     </form>
   );
 }
-
