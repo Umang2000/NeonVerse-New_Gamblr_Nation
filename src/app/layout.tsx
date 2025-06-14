@@ -8,7 +8,9 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { AuthProvider } from '@/context/AuthContext';
-import GlobalAuthModal from '@/components/auth/GlobalAuthModal'; // Import the new modal
+import GlobalAuthModal from '@/components/auth/GlobalAuthModal';
+import { SupportProvider } from '@/context/SupportContext'; // Added
+import ContactUsModal from '@/components/support/ContactUsModal'; // Added
 
 export default function RootLayout({
   children,
@@ -45,15 +47,18 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased bg-background text-foreground overflow-x-hidden">
         <AuthProvider>
-          {loading ? (
-            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-background">
-              <LoadingSpinner />
-            </div>
-          ) : (
-            children
-          )}
-          <GlobalAuthModal /> {/* Add the modal here */}
-          <Toaster />
+          <SupportProvider> {/* Added SupportProvider */}
+            {loading ? (
+              <div className="fixed inset-0 z-[200] flex items-center justify-center bg-background">
+                <LoadingSpinner />
+              </div>
+            ) : (
+              children
+            )}
+            <GlobalAuthModal />
+            <ContactUsModal /> {/* Added ContactUsModal */}
+            <Toaster />
+          </SupportProvider>
         </AuthProvider>
       </body>
     </html>

@@ -7,12 +7,12 @@ import Navbar from '@/components/layout/Navbar';
 import GameCard from '@/components/game/GameCard';
 import { Button } from '@/components/ui/button';
 import FooterYear from '@/components/layout/FooterYear';
-import { ArrowRightIcon, XIcon } from 'lucide-react'; 
+import { ArrowRightIcon, MailIcon, XIcon } from 'lucide-react'; 
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatInterface from '@/components/chat/ChatInterface';
-import FloatingSupportButton from '@/components/support/FloatingSupportButton'; // Added
-import SupportInterface from '@/components/support/SupportInterface'; // Added
 import TwitchEmbed from '@/components/media/TwitchEmbed';
+import FAQSection from '@/components/page/FAQSection'; // Added
+import { useSupport } from '@/context/SupportContext'; // Added
 import { cn } from '@/lib/utils';
 
 const games = [
@@ -24,19 +24,15 @@ const games = [
 
 export default function HomePage() {
   const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
-  const [isSupportSidebarOpen, setIsSupportSidebarOpen] = useState(false); // Added
+  const { setContactModalOpen } = useSupport(); // Added
 
-  // Calculate main content margin based on open sidebars
   const getMarginClasses = () => {
     let mlClass = "";
-    let mrClass = "";
+    // Only chat sidebar (left) affects margin now
     if (isChatSidebarOpen) {
       mlClass = "md:ml-[384px] lg:ml-[480px]";
     }
-    if (isSupportSidebarOpen) {
-      mrClass = "md:mr-[384px] lg:mr-[480px] xl:mr-[560px]"; // Adjusted support sidebar width
-    }
-    return cn(mlClass, mrClass);
+    return mlClass; // Only mlClass is returned
   };
 
   return (
@@ -90,9 +86,29 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Footer section (simple) */}
+          {/* FAQ Section */}
+          <section id="faq" className="py-12">
+            <h2 className="text-4xl font-headline font-bold text-center mb-10">
+              Frequently Asked <span className="text-accent">Questions</span>
+            </h2>
+            <div className="max-w-3xl mx-auto">
+              <FAQSection />
+            </div>
+          </section>
+
+          {/* Footer section */}
           <footer className="py-8 text-center text-muted-foreground border-t border-border/20 mt-12">
-            <p>&copy; <FooterYear /> NeonVerse. All rights reserved.</p>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
+              <p>&copy; <FooterYear /> NeonVerse. All rights reserved.</p>
+              <Button 
+                variant="link" 
+                onClick={() => setContactModalOpen(true)}
+                className="text-primary hover:text-primary/80"
+              >
+                <MailIcon className="mr-2 h-4 w-4" />
+                Contact Us
+              </Button>
+            </div>
             <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
           </footer>
         </main>
@@ -115,33 +131,14 @@ export default function HomePage() {
           <ChatInterface />
         </aside>
 
-        {/* Support Sidebar (Right) */}
-        <aside
-          className={cn(
-            "fixed top-0 right-0 h-full bg-card border-l border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-l-lg",
-            "w-full md:w-[384px] lg:w-[480px] xl:w-[560px]", // Support sidebar can be wider
-            isSupportSidebarOpen ? "translate-x-0" : "translate-x-full"
-          )}
-        >
-          <button
-            onClick={() => setIsSupportSidebarOpen(false)}
-            className="absolute top-[calc(5rem+0.75rem)] left-3 p-2 text-accent hover:text-primary z-50 rounded-md hover:bg-accent/10 transition-colors" // Adjusted for left positioning of button
-            aria-label="Close support sidebar"
-          >
-            <XIcon className="h-5 w-5 icon-glow-accent" />
-          </button>
-          <SupportInterface />
-        </aside>
+        {/* Support Sidebar (Right) - REMOVED */}
       </div>
 
       <FloatingChatButton 
         onToggle={() => setIsChatSidebarOpen(!isChatSidebarOpen)} 
         isOpen={isChatSidebarOpen} 
       />
-      <FloatingSupportButton
-        onToggle={() => setIsSupportSidebarOpen(!isSupportSidebarOpen)}
-        isOpen={isSupportSidebarOpen}
-      />
+      {/* FloatingSupportButton - REMOVED */}
     </div>
   );
 }
