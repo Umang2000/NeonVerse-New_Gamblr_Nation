@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -6,6 +5,7 @@ import ChatBubble from './ChatBubble';
 import ChatInput from './ChatInput';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { v4 as uuidv4 } from 'uuid';  // Import UUID for unique message IDs
 
 interface User {
   name: string;
@@ -41,7 +41,7 @@ const initialMessages: Message[] = [
     message: 'Anyone up for a match in "Cosmic Drift"? The new update is live!',
     timestamp: '10:02 AM',
   },
-   {
+  {
     id: '4',
     user: { name: 'GlitchMaster', avatarUrl: 'https://placehold.co/40x40/00cfff/0e0e0e.png?text=GM', nameGradient: 'blue-purple', isOnline: true },
     message: 'Just joined! Loving the vibes here.',
@@ -55,7 +55,7 @@ const ChatInterface: React.FC = () => {
 
   const handleSendMessage = (newMessageText: string) => {
     const newMessage: Message = {
-      id: (messages.length + 1).toString(),
+      id: uuidv4(),  // Use UUID for unique IDs
       user: {
         name: 'SynthWaveRider', // Current user
         avatarUrl: 'https://placehold.co/40x40/a855f7/0e0e0e.png?text=SR',
@@ -71,10 +71,10 @@ const ChatInterface: React.FC = () => {
 
   useEffect(() => {
     if (scrollAreaRef.current) {
-        const viewport = scrollAreaRef.current.querySelector('div[data-radix-scroll-area-viewport]');
-        if (viewport) {
-          viewport.scrollTop = viewport.scrollHeight;
-        }
+      const viewport = scrollAreaRef.current.querySelector('div[data-radix-scroll-area-viewport]');
+      if (viewport) {
+        viewport.scrollTop = viewport.scrollHeight;
+      }
     }
   }, [messages]);
 
@@ -82,7 +82,7 @@ const ChatInterface: React.FC = () => {
     <div className={cn(
       "flex flex-col h-full w-full overflow-hidden",
       "pt-20" // Added pt-20 to account for Navbar height
-    )}> 
+    )}>
       <div className="p-4 border-b border-border/30">
         <h2 className="text-xl font-headline text-center text-primary">Live Chat Lobby</h2>
       </div>
