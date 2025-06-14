@@ -11,48 +11,31 @@ import { AuthProvider } from '@/context/AuthContext';
 import GlobalAuthModal from '@/components/auth/GlobalAuthModal';
 import { SupportProvider } from '@/context/SupportContext';
 import ContactUsModal from '@/components/support/ContactUsModal';
-import { ChatProvider, useChat } from '@/context/ChatContext'; // Added ChatProvider and useChat
-import ChatInterface from '@/components/chat/ChatInterface'; // Added
-import FloatingChatButton from '@/components/chat/FloatingChatButton'; // Added
-import { cn } from '@/lib/utils'; // Added
-import Navbar from '@/components/layout/Navbar'; // Assuming Navbar might be needed on all pages. Adjust if not.
+import { ChatProvider, useChat } from '@/context/ChatContext';
+import ChatInterface from '@/components/chat/ChatInterface';
+import FloatingChatButton from '@/components/chat/FloatingChatButton';
+import { cn } from '@/lib/utils';
+// Navbar is rendered per-page, so it's not globally here.
 
 // Main layout component that will wrap children with ChatProvider
 function SiteLayout({ children }: { children: React.ReactNode }) {
-  const { isChatSidebarOpen, toggleChatSidebar } = useChat();
-
-  const getMarginClasses = () => {
-    let mlClass = "";
-    if (isChatSidebarOpen) {
-      // These margins might need fine-tuning depending on the exact width of your chat sidebar
-      // and whether you want this behavior on all pages.
-      mlClass = "md:ml-[384px] lg:ml-[480px]";
-    }
-    return mlClass;
-  };
+  const { isChatSidebarOpen } = useChat(); // Removed toggleChatSidebar as it's not used here
 
   return (
     <>
-      {/* Conditionally render Navbar if it's meant to be global, 
-          or manage it per-page if layouts differ significantly.
-          For now, assuming a global navbar above the main content area.
-          If pages like /join have their own navbar, this might need adjustment
-          or Navbar might be part of the children for those pages.
-          Given current structure, Navbar is in page.tsx, so it might be better managed there
-          or by specific page layouts rather than globally here unless all pages share THE exact same Navbar.
-          Let's assume for now a global Navbar structure could be desired.
-          Re-evaluating based on current structure: Navbar is per-page.
-          So, no global Navbar here. Pages will include their own.
+      {/* 
+        The main application navbar (h-20) is rendered by individual pages 
+        (e.g., page.tsx, join/page.tsx) and is expected to be fixed at the top.
+        This outer div provides a top padding container for the main scrollable content
+        of each page, ensuring that page content starts below its own fixed navbar.
       */}
-
-      <div className="flex flex-1 pt-20"> {/* pt-20 assuming a navbar height of 20 units */}
+      <div className="flex flex-1 pt-20"> {/* This pushes content below page-specific fixed navbars */}
         <main
           className={cn(
-            "flex-grow z-10 transition-all duration-300 ease-in-out w-full", // Ensure main takes full width initially
-             // Apply margin adjustments based on chat sidebar state
-             // This applies to the main content area of *all* pages using this layout.
+            "flex-grow z-10 transition-all duration-300 ease-in-out w-full",
+            // Apply margin adjustments based on chat sidebar state
             {"md:ml-[384px] lg:ml-[480px]": isChatSidebarOpen },
-            {"w-full": !isChatSidebarOpen} // explicit full width when closed
+            {"w-full": !isChatSidebarOpen} 
           )}
         >
           {children}
@@ -61,13 +44,14 @@ function SiteLayout({ children }: { children: React.ReactNode }) {
         {/* Global Chat Sidebar (Left) */}
         <aside
           className={cn(
-            "fixed top-0 left-0 h-full bg-card border-r border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-r-lg",
+            "fixed left-0 bg-card border-r border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-r-lg",
+            "top-20", // Explicitly start 20 units (5rem) from the top, below where h-20 navbar sits
+            "h-[calc(100vh-5rem)]", // Height is viewport height minus 5rem (navbar height)
             "w-full md:w-96 lg:w-[480px]",
-            "pt-20", // Added padding top to position below a fixed h-20 navbar
             isChatSidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
-          <ChatInterface />
+          <ChatInterface /> {/* ChatInterface internally uses h-full to fill this aside */}
         </aside>
       </div>
 
@@ -113,13 +97,13 @@ export default function RootLayout({
       <body className="font-body antialiased bg-background text-foreground overflow-x-hidden">
         <AuthProvider>
           <SupportProvider>
-            <ChatProvider> {/* Wrap with ChatProvider */}
+            <ChatProvider>
               {loading ? (
                 <div className="fixed inset-0 z-[200] flex items-center justify-center bg-background">
                   <LoadingSpinner />
                 </div>
               ) : (
-                <SiteLayout>{children}</SiteLayout> // Use SiteLayout to include chat components
+                <SiteLayout>{children}</SiteLayout>
               )}
               <GlobalAuthModal />
               <ContactUsModal />
