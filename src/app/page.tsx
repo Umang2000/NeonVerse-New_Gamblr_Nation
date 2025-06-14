@@ -98,16 +98,18 @@ const TheNexusSVG = () => (
 
 const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))" }: { className?: string; accentColor?: string; }) => (
   <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-6 h-[38px] rocket-svg", className)}>
-    {/* Fins */}
-    <path d="M4 28 L1 36 L5 34 Z" fill="#B0B0B0" /> 
-    <path d="M20 28 L23 36 L19 34 Z" fill="#B0B0B0" />
-    {/* Body */}
-    <path d="M6 32 C6 34, 8 36, 12 36 C16 36, 18 34, 18 32 L18 10 C18 4, 12 1, 12 1 C12 1, 6 4, 6 10 Z" fill="#D3D3D3" />
-    {/* Nose Cone */}
-    <path d="M12 1 C12 1, 15 5, 15 10 L9 10 C9 5, 12 1, 12 1 Z" fill="#FFFFFF" />
-    {/* Thruster detail (circle at the bottom) */}
-    <circle cx="12" cy="33" r="3.5" fill={accentColor} stroke="#4A4A4A" strokeWidth="0.5" />
-    <circle cx="12" cy="33" r="1.5" fill="hsl(var(--background))" opacity="0.7"/>
+    <g transform="rotate(180 12 18.5)">
+      {/* Fins */}
+      <path d="M4 28 L1 36 L5 34 Z" fill="#B0B0B0" /> 
+      <path d="M20 28 L23 36 L19 34 Z" fill="#B0B0B0" />
+      {/* Body */}
+      <path d="M6 32 C6 34, 8 36, 12 36 C16 36, 18 34, 18 32 L18 10 C18 4, 12 1, 12 1 C12 1, 6 4, 6 10 Z" fill="#D3D3D3" />
+      {/* Nose Cone */}
+      <path d="M12 1 C12 1, 15 5, 15 10 L9 10 C9 5, 12 1, 12 1 Z" fill="#FFFFFF" />
+      {/* Thruster detail (circle at the bottom) */}
+      <circle cx="12" cy="33" r="3.5" fill={accentColor} stroke="#4A4A4A" strokeWidth="0.5" />
+      <circle cx="12" cy="33" r="1.5" fill="hsl(var(--background))" opacity="0.7"/>
+    </g>
   </svg>
 );
 
@@ -179,7 +181,7 @@ export default function HomePage() {
         </ScrollAnimate>
 
         {/* Planet 2: Streamer's Orbit (Twitch Livestream Section) */}
-        <ScrollAnimate transitionDelay="300ms">
+        <ScrollAnimate transitionDelay="300ms" threshold={0.25}>
           <section id="livestream" className="planet-section">
              <div className="planet-image-container w-44 h-44 md:w-52 md:h-52">
               <StreamersOrbitSVG />
@@ -204,7 +206,7 @@ export default function HomePage() {
         </ScrollAnimate>
         
         {/* Planet 3: Help Hub Xylos (FAQ Section) */}
-        <ScrollAnimate transitionDelay="500ms">
+        <ScrollAnimate transitionDelay="500ms" threshold={0.25}>
           <section id="faq" className="planet-section">
             <div className="planet-image-container w-40 h-40 md:w-48 md:h-48">
               <HelpHubXylosSVG />

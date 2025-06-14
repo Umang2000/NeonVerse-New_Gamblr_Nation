@@ -249,14 +249,14 @@
     opacity: 0;
     /* Rocket points down, so its Y transform is from 0 to (segment_height - rocket_height) */
     /* The CSS variables --segment-height and --rocket-height are set inline on ScrollAnimate */
-    transform: translate(-50%, 0px) rotate(180deg); 
+    transform: translate(-50%, 20px); /* Initial Y offset, SVG is now rotated internally */
     transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s, opacity 0.4s ease-out; /* Slight delay for opacity */
   }
 
   .scroll-animated-item.is-visible .journey-rocket-container {
     opacity: 1;
     /* Moves rocket's top edge from 0% to (segment_height - rocket_height) from the top */
-    transform: translate(-50%, calc(var(--segment-height) - var(--rocket-height))) rotate(180deg);
+    transform: translate(-50%, calc(var(--segment-height) - var(--rocket-height) + 20px)); /* Adjusted Y offset */
   }
 }
 
