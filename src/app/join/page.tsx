@@ -41,9 +41,7 @@ export default function JoinPage() {
               For now, explore our featured games and join the Degen Chat!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline" size="lg" className="text-lg" asChild>
-                <Link href="#games">Explore Games</Link> {/* Updated Link to #games */}
-              </Button>
+              <Button variant="outline" size="lg" className="text-lg" asChild><Link href="#games">Explore Games</Link></Button> {/* Updated Link to #games */}
               <Button variant="cta" size="lg" className="text-lg" asChild>
                 <Link href="/">Back to Home</Link>
               </Button>
