@@ -171,21 +171,25 @@
     animation: pulse-aura-accent 1.8s infinite ease-in-out;
   }
 
+  /* ScrollAnimate is no longer used for journey paths directly */
+  /* Keeping general scroll animation for planet sections if desired, or can be removed */
   .scroll-animated-item {
     opacity: 0;
-    transform: translateY(40px) scale(0.95); /* Added scale for a subtle zoom out */
+    transform: translateY(40px) scale(0.95);
     transition-property: opacity, transform;
     transition-duration: 0.6s;
     transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
   .scroll-animated-item.is-visible {
     opacity: 1;
-    transform: translateY(0px) scale(1); /* Zoom back to normal */
+    transform: translateY(0px) scale(1);
   }
 
   /* Planet Journey Styles */
   .planet-section {
     @apply text-center py-8 md:py-12; 
+    /* Add margin-bottom to ensure space for the fixed journey path to be seen between sections if needed */
+    margin-bottom: 5vh; /* Example spacing */
   }
 
   .planet-image-container { 
@@ -203,61 +207,9 @@
     @apply text-3xl md:text-4xl font-headline mb-8 text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-destructive;
   }
   
-  /* Styling for the rocket SVG itself */
-  .rocket-svg {
-    transition: transform 0.3s ease-out; 
-  }
-  .rocket-svg:hover { /* Subtle glow on rocket hover */
-    filter: drop-shadow(0 0 5px currentColor); 
-  }
-  .theme-night-pulse .rocket-svg:hover {
-     filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 15px currentColor);
-  }
+  /* Styling for the rocket SVG itself - now managed within ScrollableJourneyPath.tsx or its styles */
+  /* Old .rocket-svg, .journey-segment-container, .journey-track-revealed, .journey-rocket-container can be removed */
 
-  /* New Journey Path Styles for "Revealing Dashed Track" (Downward Motion) */
-  .journey-segment-container {
-    @apply relative mx-auto my-8 md:my-12;
-    width: 6px; /* Width of the track */
-    /* Height is set inline via style prop in page.tsx */
-  }
-
-  .journey-track-revealed {
-    @apply absolute top-0 left-1/2 -translate-x-1/2 w-full origin-top;
-    /* currentColor will be from parent (.text-primary, .text-accent etc.) */
-    background-image: repeating-linear-gradient(
-      transparent, /* Gap first */
-      transparent 3px, /* 3px gap */
-      currentColor 3px, /* Dash starts */
-      currentColor 10px /* Dash ends (7px dash length) */
-    );
-    background-size: 100% 10px; /* Pattern repeats every 10px vertically */
-    height: 0%; /* Initial state: no track visible */
-    transition: height 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
-    box-shadow: 0 0 6px currentColor, 0 0 12px currentColor; /* Glow for the track */
-  }
-  .theme-night-pulse .journey-track-revealed {
-    box-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
-  }
-  
-  .scroll-animated-item.is-visible .journey-track-revealed {
-    height: 100%; /* Animate to full height when visible */
-  }
-
-  .journey-rocket-container {
-    @apply absolute left-1/2;
-    top: 0%; /* Start at the top of the segment */
-    opacity: 0;
-    /* Rocket points down, so its Y transform is from 0 to (segment_height - rocket_height) */
-    /* The CSS variables --segment-height and --rocket-height are set inline on ScrollAnimate */
-    transform: translate(-50%, 0px) rotate(180deg); 
-    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s, opacity 0.4s ease-out; /* Slight delay for opacity */
-  }
-
-  .scroll-animated-item.is-visible .journey-rocket-container {
-    opacity: 1;
-    /* Moves rocket's top edge from 0% to (segment_height - rocket_height) from the top */
-    transform: translate(-50%, calc(var(--segment-height) - var(--rocket-height))) rotate(180deg);
-  }
 }
 
 @keyframes pulse {
@@ -329,11 +281,3 @@
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
 }
-    
-
-    
-
-    
-
-
-    

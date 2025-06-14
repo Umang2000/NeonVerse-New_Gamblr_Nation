@@ -10,6 +10,7 @@ interface ScrollAnimateProps {
   animationVisibleClass?: string; // e.g., 'is-visible'
   threshold?: number;
   transitionDelay?: string; // e.g., "0ms", "100ms", "0.2s"
+  // triggerOnce prop removed to allow animation in and out
 }
 
 const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
@@ -17,8 +18,8 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
   className,
   animationBaseClass = 'scroll-animated-item',
   animationVisibleClass = 'is-visible',
-  threshold = 0.1, // Trigger when 10% of the element is visible
-  transitionDelay = '0s', // Default no delay
+  threshold = 0.1, 
+  transitionDelay = '0s',
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const domRef = useRef<HTMLDivElement>(null);
@@ -27,8 +28,7 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Set visibility based on whether the element is intersecting
-          setIsVisible(entry.isIntersecting);
+          setIsVisible(entry.isIntersecting); // Animate in and out
         });
       },
       { threshold }
@@ -44,21 +44,21 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
         observer.unobserve(currentRef);
       }
     };
-  }, [threshold]); // Rerun observer if threshold changes
+  }, [threshold]);
 
   const itemStyle: CSSProperties = {
-    transitionDelay: isVisible ? transitionDelay : '0s', // Apply delay only for "in" animation
+    transitionDelay: isVisible ? transitionDelay : '0s', 
   };
 
   return (
     <div
       ref={domRef}
       className={cn(
-        animationBaseClass, // Base styles (initial state)
-        isVisible && animationVisibleClass, // Styles for visible/animated state
-        className // Any additional custom classes
+        animationBaseClass,
+        isVisible && animationVisibleClass,
+        className
       )}
-      style={itemStyle} // Apply transition delay
+      style={itemStyle}
     >
       {children}
     </div>

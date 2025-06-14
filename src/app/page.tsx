@@ -1,4 +1,4 @@
-
+// src/app/page.tsx
 "use client";
 
 import Link from 'next/link';
@@ -11,7 +11,8 @@ import TwitchEmbed from '@/components/media/TwitchEmbed';
 import FAQSection from '@/components/page/FAQSection';
 import { useSupport } from '@/context/SupportContext';
 import { cn } from '@/lib/utils';
-import ScrollAnimate from '@/components/ui/ScrollAnimate';
+// ScrollAnimate is no longer used for journey paths, replaced by ScrollableJourneyPath
+import ScrollableJourneyPath from '@/components/animations/ScrollableJourneyPath'; // New component
 
 // Planet SVGs as functional components
 const NeonPrimeSVG = () => (
@@ -96,60 +97,32 @@ const TheNexusSVG = () => (
   </svg>
 );
 
-const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))" }: { className?: string; accentColor?: string; }) => (
-  <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-6 h-[38px] rocket-svg", className)}>
-    {/* Fins */}
-    <path d="M4 28 L1 36 L5 34 Z" fill="#B0B0B0" /> 
-    <path d="M20 28 L23 36 L19 34 Z" fill="#B0B0B0" />
-    {/* Body */}
-    <path d="M6 32 C6 34, 8 36, 12 36 C16 36, 18 34, 18 32 L18 10 C18 4, 12 1, 12 1 C12 1, 6 4, 6 10 Z" fill="#D3D3D3" />
-    {/* Nose Cone */}
-    <path d="M12 1 C12 1, 15 5, 15 10 L9 10 C9 5, 12 1, 12 1 Z" fill="#FFFFFF" />
-    {/* Thruster detail (circle at the bottom) */}
-    <circle cx="12" cy="33" r="3.5" fill={accentColor} stroke="#4A4A4A" strokeWidth="0.5" />
-    <circle cx="12" cy="33" r="1.5" fill="hsl(var(--background))" opacity="0.7"/>
-  </svg>
-);
-
-const ROCKET_HEIGHT_PX = 38; // Height of VerticalRocketSVG
+// VerticalRocketSVG is now part of ScrollableJourneyPath.tsx
 
 export default function HomePage() {
   const { setContactModalOpen } = useSupport();
 
-  const journeySegments = [
-    { colorClass: 'text-primary', segmentHeight: '120px' },
-    { colorClass: 'text-accent', segmentHeight: '120px' },
-    { colorClass: 'text-destructive', segmentHeight: '120px' },
-    { colorClass: 'text-primary', segmentHeight: '120px' },
-  ];
-
-  const getAccentColorFromTextColor = (textColorClass: string) => {
-    if (textColorClass === 'text-primary') return 'hsl(var(--primary))';
-    if (textColorClass === 'text-accent') return 'hsl(var(--accent))';
-    if (textColorClass === 'text-destructive') return 'hsl(var(--destructive))';
-    return 'hsl(var(--primary))'; // Default
-  };
+  // Old journeySegments array is no longer needed for per-segment animation.
 
   return (
     <div className="relative min-h-screen flex flex-col">
       <AnimatedBackground />
       <Navbar />
+      <ScrollableJourneyPath /> {/* Add the new journey path component */}
 
-      <main
-        className={cn(
-          "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden" 
-        )}
-      >
-        {/* Initial Path Segment - "Mission Start" */}
-        <ScrollAnimate transitionDelay="0ms">
+      {/* Wrapper for main content to ensure it's above the fixed SVG path */}
+      <div className="relative z-10 flex-grow"> 
+        <main
+          className={cn(
+            "container mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden" 
+          )}
+        >
+          {/* "Mission Start" - can be simple text or a small static visual */}
           <div className="text-center pt-24 pb-8 md:pt-28 md:pb-12">
             <h2 className="text-4xl md:text-5xl font-headline mb-4 text-gradient-purple-orange">Mission Start</h2>
-            {/* Optional: Add a small, static visual cue for start if desired */}
           </div>
-        </ScrollAnimate>
-        
-        {/* Planet 1: Neon Prime (Hero Section) */}
-        <ScrollAnimate transitionDelay="100ms">
+          
+          {/* Planet 1: Neon Prime (Hero Section) */}
           <section id="home" className="planet-section text-center">
             <div className="planet-image-container w-48 h-48 md:w-60 md:h-60">
               <NeonPrimeSVG />
@@ -167,19 +140,8 @@ export default function HomePage() {
               </Link>
             </Button>
           </section>
-        </ScrollAnimate>
 
-        <ScrollAnimate transitionDelay="200ms" className={journeySegments[0].colorClass} style={{ '--segment-height': journeySegments[0].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
-            <div className="journey-segment-container" style={{ height: journeySegments[0].segmentHeight }}>
-                <div className="journey-track-revealed"></div>
-                <div className="journey-rocket-container">
-                    <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[0].colorClass)} />
-                </div>
-            </div>
-        </ScrollAnimate>
-
-        {/* Planet 2: Streamer's Orbit (Twitch Livestream Section) */}
-        <ScrollAnimate transitionDelay="300ms">
+          {/* Planet 2: Streamer's Orbit (Twitch Livestream Section) */}
           <section id="livestream" className="planet-section">
              <div className="planet-image-container w-44 h-44 md:w-52 md:h-52">
               <StreamersOrbitSVG />
@@ -192,19 +154,8 @@ export default function HomePage() {
               <TwitchEmbed channel="afterhoursaz" />
             </div>
           </section>
-        </ScrollAnimate>
-
-        <ScrollAnimate transitionDelay="400ms" className={journeySegments[1].colorClass} style={{ '--segment-height': journeySegments[1].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
-            <div className="journey-segment-container" style={{ height: journeySegments[1].segmentHeight }}>
-                <div className="journey-track-revealed"></div>
-                <div className="journey-rocket-container">
-                     <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[1].colorClass)} />
-                </div>
-            </div>
-        </ScrollAnimate>
-        
-        {/* Planet 3: Help Hub Xylos (FAQ Section) */}
-        <ScrollAnimate transitionDelay="500ms">
+          
+          {/* Planet 3: Help Hub Xylos (FAQ Section) */}
           <section id="faq" className="planet-section">
             <div className="planet-image-container w-40 h-40 md:w-48 md:h-48">
               <HelpHubXylosSVG />
@@ -217,19 +168,9 @@ export default function HomePage() {
               <FAQSection />
             </div>
           </section>
-        </ScrollAnimate>
 
-        <ScrollAnimate transitionDelay="600ms" className={journeySegments[2].colorClass} style={{ '--segment-height': journeySegments[2].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
-            <div className="journey-segment-container" style={{ height: journeySegments[2].segmentHeight }}>
-                <div className="journey-track-revealed"></div>
-                <div className="journey-rocket-container">
-                    <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[2].colorClass)}/>
-                </div>
-            </div>
-        </ScrollAnimate>
-
-        {/* Planet 4: The Nexus (Footer section) */}
-        <ScrollAnimate transitionDelay="700ms">
+          {/* Planet 4: The Nexus (Footer section) */}
+          {/* Footer itself acts as the Nexus content */}
           <footer className="planet-section text-center text-muted-foreground border-t border-border/20 mt-12 pb-12 md:pb-16">
             <div className="planet-image-container w-32 h-32 md:w-36 md:h-36 opacity-80">
               <TheNexusSVG />
@@ -247,20 +188,12 @@ export default function HomePage() {
               </Button>
             </div>
             <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
-            {/* Final smaller decorative journey segment */}
-            <div className={cn("journey-segment-container mx-auto mt-10", journeySegments[3].colorClass)} style={{ height: '40px', opacity: 0.6 }}>
-                <div className="journey-track-revealed" style={{animationDelay: '0.1s', animationDuration: '0.5s', height: '100%'}}></div>
-                 {/* No rocket for the final small segment, or a very small one if desired */}
-            </div>
             <div className="text-center pt-8 pb-4">
               <p className="text-3xl md:text-4xl font-headline text-gradient-purple-orange">Journey's End</p>
             </div>
           </footer>
-        </ScrollAnimate>
-      </main>
+        </main>
+      </div> {/* End of z-10 content wrapper */}
     </div>
   );
 }
-    
-
-    
