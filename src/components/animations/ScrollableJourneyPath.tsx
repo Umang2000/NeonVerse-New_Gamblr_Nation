@@ -1,3 +1,4 @@
+
 // src/components/animations/ScrollableJourneyPath.tsx
 "use client";
 
@@ -29,7 +30,7 @@ const ScrollableJourneyPath: React.FC = () => {
 
   // Define a winding path. Coordinates are illustrative and need careful adjustment.
   // This path starts top-ish, goes down, wiggles, and continues.
-  // Values are percentages of the SVG viewbox (0-1000).
+  // Values are percentages of the SVG viewbox (0-1000 for height, 0-500 for width).
   const pathData = "M 100 50 C 100 150, 300 150, 300 250 S 100 350, 100 450 C 100 550, 400 550, 400 650 S 200 750, 200 850 S 350 950, 350 1000";
 
 
@@ -40,7 +41,7 @@ const ScrollableJourneyPath: React.FC = () => {
       revealedPathRef.current.style.strokeDasharray = `${length} ${length}`;
       revealedPathRef.current.style.strokeDashoffset = `${length}`; // Initially hide the revealed path
     }
-  }, [pathData]);
+  }, [pathData]); // Rerun if pathData changes, though it's static here
 
   useEffect(() => {
     if (!revealedPathRef.current || !rocketRef.current || pathLength === 0) return;
@@ -48,9 +49,9 @@ const ScrollableJourneyPath: React.FC = () => {
     const pathNode = revealedPathRef.current;
     const rocketNode = rocketRef.current;
     
-    // Correct rotationAdjustment for an upward-pointing SVG to follow the path's tangent
-    const rotationAdjustment = 90; // Degrees to add to atan2 result
-    const scaleFactor = 0.4; // Factor to scale the rocket size (SHIT TON SMALLER)
+    // For an upward-pointing SVG, +90 degrees aligns its "up" with the path's tangent
+    const rotationAdjustment = 90; 
+    const scaleFactor = 0.2; // Rocket scale factor
 
     const handleScroll = () => {
       // Calculate scroll percentage (0 to 1)
@@ -58,9 +59,8 @@ const ScrollableJourneyPath: React.FC = () => {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercentage = docHeight > 0 ? Math.min(1, Math.max(0, scrollY / docHeight)) : 0;
       
-      const drawLength = scrollPercentage * pathLength;
-      
       // Animate path drawing: make strokeDashoffset go from pathLength to 0
+      const drawLength = scrollPercentage * pathLength;
       pathNode.style.strokeDashoffset = `${pathLength - drawLength}`;
 
       // Animate rocket position and rotation
@@ -77,8 +77,7 @@ const ScrollableJourneyPath: React.FC = () => {
       if (point && nextPoint && (nextPoint.x !== point.x || nextPoint.y !== point.y)) {
         angle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * (180 / Math.PI);
       } else if (point) {
-        // Fallback for the very start/end of the path if nextPoint is same as point
-        // Or, get a point slightly behind if at the very end
+        // Fallback for the very start/end or if path is perfectly vertical/horizontal at a segment
         const lookBehindLength = Math.max(0, currentPointLength - 1);
         const prevPoint = pathNode.getPointAtLength(lookBehindLength);
         if (prevPoint && (point.x !== prevPoint.x || point.y !== prevPoint.y)) {
@@ -87,6 +86,7 @@ const ScrollableJourneyPath: React.FC = () => {
       }
       
       // Apply transform with scaling
+      // The rocket SVG itself is 24 units wide, 38 units high. transform-origin is center.
       rocketNode.style.transform = `translate(${point.x}px, ${point.y}px) rotate(${angle + rotationAdjustment}deg) scale(${scaleFactor})`;
     };
 
@@ -107,17 +107,17 @@ const ScrollableJourneyPath: React.FC = () => {
         ref={svgRef} 
         width="100%" 
         height="100%" 
-        viewBox="0 0 500 1000" // Example viewBox, adjust based on pathData and desired scale
-        preserveAspectRatio="xMidYMax meet" // Ensures path scales nicely but might need adjustment
+        viewBox="0 0 500 1000" // Example viewBox, adjust based on pathData and desired scale/aspect ratio
+        preserveAspectRatio="xMidYMax meet" // Ensures path scales nicely relative to its viewBox. Consider "none" if you want full viewport stretching.
         className="overflow-visible"
       >
         {/* Path 1: Faded Background Track */}
         <path
           d={pathData}
           fill="none"
-          stroke="hsl(var(--border) / 0.3)"
-          strokeWidth="3" // Adjusted stroke width for visibility with smaller rocket
-          strokeDasharray="6 6" // Dashed appearance
+          stroke="hsl(var(--border) / 0.3)" // Fainter color for the track
+          strokeWidth="2.5" // Slightly thinner path for a smaller rocket
+          strokeDasharray="5 5" // Dashed appearance (5px dash, 5px gap)
         />
         {/* Path 2: Colored Revealed Trail */}
         <path
@@ -125,12 +125,12 @@ const ScrollableJourneyPath: React.FC = () => {
           d={pathData}
           fill="none"
           stroke="hsl(var(--primary))" // Theme color
-          strokeWidth="3.5" // Slightly thicker to overlay nicely, adjusted for visibility
-          strokeLinecap="round" // Nicer ends for dashes
-          // strokeDasharray will be set by JS
+          strokeWidth="3" // Slightly thicker to overlay nicely, adjusted for visibility
+          strokeLinecap="round" 
+          // strokeDasharray and strokeDashoffset will be set by JS
         />
         {/* Rocket - pointing upwards by default, rotation and scale applied by JS */}
-        <g ref={rocketRef} style={{ transformOrigin: 'center center' }}> {/* transform-origin for rocket itself */}
+        <g ref={rocketRef} style={{ transformOrigin: 'center center' }}> {/* transform-origin for rocket itself, centered on its viewBox */}
           {/* Rocket SVG takes full width/height of its <g> container, scaling is applied to <g> */}
           <VerticalRocketSVG accentColor="hsl(var(--primary))" className="w-full h-full"/>
         </g>
@@ -140,3 +140,5 @@ const ScrollableJourneyPath: React.FC = () => {
 };
 
 export default ScrollableJourneyPath;
+
+    
