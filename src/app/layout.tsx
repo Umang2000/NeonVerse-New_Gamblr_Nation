@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { AuthProvider } from '@/context/AuthContext'; // Import AuthProvider
 
 // Static metadata object (can be uncommented if you still want some static parts)
 // export const metadata: Metadata = {
@@ -54,14 +55,16 @@ export default function RootLayout({
       </head>
       {/* Add overflow-x-hidden to body to prevent horizontal scroll issues when sidebar pushes content */}
       <body className="font-body antialiased bg-background text-foreground overflow-x-hidden">
-        {loading ? (
-          <div className="fixed inset-0 z-[200] flex items-center justify-center bg-background">
-            <LoadingSpinner />
-          </div>
-        ) : (
-          children
-        )}
-        <Toaster />
+        <AuthProvider> {/* Wrap children with AuthProvider */}
+          {loading ? (
+            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-background">
+              <LoadingSpinner />
+            </div>
+          ) : (
+            children
+          )}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );
