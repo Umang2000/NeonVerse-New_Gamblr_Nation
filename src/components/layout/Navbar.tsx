@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Gamepad2Icon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon, TvIcon } from 'lucide-react'; // Removed MessageSquareIcon
+import { Gamepad2Icon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon, TvIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
@@ -17,17 +17,39 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from '../ui/button';
+import { useState, useEffect } from 'react';
 
 const navItems = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Games', href: '#games', icon: Gamepad2Icon },
   { name: 'Livestream', href: '#livestream', icon: TvIcon },
-  // { name: 'Forums', href: '#forums', icon: MessageSquareIcon }, // Removed Forums
 ];
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
   const { user, loading, signOutUser, setAuthModalType } = useAuth();
+  const [currentHash, setCurrentHash] = useState('');
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentHash(window.location.hash);
+    };
+
+    // Set initial hash
+    setCurrentHash(window.location.hash);
+
+    window.addEventListener('hashchange', handleHashChange, false);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange, false);
+    };
+  }, []); // Runs once on mount to set initial hash and add listener
+
+  // This effect updates currentHash if the pathname changes
+  // and the new page doesn't have a hash (or has a different one).
+  useEffect(() => {
+    setCurrentHash(window.location.hash);
+  }, [pathname]);
+
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md shadow-lg">
@@ -38,14 +60,17 @@ const Navbar: React.FC = () => {
           </Link>
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
-              const isStrictMatch = pathname === item.href;
-              // For hash links, active state relies on observing scroll position,
-              // which is more complex. For now, basic active state if it's the current page
-              // and the hash matches, or if it's a simple path match.
-              // A more robust solution for hash links would involve IntersectionObserver.
-              const isActive = item.href.startsWith('#')
-                ? (typeof window !== "undefined" && window.location.hash === item.href && pathname === '/') // Basic hash check on home
-                : pathname === item.href;
+              let isActive;
+              if (item.href === '/') {
+                // Home is active if path is '/' AND no other specific section hash is active.
+                isActive = pathname === '/' && (currentHash === '' || currentHash === '#');
+              } else if (item.href.startsWith('#')) {
+                // Section link is active if path is '/' AND its hash matches the current hash.
+                isActive = pathname === '/' && currentHash === item.href;
+              } else {
+                // For any other non-hash, non-root links (if they exist in future)
+                isActive = pathname === item.href;
+              }
 
               const underlineClass = cn(
                 "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
