@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { ShieldAlertIcon } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 interface ChatRulesModalProps {
   isOpen: boolean;
@@ -37,10 +38,15 @@ const rules = [
 const ChatRulesModal: React.FC<ChatRulesModalProps> = ({ isOpen, onOpenChange }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-card border-border/50 shadow-xl">
-        <DialogHeader className="text-left">
-          <DialogTitle className="flex items-center gap-2 text-xl text-primary">
-            <ShieldAlertIcon className="h-5 w-5 icon-glow-primary" />
+      <DialogContent 
+        className={cn(
+          "sm:max-w-md bg-card border-border/50 shadow-xl rounded-lg", // Card-like appearance
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95" // Standard modal animations
+        )}
+      >
+        <DialogHeader className="text-left pt-6 px-6"> {/* Adjusted padding */}
+          <DialogTitle className="flex items-center gap-2 text-xl font-headline text-primary"> {/* Themed title */}
+            <ShieldAlertIcon className="h-6 w-6 icon-glow-primary" />
             Chat Rules
           </DialogTitle>
           <DialogDescription className="text-muted-foreground pt-1">
@@ -48,17 +54,17 @@ const ChatRulesModal: React.FC<ChatRulesModalProps> = ({ isOpen, onOpenChange })
           </DialogDescription>
         </DialogHeader>
         
-        <ScrollArea className="max-h-[50vh] pr-4 my-4">
-            <ul className="space-y-2 text-sm text-foreground/90 list-decimal list-inside pl-2">
+        <ScrollArea className="max-h-[50vh] my-4 px-6"> {/* Scrollable area for rules, added horizontal padding */}
+            <ul className="space-y-2.5 text-sm text-foreground/90 list-decimal list-inside pl-1"> {/* Numbered list */}
             {rules.map((rule, index) => (
-                <li key={index}>{rule}</li>
+                <li key={index} className="leading-relaxed">{rule}</li>
             ))}
             </ul>
         </ScrollArea>
         
-        <DialogFooter className="sm:justify-end">
+        <DialogFooter className="sm:justify-end px-6 pb-6"> {/* Adjusted padding */}
           <DialogClose asChild>
-            <Button type="button" variant="outline" className="shadow-neon-primary hover:shadow-neon-accent">
+            <Button type="button" variant="outline" className="shadow-neon-primary hover:shadow-neon-accent focus:shadow-neon-accent">
               Got it
             </Button>
           </DialogClose>
