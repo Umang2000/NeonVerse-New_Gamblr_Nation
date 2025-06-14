@@ -61,7 +61,7 @@ const ChatRulesModal: React.FC<ChatRulesModalProps> = ({ isOpen, onOpenChange })
           <ScrollArea className="max-h-[50vh] px-6 py-4"> 
               <div className="space-y-3">
               {rules.map((rule, index) => (
-                  <div key={index} className="bg-accent p-3.5 rounded-lg shadow-neon-accent text-accent-foreground text-sm">
+                <div key={index} className="bg-card p-3.5 rounded-lg shadow-md text-accent-foreground text-sm">
                       {rule}
                   </div>
               ))}
