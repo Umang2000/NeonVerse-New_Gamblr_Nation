@@ -140,14 +140,14 @@ const ChatInterface: React.FC = () => {
       "pt-20" 
     )}>
       {/* Header */}
-      <div className="p-4 border-b border-border/30 flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-border/30 flex items-center justify-between"> {/* Changed p-4 to px-4 py-3 */}
         {/* Grouped Left Part: Title and Online Count */}
-        <div className="flex items-center gap-x-3"> {/* Adjusted gap here */}
-          <div className="flex items-center gap-2"> {/* Degen Chat title + Icon */}
+        <div className="flex items-center gap-x-3"> {/* Inter-group gap */}
+          <div className="flex items-center gap-2"> {/* Degen Chat title + Icon, intra-group gap */}
             <ShieldIcon className="h-6 w-6 text-primary icon-glow-primary" />
             <h2 className="text-xl font-headline text-primary">DEGEN CHAT</h2>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground"> {/* Online count */}
+          <div className="flex items-center gap-2 text-sm text-muted-foreground"> {/* Online count + Icon, intra-group gap */}
             <UsersIcon className="h-4 w-4 text-accent icon-glow-accent" />
             <span>{onlineUsers} Online</span>
           </div>
