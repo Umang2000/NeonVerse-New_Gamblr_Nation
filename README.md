@@ -14,6 +14,9 @@ Implementations in place for this Template Website
 
 
 ## Commit details
+**965e1ba6f89ab00ae61d8499f2a5acb386d9881d**
+- Maintain README.md file
+
 **5c627e08caf3cc9358286cbdd85ff4e231f7bfb1**
 - add Authentication module in the form of popup with animations for smoothness
 
