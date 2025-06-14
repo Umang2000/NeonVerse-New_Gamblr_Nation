@@ -96,30 +96,18 @@ const TheNexusSVG = () => (
   </svg>
 );
 
-const RocketWithTrailSVG = ({ className, trailColorClass = "text-primary" }: { className?: string; trailColorClass?: string; }) => (
-  <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" className={cn("w-32 h-16 md:w-40 md:h-20 rocket-svg", className)}>
-    <defs>
-       <filter id="rocketGlow" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-        <feMerge>
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    {/* Rocket Body - Points right (nose at x=170), rear at x=115-120 */}
-    <path d="M150 50 Q145 30 120 25 L115 20 Q125 10 140 10 Q165 20 170 45 L175 60 Q165 70 140 70 Q125 70 115 65 L120 60 Q145 55 150 50Z" fill="hsl(var(--foreground) / 0.9)" stroke="hsl(var(--card-foreground))" strokeWidth="1" filter="url(#rocketGlow)" />
-    {/* Window */}
-    <circle cx="155" cy="48" r="7" fill="hsl(var(--primary))" stroke="hsl(var(--background))" strokeWidth="1.5" />
+const VerticalRocketSVG = ({ className, rocketColor = "hsl(var(--foreground))", accentColor = "hsl(var(--destructive))" }: { className?: string; rocketColor?: string, accentColor?: string; }) => (
+  <svg viewBox="0 0 20 40" xmlns="http://www.w3.org/2000/svg" className={cn("w-5 h-10", className)}>
+    {/* Main Body */}
+    <path d="M10 0 L16 12 L13 12 L13 28 L7 28 L7 12 L4 12 Z" fill={rocketColor} />
+    {/* Nose Cone accent */}
+    <path d="M10 0 L13 6 L7 6 Z" fill={accentColor} />
     {/* Fins */}
-    <path d="M120 25 L100 10 L110 23 Z" fill="hsl(var(--muted))" /> {/* Top fin, points back-left from body */}
-    <path d="M120 60 L100 75 L110 62 Z" fill="hsl(var(--muted))" /> {/* Bottom fin, points back-left from body */}
-    <path d="M130 35 L120 30 L125 48 L120 55 L130 50 Z" fill="hsl(var(--destructive))" /> {/* Side fin detail */}
-    
-    {/* Revised Trail - Emanates from rocket's rear (around x=115) towards the left */}
-    <line x1="115" y1="45" x2="65" y2="35" stroke="currentColor" strokeWidth="2.5" strokeDasharray="4,4" className={cn("opacity-80", trailColorClass)} />
-    <line x1="118" y1="50" x2="50" y2="50" stroke="currentColor" strokeWidth="3" strokeDasharray="5,5"   className={cn("opacity-90", trailColorClass)} />
-    <line x1="115" y1="55" x2="65" y2="65" stroke="currentColor" strokeWidth="2.5" strokeDasharray="4,4" className={cn("opacity-80", trailColorClass)} />
+    <path d="M7 28 L2 35 L7 32 Z" fill={rocketColor} opacity="0.8" />
+    <path d="M13 28 L18 35 L13 32 Z" fill={rocketColor} opacity="0.8" />
+    {/* Engine Glow */}
+    <ellipse cx="10" cy="35" rx="4" ry="5" fill={accentColor} opacity="0.7" />
+    <ellipse cx="10" cy="35" rx="2" ry="3" fill="hsl(var(--background))" opacity="0.5" />
   </svg>
 );
 
@@ -134,22 +122,23 @@ export default function HomePage() {
 
       <main
         className={cn(
-          "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden" // Added overflow-hidden to main
+          "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden" 
         )}
       >
         {/* Initial Path Segment - "Mission Start" */}
         <ScrollAnimate transitionDelay="0ms">
           <div className="text-center pt-24 pb-8 md:pt-28 md:pb-12">
             <h2 className="text-4xl md:text-5xl font-headline mb-4 text-gradient-purple-orange">Mission Start</h2>
-            <div className="journey-path-segment text-primary mx-auto" style={{ height: '60px' }}></div>
+            <div className="journey-segment-container text-primary" style={{ height: '60px' }}>
+                <div className="journey-track"></div>
+                <div className="journey-filler bg-primary"></div>
+                <div className="journey-rocket-container">
+                    <VerticalRocketSVG rocketColor="hsl(var(--primary-foreground))" accentColor="hsl(var(--primary))"/>
+                </div>
+            </div>
           </div>
         </ScrollAnimate>
         
-        <ScrollAnimate transitionDelay="50ms" className="flex justify-start -mt-8 ml-4 md:ml-12 opacity-80">
-            <RocketWithTrailSVG className="-rotate-[15deg]" trailColorClass="text-primary" />
-        </ScrollAnimate>
-
-
         {/* Planet 1: Neon Prime (Hero Section) */}
         <ScrollAnimate transitionDelay="100ms">
           <section id="home" className="planet-section text-center">
@@ -172,11 +161,13 @@ export default function HomePage() {
         </ScrollAnimate>
 
         <ScrollAnimate transitionDelay="200ms">
-          <div className="journey-path-segment text-accent mx-auto" style={{ height: '100px' }}></div>
-        </ScrollAnimate>
-
-        <ScrollAnimate transitionDelay="250ms" className="flex justify-end -mt-10 mr-4 md:mr-16 opacity-90">
-            <RocketWithTrailSVG className="rotate-[5deg]" trailColorClass="text-accent" />
+            <div className="journey-segment-container text-accent" style={{ height: '120px' }}>
+                <div className="journey-track"></div>
+                <div className="journey-filler bg-accent"></div>
+                <div className="journey-rocket-container">
+                    <VerticalRocketSVG rocketColor="hsl(var(--accent-foreground))" accentColor="hsl(var(--accent))"/>
+                </div>
+            </div>
         </ScrollAnimate>
 
         {/* Planet 2: Streamer's Orbit (Twitch Livestream Section) */}
@@ -196,14 +187,15 @@ export default function HomePage() {
         </ScrollAnimate>
 
         <ScrollAnimate transitionDelay="400ms">
-          <div className="journey-path-segment text-destructive mx-auto" style={{ height: '100px' }}></div>
+             <div className="journey-segment-container text-destructive" style={{ height: '120px' }}>
+                <div className="journey-track"></div>
+                <div className="journey-filler bg-destructive"></div>
+                <div className="journey-rocket-container">
+                     <VerticalRocketSVG rocketColor="hsl(var(--destructive-foreground))" accentColor="hsl(var(--destructive))"/>
+                </div>
+            </div>
         </ScrollAnimate>
         
-        <ScrollAnimate transitionDelay="450ms" className="flex justify-center -mt-8 opacity-80">
-            <RocketWithTrailSVG className="rotate-[0deg]" trailColorClass="text-destructive" />
-        </ScrollAnimate>
-
-
         {/* Planet 3: Help Hub Xylos (FAQ Section) */}
         <ScrollAnimate transitionDelay="500ms">
           <section id="faq" className="planet-section">
@@ -221,7 +213,13 @@ export default function HomePage() {
         </ScrollAnimate>
 
         <ScrollAnimate transitionDelay="600ms">
-          <div className="journey-path-segment text-primary mx-auto" style={{ height: '100px' }}></div>
+             <div className="journey-segment-container text-primary" style={{ height: '120px' }}>
+                <div className="journey-track"></div>
+                <div className="journey-filler bg-primary"></div>
+                <div className="journey-rocket-container">
+                    <VerticalRocketSVG rocketColor="hsl(var(--primary-foreground))" accentColor="hsl(var(--primary))"/>
+                </div>
+            </div>
         </ScrollAnimate>
 
         {/* Planet 4: The Nexus (Footer section) */}
@@ -243,7 +241,11 @@ export default function HomePage() {
               </Button>
             </div>
             <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
-            <div className="journey-path-segment text-accent mx-auto mt-10" style={{ height: '40px', opacity: 0.6 }}></div>
+            <div className="journey-segment-container text-accent mx-auto mt-10" style={{ height: '40px', opacity: 0.6 }}>
+                <div className="journey-track"></div>
+                <div className="journey-filler bg-accent"></div>
+                 {/* No rocket for the final small segment, or a very small one if desired */}
+            </div>
             <div className="text-center pt-8 pb-4">
               <p className="text-3xl md:text-4xl font-headline text-gradient-purple-orange">Journey's End</p>
             </div>
@@ -253,4 +255,6 @@ export default function HomePage() {
     </div>
   );
 }
+    
+
     

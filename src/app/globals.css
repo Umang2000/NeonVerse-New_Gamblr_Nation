@@ -204,32 +204,62 @@
     @apply text-3xl md:text-4xl font-headline mb-8 text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-destructive;
   }
   
-  .journey-path-segment {
-    @apply w-1.5 mx-auto; 
-    background: repeating-linear-gradient(
-      to bottom,
-      currentColor, 
-      currentColor 10px, 
-      transparent 10px, 
-      transparent 22px 
-    );
-  }
-
   /* Styling for the rocket SVG itself */
   .rocket-svg {
-    /* Base size is controlled by w-X h-X on the element */
-    /* fill: hsl(var(--foreground)); /* Default fill for rocket body */
-    /* stroke: hsl(var(--primary)); /* Default stroke for trail */ 
-    /* stroke-width: 2;
-    stroke-dasharray: 4, 4; */
-    /* The above commented out styles are better handled directly in the SVG or via trailColorClass prop */
-    transition: transform 0.3s ease-out; /* For hover effects or programmatic rotation */
+    transition: transform 0.3s ease-out; 
   }
   .rocket-svg:hover {
-    filter: drop-shadow(0 0 5px currentColor); /* Glow with its trail color */
+    filter: drop-shadow(0 0 5px currentColor); 
   }
   .theme-night-pulse .rocket-svg:hover {
      filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 15px currentColor);
+  }
+
+  /* New Journey Path Styles for "Filling Progress Bar" */
+  .journey-segment-container {
+    @apply relative mx-auto my-8 md:my-12;
+    width: 4px; /* Width of the track/filler */
+  }
+
+  .journey-track {
+    @apply absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-transparent;
+    /* Dashed line effect using repeating gradient */
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 8px,
+      hsl(var(--border) / 0.3), /* Fainter track color */
+      hsl(var(--border) / 0.3) 18px
+    );
+  }
+
+  .journey-filler {
+    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-full origin-bottom;
+    /* Color will be set by utility classes like bg-primary, bg-accent */
+    height: 0%;
+    transition: height 0.8s cubic-bezier(0.25, 0.1, 0.25, 1); /* Fill animation */
+    /* Add a subtle glow to the filler */
+    box-shadow: 0 0 6px currentColor, 0 0 10px currentColor; 
+  }
+  .theme-night-pulse .journey-filler {
+    box-shadow: 0 0 8px currentColor, 0 0 15px currentColor, 0 0 25px currentColor;
+  }
+
+
+  .scroll-animated-item.is-visible .journey-filler {
+    height: 100%;
+  }
+
+  .journey-rocket-container { /* Wrapper for the vertical rocket */
+    @apply absolute left-1/2 -translate-x-1/2;
+    top: 0; /* Positioned at the top end of the segment */
+    opacity: 0;
+    transform: translateY(-10px) scale(0.9); /* Start slightly above and smaller, for "landing" effect */
+    transition: opacity 0.6s ease-out 0.6s, transform 0.6s ease-out 0.6s; /* Appear after line has filled significantly */
+  }
+
+  .scroll-animated-item.is-visible .journey-rocket-container {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
   }
 }
 
@@ -302,6 +332,8 @@
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
 }
+
+    
 
     
 
