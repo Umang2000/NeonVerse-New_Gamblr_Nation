@@ -2,10 +2,9 @@
 "use client";
 
 import { useState } from 'react';
-import Link from 'next/link'; // Added Link import
+import Link from 'next/link';
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Navbar from '@/components/layout/Navbar';
-import GameCard from '@/components/game/GameCard';
 import { Button } from '@/components/ui/button';
 import FooterYear from '@/components/layout/FooterYear';
 import { ArrowRightIcon, MailIcon, XIcon } from 'lucide-react'; 
@@ -16,12 +15,7 @@ import FAQSection from '@/components/page/FAQSection';
 import { useSupport } from '@/context/SupportContext';
 import { cn } from '@/lib/utils';
 
-const games = [
-  { id: '1', title: 'Cosmic Drift Racer', imageUrl: 'https://placehold.co/600x400/003366/00cfff.png', category: 'Racing', dataAiHint: 'space race' },
-  { id: '2', title: 'Synthwave Striker', imageUrl: 'https://placehold.co/600x400/4B0082/a855f7.png', category: 'Action', dataAiHint: 'synthwave action' },
-  { id: '3', title: 'Neon Grid Runner', imageUrl: 'https://placehold.co/600x400/FF4500/ff6a00.png', category: 'Arcade', dataAiHint: 'neon grid' },
-  { id: '4', title: 'Galaxy Guardians', imageUrl: 'https://placehold.co/600x400/1E90FF/00cfff.png', category: 'Strategy', dataAiHint: 'galaxy strategy' },
-];
+// Game data removed from here
 
 export default function HomePage() {
   const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
@@ -62,21 +56,7 @@ export default function HomePage() {
             </Button>
           </section>
 
-          {/* Game Cards Section */}
-          <section id="games" className="py-12">
-            <h2 className="text-4xl font-headline font-bold text-center mb-10">Featured Games</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {games.map((game) => (
-                <GameCard
-                  key={game.id}
-                  title={game.title}
-                  imageUrl={game.imageUrl}
-                  category={game.category}
-                  dataAiHint={game.dataAiHint}
-                />
-              ))}
-            </div>
-          </section>
+          {/* Game Cards Section Removed */}
 
           {/* Twitch Livestream Section */}
           <section id="livestream" className="py-12">

@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Gamepad2Icon, HomeIcon, UserCircle2Icon, TvIcon, LogOutIcon, LogInIcon, HelpCircle } from 'lucide-react'; // Added HelpCircle
+import { HomeIcon, UserCircle2Icon, TvIcon, LogOutIcon, LogInIcon, HelpCircle } from 'lucide-react'; // Gamepad2Icon removed
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
@@ -21,9 +21,9 @@ import { useState, useEffect } from 'react';
 
 const navItems = [
   { name: 'Home', href: '/', icon: HomeIcon },
-  { name: 'Games', href: '#games', icon: Gamepad2Icon },
+  // { name: 'Games', href: '#games', icon: Gamepad2Icon }, // Games link removed
   { name: 'Livestream', href: '#livestream', icon: TvIcon },
-  { name: 'FAQ', href: '#faq', icon: HelpCircle }, // Added FAQ link
+  { name: 'FAQ', href: '#faq', icon: HelpCircle },
 ];
 
 const Navbar: React.FC = () => {
@@ -48,10 +48,7 @@ const Navbar: React.FC = () => {
   const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (pathname === '/' && window.location.hash && window.location.hash !== '#') {
       e.preventDefault();
-      // Use router.push to ensure hash is cleared and component re-evaluates
       router.push('/', { shallow: true }); 
-      // Manually set hash to empty for immediate UI update if router.push doesn't trigger listener fast enough
-      // setCurrentHash(''); // This line might be redundant if router.push triggers hashchange reliably
     }
   };
 
@@ -147,7 +144,6 @@ const Navbar: React.FC = () => {
                       <LogInIcon className="mr-1.5 h-4 w-4" />
                       Login
                     </Button>
-                    {/* Sign Up button removed, accessed via Login modal */}
                   </div>
                 )}
               </>
