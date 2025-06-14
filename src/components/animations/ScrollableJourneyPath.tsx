@@ -21,6 +21,11 @@ const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))", rock
   </svg>
 );
 
+const ROCKET_VIEWBOX_WIDTH = 24;
+const ROCKET_VIEWBOX_HEIGHT = 38;
+const ROCKET_CENTER_X = ROCKET_VIEWBOX_WIDTH / 2; // 12
+const ROCKET_CENTER_Y = ROCKET_VIEWBOX_HEIGHT / 2; // 19
+
 const ScrollableJourneyPath: React.FC = () => {
   const svgRef = useRef<SVGSVGElement>(null);
   const revealedPathRef = useRef<SVGPathElement>(null);
@@ -49,89 +54,84 @@ const ScrollableJourneyPath: React.FC = () => {
     const pathNode = revealedPathRef.current;
     const rocketNode = rocketRef.current;
     
-    // For an upward-pointing SVG, +90 degrees aligns its "up" with the path's tangent
+    // For an upward-pointing SVG, +90 degrees aligns its "up" with the path's tangent (direction of travel)
     const rotationAdjustment = 90; 
-    const scaleFactor = 0.2; // Rocket scale factor
+    const scaleFactor = 0.2; 
  
     const handleScroll = () => {
-      // Calculate scroll percentage (0 to 1)
       const scrollY = window.scrollY || window.pageYOffset;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercentage = docHeight > 0 ? Math.min(1, Math.max(0, scrollY / docHeight)) : 0;
       
-      // Animate path drawing: make strokeDashoffset go from pathLength to 0
       const drawLength = scrollPercentage * pathLength;
       pathNode.style.strokeDashoffset = `${pathLength - drawLength}`;
 
-      // Animate rocket position and rotation
-      // Ensure currentPointLength is slightly less than pathLength to avoid issues at the very end.
       const currentPointLength = Math.max(0, Math.min(drawLength, pathLength - 0.01)); 
       const point = pathNode.getPointAtLength(currentPointLength);
       
-      // For rotation, get a point slightly ahead to calculate the angle
-      // Ensure lookAhead doesn't exceed pathLength.
-      const lookAheadLength = Math.min(currentPointLength + 1, pathLength); 
+      const lookAheadLength = Math.min(currentPointLength + 1, pathLength - 0.001); 
       const nextPoint = pathNode.getPointAtLength(lookAheadLength);
       
       let angle = 0;
       if (point && nextPoint && (nextPoint.x !== point.x || nextPoint.y !== point.y)) {
         angle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * (180 / Math.PI);
-      } else if (point) {
-        // Fallback for the very start/end or if path is perfectly vertical/horizontal at a segment
+      } else if (point && currentPointLength > 0) { // Fallback for the very end or if path is perfectly vertical/horizontal
         const lookBehindLength = Math.max(0, currentPointLength - 1);
         const prevPoint = pathNode.getPointAtLength(lookBehindLength);
         if (prevPoint && (point.x !== prevPoint.x || point.y !== prevPoint.y)) {
            angle = Math.atan2(point.y - prevPoint.y, point.x - prevPoint.x) * (180 / Math.PI);
         }
+      } else if (point && pathLength > 0) { // Fallback for the very start
+         const startLookAhead = pathNode.getPointAtLength(Math.min(1, pathLength - 0.001));
+         angle = Math.atan2(startLookAhead.y - point.y, startLookAhead.x - point.x) * (180 / Math.PI);
       }
       
-      // Apply transform with scaling
-      // The rocket SVG itself is 24 units wide, 38 units high. transform-origin is center.
-      rocketNode.style.transform = `translate(${point.x - 200}px, ${point.y - 460}px) rotate(${angle + rotationAdjustment}deg) scale(${scaleFactor})`;
+      // Adjust translation to align rocket's center (ROCKET_CENTER_X, ROCKET_CENTER_Y in its local coords) with the path point
+      const translateX = point.x - ROCKET_CENTER_X;
+      const translateY = point.y - ROCKET_CENTER_Y;
+
+      rocketNode.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${angle + rotationAdjustment}deg) scale(${scaleFactor})`;
     };
 
-    // Initial position and orientation
     handleScroll(); 
 
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [pathLength]); // Re-attach listener if pathLength changes
+  }, [pathLength]);
 
   return (
     <div 
-      className="fixed inset-0 z-0 pointer-events-none" // z-0 to be behind main content
+      className="fixed inset-0 z-0 pointer-events-none" 
     >
       <svg 
         ref={svgRef} 
         width="100%" 
         height="100%" 
-        viewBox="0 0 500 1000" // Example viewBox, adjust based on pathData and desired scale/aspect ratio
-        preserveAspectRatio="xMidYMax meet" // Ensures path scales nicely relative to its viewBox. Consider "none" if you want full viewport stretching.
+        viewBox="0 0 500 1000" 
+        preserveAspectRatio="xMidYMax meet" 
         className="overflow-visible"
       >
         {/* Path 1: Faded Background Track */}
         <path
           d={pathData}
           fill="none"
-          stroke="hsl(var(--border) / 0.3)" // Fainter color for the track
-          strokeWidth="2.5" // Slightly thinner path for a smaller rocket
-          strokeDasharray="5 5" // Dashed appearance (5px dash, 5px gap)
+          stroke="hsl(var(--border) / 0.3)" 
+          strokeWidth="2.5" 
+          strokeDasharray="5 5" 
         />
         {/* Path 2: Colored Revealed Trail */}
         <path
           ref={revealedPathRef}
           d={pathData}
           fill="none"
-          stroke="hsl(var(--primary))" // Theme color
-          strokeWidth="3" // Slightly thicker to overlay nicely, adjusted for visibility
+          stroke="hsl(var(--primary))" 
+          strokeWidth="3" 
           strokeLinecap="round" 
-          // strokeDasharray and strokeDashoffset will be set by JS
         />
-        {/* Rocket - pointing upwards by default, rotation and scale applied by JS */}
-        <g ref={rocketRef} style={{ transformOrigin: 'center center' }}> {/* transform-origin for rocket itself, centered on its viewBox */}
-          {/* Rocket SVG takes full width/height of its <g> container, scaling is applied to <g> */}
+        {/* Rocket - transform-origin is center center by default for CSS transforms on g if not specified for SVG transforms */}
+        <g ref={rocketRef} style={{ transformOrigin: 'center center' }}> 
           <VerticalRocketSVG accentColor="hsl(var(--primary))" className="w-full h-full"/>
         </g>
       </svg>
@@ -140,5 +140,4 @@ const ScrollableJourneyPath: React.FC = () => {
 };
 
 export default ScrollableJourneyPath;
-
     
