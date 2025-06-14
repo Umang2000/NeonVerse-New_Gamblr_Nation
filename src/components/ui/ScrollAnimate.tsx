@@ -9,7 +9,6 @@ interface ScrollAnimateProps {
   animationBaseClass?: string; // e.g., 'scroll-animated-item'
   animationVisibleClass?: string; // e.g., 'is-visible'
   threshold?: number;
-  triggerOnce?: boolean;
   transitionDelay?: string; // e.g., "0ms", "100ms", "0.2s"
 }
 
@@ -19,7 +18,6 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
   animationBaseClass = 'scroll-animated-item',
   animationVisibleClass = 'is-visible',
   threshold = 0.1, // Trigger when 10% of the element is visible
-  triggerOnce = true, // Animate only once
   transitionDelay = '0s', // Default no delay
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -29,15 +27,8 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            if (triggerOnce && domRef.current) {
-              observer.unobserve(domRef.current);
-            }
-          }
-          // If triggerOnce is false, you might add an "else" block here
-          // to set isVisible to false and re-animate on scroll out.
-          // For now, with triggerOnce=true, it animates in and stays.
+          // Set visibility based on whether the element is intersecting
+          setIsVisible(entry.isIntersecting);
         });
       },
       { threshold }
@@ -53,10 +44,10 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
         observer.unobserve(currentRef);
       }
     };
-  }, [threshold, triggerOnce]);
+  }, [threshold]); // Rerun observer if threshold changes
 
   const itemStyle: CSSProperties = {
-    transitionDelay: transitionDelay,
+    transitionDelay: isVisible ? transitionDelay : '0s', // Apply delay only for "in" animation
   };
 
   return (
