@@ -90,7 +90,7 @@ const ScrollableJourneyPath: React.FC = () => {
       const translateX = point.x - ROCKET_CENTER_X;
       const translateY = point.y - ROCKET_CENTER_Y;
 
-      rocketNode.style.transform = `translate(${translateX - 200}px, ${translateY - 460}px) rotate(${angle + rotationAdjustment}deg) scale(${scaleFactor})`;
+      rocketNode.style.transform = `translate(${translateX - 240}px, ${translateY - 460}px) rotate(${angle + rotationAdjustment}deg) scale(${scaleFactor})`;
     };
 
     handleScroll(); 
