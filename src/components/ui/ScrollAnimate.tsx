@@ -10,6 +10,7 @@ interface ScrollAnimateProps {
   animationVisibleClass?: string; // e.g., 'is-visible'
   threshold?: number;
   transitionDelay?: string; // e.g., "0ms", "100ms", "0.2s"
+  style?: React.CSSProperties; // Moved inside the interface
 }
 
 const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
@@ -19,6 +20,7 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
   animationVisibleClass = 'is-visible',
   threshold = 0.1, // Trigger when 10% of the element is visible
   transitionDelay = '0s', // Default no delay
+  style, // Added to destructuring
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const domRef = useRef<HTMLDivElement>(null);
@@ -48,6 +50,7 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
 
   const itemStyle: CSSProperties = {
     transitionDelay: isVisible ? transitionDelay : '0s', // Apply delay only for "in" animation
+    ...style, // Spread the passed style prop
   };
 
   return (
@@ -58,7 +61,7 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
         isVisible && animationVisibleClass, // Styles for visible/animated state
         className // Any additional custom classes
       )}
-      style={itemStyle} // Apply transition delay
+      style={itemStyle} // Apply combined styles
     >
       {children}
     </div>
