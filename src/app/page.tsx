@@ -1,3 +1,4 @@
+
 // src/app/page.tsx
 "use client";
 
@@ -11,8 +12,8 @@ import TwitchEmbed from '@/components/media/TwitchEmbed';
 import FAQSection from '@/components/page/FAQSection';
 import { useSupport } from '@/context/SupportContext';
 import { cn } from '@/lib/utils';
-// ScrollAnimate is no longer used for journey paths, replaced by ScrollableJourneyPath
-import ScrollableJourneyPath from '@/components/animations/ScrollableJourneyPath'; // New component
+import ScrollableJourneyPath from '@/components/animations/ScrollableJourneyPath';
+import ScrollAnimate from '@/components/ui/ScrollAnimate'; // Import ScrollAnimate
 
 // Planet SVGs as functional components
 const NeonPrimeSVG = () => (
@@ -97,103 +98,103 @@ const TheNexusSVG = () => (
   </svg>
 );
 
-// VerticalRocketSVG is now part of ScrollableJourneyPath.tsx
 
 export default function HomePage() {
   const { setContactModalOpen } = useSupport();
-
-  // Old journeySegments array is no longer needed for per-segment animation.
 
   return (
     <div className="relative min-h-screen flex flex-col">
       <AnimatedBackground />
       <Navbar />
-      <ScrollableJourneyPath /> {/* Add the new journey path component */}
+      <ScrollableJourneyPath /> 
 
-      {/* Wrapper for main content to ensure it's above the fixed SVG path */}
       <div className="relative z-10 flex-grow"> 
         <main
           className={cn(
             "container mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden" 
           )}
         >
-          {/* "Mission Start" - can be simple text or a small static visual */}
-          <div id="mission-start-anchor" className="text-center pt-24 pb-8 md:pt-28 md:pb-12">
-            <h2 className="text-4xl md:text-5xl font-headline mb-4 text-gradient-purple-orange">Mission Start</h2>
-          </div>
+          <ScrollAnimate>
+            <div id="mission-start-anchor" className="text-center pt-24 pb-8 md:pt-28 md:pb-12">
+              <h2 className="text-4xl md:text-5xl font-headline mb-4 text-gradient-purple-orange">Mission Start</h2>
+            </div>
+          </ScrollAnimate>
           
-          {/* Planet 1: Neon Prime (Hero Section) */}
-          <section id="home" className="planet-section text-center">
-            <div className="planet-image-container w-48 h-48 md:w-60 md:h-60">
-              <NeonPrimeSVG />
-            </div>
-            <h2 className="planet-name">Neon Prime</h2>
-            <h1 className="text-5xl md:text-7xl font-headline font-bold mb-6">
-              Welcome to <span className="text-primary">Neon</span><span className="text-accent">Verse</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-              Dive into a universe of high-octane games, vibrant communities, and retro-futuristic vibes.
-            </p>
-            <Button variant="cta" size="lg" className="text-lg px-8 py-4 group" asChild>
-              <Link href="/join">
-                Join The Universe <ArrowRightIcon className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </section>
-
-          {/* Planet 2: Streamer's Orbit (Twitch Livestream Section) */}
-          <section id="livestream" className="planet-section">
-             <div className="planet-image-container w-44 h-44 md:w-52 md:h-52">
-              <StreamersOrbitSVG />
-            </div>
-            <h2 className="planet-name">Streamer's Orbit</h2>
-            <h3 className="text-4xl font-headline font-bold text-center mb-10 text-foreground">
-              Live <span className="text-destructive">Now</span>
-            </h3>
-            <div className="max-w-4xl mx-auto px-4">
-              <TwitchEmbed channel="afterhoursaz" />
-            </div>
-          </section>
-          
-          {/* Planet 3: Help Hub Xylos (FAQ Section) */}
-          <section id="faq" className="planet-section">
-            <div className="planet-image-container w-40 h-40 md:w-48 md:h-48">
-              <HelpHubXylosSVG />
-            </div>
-            <h2 className="planet-name">Help Hub Xylos</h2>
-            <h3 className="text-4xl font-headline font-bold text-center mb-10 text-foreground">
-              Frequently Asked <span className="text-accent">Questions</span>
-            </h3>
-            <div className="max-w-3xl mx-auto">
-              <FAQSection />
-            </div>
-          </section>
-
-          {/* Planet 4: The Nexus (Footer section) */}
-          {/* Footer itself acts as the Nexus content */}
-          <footer id="page-footer" className="planet-section text-center text-muted-foreground border-t border-border/20 mt-12 pb-12 md:pb-16">
-            <div className="planet-image-container w-32 h-32 md:w-36 md:h-36 opacity-80">
-              <TheNexusSVG />
-            </div>
-            <h2 className="planet-name">The Nexus</h2>
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
-              <p>&copy; <FooterYear /> NeonVerse. All rights reserved.</p>
-              <Button
-                variant="link"
-                onClick={() => setContactModalOpen(true)}
-                className="text-primary hover:text-primary/80"
-              >
-                <MailIcon className="mr-2 h-4 w-4" />
-                Contact Us
+          <ScrollAnimate>
+            <section id="home" className="planet-section text-center">
+              <div className="planet-image-container w-48 h-48 md:w-60 md:h-60">
+                <NeonPrimeSVG />
+              </div>
+              <h2 className="planet-name">Neon Prime</h2>
+              <h1 className="text-5xl md:text-7xl font-headline font-bold mb-6">
+                Welcome to <span className="text-primary">Neon</span><span className="text-accent">Verse</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
+                Dive into a universe of high-octane games, vibrant communities, and retro-futuristic vibes.
+              </p>
+              <Button variant="cta" size="lg" className="text-lg px-8 py-4 group" asChild>
+                <Link href="/join">
+                  Join The Universe <ArrowRightIcon className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
-            </div>
-            <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
-            <div className="text-center pt-8 pb-4">
-              <p className="text-3xl md:text-4xl font-headline text-gradient-purple-orange">Journey's End</p>
-            </div>
-          </footer>
+            </section>
+          </ScrollAnimate>
+
+          <ScrollAnimate>
+            <section id="livestream" className="planet-section">
+              <div className="planet-image-container w-44 h-44 md:w-52 md:h-52">
+                <StreamersOrbitSVG />
+              </div>
+              <h2 className="planet-name">Streamer's Orbit</h2>
+              <h3 className="text-4xl font-headline font-bold text-center mb-10 text-foreground">
+                Live <span className="text-destructive">Now</span>
+              </h3>
+              <div className="max-w-4xl mx-auto px-4">
+                <TwitchEmbed channel="afterhoursaz" />
+              </div>
+            </section>
+          </ScrollAnimate>
+          
+          <ScrollAnimate>
+            <section id="faq" className="planet-section">
+              <div className="planet-image-container w-40 h-40 md:w-48 md:h-48">
+                <HelpHubXylosSVG />
+              </div>
+              <h2 className="planet-name">Help Hub Xylos</h2>
+              <h3 className="text-4xl font-headline font-bold text-center mb-10 text-foreground">
+                Frequently Asked <span className="text-accent">Questions</span>
+              </h3>
+              <div className="max-w-3xl mx-auto">
+                <FAQSection />
+              </div>
+            </section>
+          </ScrollAnimate>
+
+          <ScrollAnimate>
+            <footer id="page-footer" className="planet-section text-center text-muted-foreground border-t border-border/20 mt-12 pb-12 md:pb-16">
+              <div className="planet-image-container w-32 h-32 md:w-36 md:h-36 opacity-80">
+                <TheNexusSVG />
+              </div>
+              <h2 className="planet-name">The Nexus</h2>
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
+                <p>&copy; <FooterYear /> NeonVerse. All rights reserved.</p>
+                <Button
+                  variant="link"
+                  onClick={() => setContactModalOpen(true)}
+                  className="text-primary hover:text-primary/80"
+                >
+                  <MailIcon className="mr-2 h-4 w-4" />
+                  Contact Us
+                </Button>
+              </div>
+              <p className="text-sm">Powered by Electric Dreams & Pixel Dust</p>
+              <div className="text-center pt-8 pb-4">
+                <p className="text-3xl md:text-4xl font-headline text-gradient-purple-orange">Journey's End</p>
+              </div>
+            </footer>
+          </ScrollAnimate>
         </main>
-      </div> {/* End of z-10 content wrapper */}
+      </div> 
     </div>
   );
 }
