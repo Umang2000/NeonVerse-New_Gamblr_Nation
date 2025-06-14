@@ -6,6 +6,8 @@ import {
   Dialog,
   DialogContent,
   DialogOverlay,
+  DialogTitle, // Import DialogTitle
+  DialogDescription, // Import DialogDescription
 } from "@/components/ui/dialog";
 import { useAuth } from '@/context/AuthContext';
 import LoginForm from './LoginForm';
@@ -26,14 +28,14 @@ const GlobalAuthModal: React.FC = () => {
     }
   };
 
-  let title = "";
-  let description = "";
+  let titleText = "";
+  let descriptionText = "";
   if (authModalType === 'login') {
-    title = "Welcome Back";
-    description = "Log in to access your NeonVerse account.";
+    titleText = "Welcome Back";
+    descriptionText = "Log in to access your NeonVerse account.";
   } else if (authModalType === 'signup') {
-    title = "Join NeonVerse";
-    description = "Create your account to dive into the action.";
+    titleText = "Join NeonVerse";
+    descriptionText = "Create your account to dive into the action.";
   }
 
   return (
@@ -42,9 +44,13 @@ const GlobalAuthModal: React.FC = () => {
       <DialogContent 
         className="p-0 border-none shadow-none bg-transparent max-w-md w-full data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
       >
+        {/* Add sr-only DialogTitle and DialogDescription for accessibility */}
+        <DialogTitle className="sr-only">{titleText}</DialogTitle>
+        {descriptionText && <DialogDescription className="sr-only">{descriptionText}</DialogDescription>}
+        
         <AuthCard
-            title={title}
-            description={description}
+            title={titleText}
+            description={descriptionText}
             showBackButton={false}
         >
             <div className="relative min-h-[480px]"> {/* Container for smooth transition and consistent height */}
