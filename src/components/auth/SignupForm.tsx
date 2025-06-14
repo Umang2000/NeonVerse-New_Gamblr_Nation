@@ -8,10 +8,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Label } from '@/components/ui/label'; // Keep if used explicitly
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAuth } from '@/context/AuthContext';
-import { SocialButton, GoogleIcon } from './SocialButton'; // Assuming GoogleIcon is defined or imported
+import { SocialButton, GoogleIcon } from './SocialButton';
 import { Separator } from '../ui/separator';
 import { Loader2 } from 'lucide-react';
 
@@ -21,14 +21,14 @@ const signupSchema = z.object({
   confirmPassword: z.string(),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match.",
-  path: ["confirmPassword"], // path of error
+  path: ["confirmPassword"],
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 const SignupForm: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const { emailSignUp, googleSignIn } = useAuth(); // Assuming googleSignIn is added to AuthContext
+  const { emailSignUp, googleSignIn, setAuthModalType } = useAuth();
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -41,15 +41,16 @@ const SignupForm: React.FC = () => {
 
   const onSubmit = async (values: SignupFormValues) => {
     setIsLoading(true);
-    // Actual sign-up logic will be implemented later
     await emailSignUp(values.email, values.password).catch(console.error);
     setIsLoading(false);
+    // Modal will be closed by AuthContext if signup is successful
   };
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     await googleSignIn().catch(console.error);
     setIsLoading(false);
+     // Modal will be closed by AuthContext if signup is successful
   }
 
   return (
@@ -130,6 +131,18 @@ const SignupForm: React.FC = () => {
           onClick={handleGoogleSignIn}
           disabled={isLoading}
         />
+         <div className="text-center text-sm text-muted-foreground">
+          Already have an account?{' '}
+          <Button
+            variant="link"
+            type="button"
+            onClick={() => setAuthModalType('login')}
+            className="font-semibold text-primary hover:text-primary/80 p-0 h-auto"
+            disabled={isLoading}
+          >
+            Log In
+          </Button>
+        </div>
       </form>
     </Form>
   );

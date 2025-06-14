@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Gamepad2Icon, MessageSquareIcon, HomeIcon, LogInIcon, UserPlusIcon, LogOutIcon, UserCircle2Icon } from 'lucide-react';
+import { Gamepad2Icon, MessageSquareIcon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
@@ -26,7 +26,7 @@ const navItems = [
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
-  const { user, loading, signOutUser } = useAuth();
+  const { user, loading, signOutUser, setAuthModalType } = useAuth();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md shadow-lg">
@@ -35,10 +35,15 @@ const Navbar: React.FC = () => {
           <Link href="/" className="text-3xl font-headline font-bold text-primary hover:text-primary/80 transition-colors">
             NeonVerse
           </Link>
-          <div className="hidden md:flex items-center space-x-1"> {/* Reduced space-x-6 to space-x-1 or 2 */}
+          <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
               const isStrictMatch = pathname === item.href;
-              const isActive = item.href === '/' ? isStrictMatch : false;
+              const isActive = item.href === '/' ? isStrictMatch : (item.href !== '/' && pathname.startsWith(item.href)); // Adjusted for # links potentially
+              
+              const underlineClass = cn(
+                "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
+                isActive ? "scale-x-100 neon-shadow-primary" : "group-hover:neon-shadow-primary"
+              );
 
               return (
                 <Link
@@ -50,12 +55,7 @@ const Navbar: React.FC = () => {
                   )}
                 >
                   {item.name}
-                  <span
-                    className={cn(
-                      "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left",
-                      isActive ? "scale-x-100 neon-shadow-primary" : "group-hover:neon-shadow-primary"
-                    )}
-                  />
+                  <span className={underlineClass} />
                   {isActive && (
                   <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary neon-shadow-primary opacity-50" />
                  )}
@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
               );
             })}
           </div>
-          <div className="flex items-center space-x-3"> {/* Combined ThemeToggle and Auth buttons */}
+          <div className="flex items-center space-x-3">
             <ThemeToggle />
             {!loading && (
               <>
@@ -98,32 +98,19 @@ const Navbar: React.FC = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ) : (
-                  <div className="hidden md:flex items-center space-x-2">
-                    <Button variant="outline" asChild className="px-3 py-1.5 text-sm">
-                      <Link href="/auth/login">
-                        <LogInIcon className="mr-1.5 h-4 w-4" />
-                        Login
-                      </Link>
+                  <div className="flex items-center space-x-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setAuthModalType('login')}
+                      className="px-3 py-1.5 text-sm"
+                    >
+                      <LogInIcon className="mr-1.5 h-4 w-4" />
+                      Login
                     </Button>
-                    <Button variant="default" asChild className="px-3 py-1.5 text-sm">
-                       <Link href="/auth/signup">
-                        <UserPlusIcon className="mr-1.5 h-4 w-4" />
-                        Sign Up
-                      </Link>
-                    </Button>
+                    {/* Sign Up button removed, accessed via Login modal */}
                   </div>
                 )}
               </>
-            )}
-             {/* Mobile Auth Links (example, can be integrated into a mobile menu) */}
-            {!loading && !user && (
-              <div className="md:hidden">
-                <Button variant="ghost" size="icon" asChild>
-                  <Link href="/auth/login" aria-label="Login">
-                    <LogInIcon className="h-5 w-5" />
-                  </Link>
-                </Button>
-              </div>
             )}
           </div>
         </div>

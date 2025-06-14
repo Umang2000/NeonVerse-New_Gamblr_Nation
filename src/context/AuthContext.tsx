@@ -10,6 +10,8 @@ import type { ReactNode } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
+type AuthModalType = 'login' | 'signup' | null;
+
 interface AuthContextType {
   user: FirebaseUser | null;
   loading: boolean;
@@ -17,6 +19,8 @@ interface AuthContextType {
   emailSignUp: (email: string, pass: string) => Promise<void>; // Placeholder
   googleSignIn: () => Promise<void>; // Placeholder
   signOutUser: () => Promise<void>;
+  authModalType: AuthModalType;
+  setAuthModalType: (type: AuthModalType) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,6 +28,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authModalType, setAuthModalType] = useState<AuthModalType>(null);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -31,26 +36,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
       setLoading(false);
+      if (firebaseUser) { // If user logs in, close any open auth modals
+        setAuthModalType(null);
+      }
     });
     return () => unsubscribe();
   }, []);
 
-  // Placeholder functions - actual implementation in next step
   const emailSignIn = async (email: string, pass: string) => {
-    console.log("Attempting email sign in with:", email); // Placeholder
-    // Actual Firebase signInWithEmailAndPassword will go here
+    console.log("Attempting email sign in with:", email);
     toast({ title: "Sign In Clicked", description: "Functionality pending." });
   };
 
   const emailSignUp = async (email: string, pass: string) => {
-    console.log("Attempting email sign up with:", email); // Placeholder
-    // Actual Firebase createUserWithEmailAndPassword will go here
+    console.log("Attempting email sign up with:", email);
     toast({ title: "Sign Up Clicked", description: "Functionality pending." });
   };
 
   const googleSignIn = async () => {
-    console.log("Attempting Google sign in"); // Placeholder
-    // Actual Firebase GoogleAuthProvider logic will go here
+    console.log("Attempting Google sign in");
     toast({ title: "Google Sign In Clicked", description: "Functionality pending." });
   };
 
@@ -58,7 +62,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       await firebaseSignOut(auth);
       toast({ title: "Signed Out", description: "You have been successfully signed out." });
-      router.push('/'); // Redirect to home after sign out
+      router.push('/');
     } catch (error: any) {
       console.error("Error signing out: ", error);
       toast({ variant: "destructive", title: "Sign Out Error", description: error.message });
@@ -72,6 +76,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     emailSignUp,
     googleSignIn,
     signOutUser,
+    authModalType,
+    setAuthModalType,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

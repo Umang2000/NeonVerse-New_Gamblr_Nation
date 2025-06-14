@@ -8,10 +8,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Label } from '@/components/ui/label'; // Keep if used explicitly, FormLabel is preferred
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAuth } from '@/context/AuthContext';
-import { SocialButton, GoogleIcon } from './SocialButton'; // Assuming GoogleIcon is defined or imported
+import { SocialButton, GoogleIcon } from './SocialButton';
 import { Separator } from '../ui/separator';
 import { Loader2 } from 'lucide-react';
 
@@ -24,7 +24,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const { emailSignIn, googleSignIn } = useAuth(); // Assuming googleSignIn is added to AuthContext
+  const { emailSignIn, googleSignIn, setAuthModalType } = useAuth();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -36,16 +36,16 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = async (values: LoginFormValues) => {
     setIsLoading(true);
-    // Actual sign-in logic will be implemented later
-    // For now, it calls the placeholder from AuthContext
     await emailSignIn(values.email, values.password).catch(console.error);
     setIsLoading(false);
+    // Modal will be closed by AuthContext if login is successful
   };
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     await googleSignIn().catch(console.error);
     setIsLoading(false);
+    // Modal will be closed by AuthContext if login is successful
   }
 
   return (
@@ -107,6 +107,19 @@ const LoginForm: React.FC = () => {
           onClick={handleGoogleSignIn}
           disabled={isLoading}
         />
+
+        <div className="text-center text-sm text-muted-foreground">
+          Don't have an account?{' '}
+          <Button
+            variant="link"
+            type="button"
+            onClick={() => setAuthModalType('signup')}
+            className="font-semibold text-primary hover:text-primary/80 p-0 h-auto"
+            disabled={isLoading}
+          >
+            Sign Up
+          </Button>
+        </div>
       </form>
     </Form>
   );
