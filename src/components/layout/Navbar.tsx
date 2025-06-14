@@ -42,22 +42,13 @@ const Navbar: React.FC = () => {
     return () => {
       window.removeEventListener('hashchange', handleHashChange, false);
     };
-  }, []);
-
-  // Update currentHash if pathname changes (e.g. navigation from other pages back to home)
-  useEffect(() => {
-    setCurrentHash(window.location.hash);
-  }, [pathname]);
+  }, [pathname]); // Added pathname to dependency array
 
   const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (pathname === '/' && window.location.hash && window.location.hash !== '#') {
       e.preventDefault();
-      // Use router.push to clear the hash.
-      // Explicitly pushing to '/' should clear the hash.
-      // { shallow: true } attempts to prevent full reload if already on the page.
       router.push('/', { shallow: true });
     }
-    // Allow default Link behavior for navigating to / from other pages
   };
 
 
