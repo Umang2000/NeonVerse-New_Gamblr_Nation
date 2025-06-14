@@ -10,6 +10,8 @@ import FooterYear from '@/components/layout/FooterYear';
 import { ArrowRightIcon, XIcon } from 'lucide-react'; 
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import ChatInterface from '@/components/chat/ChatInterface';
+import FloatingSupportButton from '@/components/support/FloatingSupportButton'; // Added
+import SupportInterface from '@/components/support/SupportInterface'; // Added
 import TwitchEmbed from '@/components/media/TwitchEmbed';
 import { cn } from '@/lib/utils';
 
@@ -22,6 +24,20 @@ const games = [
 
 export default function HomePage() {
   const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
+  const [isSupportSidebarOpen, setIsSupportSidebarOpen] = useState(false); // Added
+
+  // Calculate main content margin based on open sidebars
+  const getMarginClasses = () => {
+    let mlClass = "";
+    let mrClass = "";
+    if (isChatSidebarOpen) {
+      mlClass = "md:ml-[384px] lg:ml-[480px]";
+    }
+    if (isSupportSidebarOpen) {
+      mrClass = "md:mr-[384px] lg:mr-[480px] xl:mr-[560px]"; // Adjusted support sidebar width
+    }
+    return cn(mlClass, mrClass);
+  };
 
   return (
     <div className="relative min-h-screen flex flex-col">
@@ -32,7 +48,7 @@ export default function HomePage() {
         <main
           className={cn(
             "flex-grow z-10 container mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out",
-            isChatSidebarOpen ? "md:ml-[384px] lg:ml-[480px]" : "" 
+            getMarginClasses()
           )}
         >
           {/* Hero Section */}
@@ -81,10 +97,10 @@ export default function HomePage() {
           </footer>
         </main>
 
-        {/* Chat Sidebar */}
+        {/* Chat Sidebar (Left) */}
         <aside
           className={cn(
-            "fixed top-0 left-0 h-full bg-card border border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-r-lg", 
+            "fixed top-0 left-0 h-full bg-card border-r border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-r-lg", 
             "w-full md:w-96 lg:w-[480px]", 
             isChatSidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
@@ -98,11 +114,33 @@ export default function HomePage() {
           </button>
           <ChatInterface />
         </aside>
+
+        {/* Support Sidebar (Right) */}
+        <aside
+          className={cn(
+            "fixed top-0 right-0 h-full bg-card border-l border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-l-lg",
+            "w-full md:w-[384px] lg:w-[480px] xl:w-[560px]", // Support sidebar can be wider
+            isSupportSidebarOpen ? "translate-x-0" : "translate-x-full"
+          )}
+        >
+          <button
+            onClick={() => setIsSupportSidebarOpen(false)}
+            className="absolute top-[calc(5rem+0.75rem)] left-3 p-2 text-accent hover:text-primary z-50 rounded-md hover:bg-accent/10 transition-colors" // Adjusted for left positioning of button
+            aria-label="Close support sidebar"
+          >
+            <XIcon className="h-5 w-5 icon-glow-accent" />
+          </button>
+          <SupportInterface />
+        </aside>
       </div>
 
       <FloatingChatButton 
         onToggle={() => setIsChatSidebarOpen(!isChatSidebarOpen)} 
         isOpen={isChatSidebarOpen} 
+      />
+      <FloatingSupportButton
+        onToggle={() => setIsSupportSidebarOpen(!isSupportSidebarOpen)}
+        isOpen={isSupportSidebarOpen}
       />
     </div>
   );
