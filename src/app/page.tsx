@@ -94,7 +94,7 @@ export default function HomePage() {
         <ScrollAnimate className={journeySegments[0].colorClass} style={{ '--segment-height': journeySegments[0].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
             <div className="journey-segment-container" style={{ height: journeySegments[0].segmentHeight }}>
                 <div className="journey-track-revealed"></div>
-                <div className="journey-rocket-container pt-6 pl-2">
+                <div className="journey-rocket-container">
                     <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[0].colorClass)} />
                 </div>
             </div>
@@ -118,7 +118,7 @@ export default function HomePage() {
         <ScrollAnimate className={journeySegments[1].colorClass} style={{ '--segment-height': journeySegments[1].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
             <div className="journey-segment-container" style={{ height: journeySegments[1].segmentHeight }}>
                 <div className="journey-track-revealed"></div>
-                <div className="journey-rocket-container pt-8 pl-2">
+                <div className="journey-rocket-container">
                      <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[1].colorClass)} />
                 </div>
             </div>
@@ -142,7 +142,7 @@ export default function HomePage() {
         <ScrollAnimate className={journeySegments[2].colorClass} style={{ '--segment-height': journeySegments[2].segmentHeight, '--rocket-height': `${ROCKET_HEIGHT_PX}px` } as React.CSSProperties}>
             <div className="journey-segment-container" style={{ height: journeySegments[2].segmentHeight }}>
                 <div className="journey-track-revealed"></div>
-                <div className="journey-rocket-container pt-14 pl-2">
+                <div className="journey-rocket-container">
                     <VerticalRocketSVG accentColor={getAccentColorFromTextColor(journeySegments[2].colorClass)}/>
                 </div>
             </div>
