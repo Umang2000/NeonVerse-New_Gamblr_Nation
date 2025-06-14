@@ -7,13 +7,12 @@ import {
   Dialog,
   DialogContent,
   DialogOverlay,
-  DialogClose, // For potential custom close button if needed, DialogTitle for ARIA
 } from "@/components/ui/dialog";
 import { useAuth } from '@/context/AuthContext';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import AuthCard from './AuthCard';
-import AnimatedBackground from '../ui/AnimatedBackground'; // To have the themed background in the modal
+// AnimatedBackground is removed from here. The page's own background will be visible through the overlay.
 import { XIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -41,29 +40,38 @@ const GlobalAuthModal: React.FC = () => {
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogOverlay className="bg-background/80 backdrop-blur-sm" />
-      <DialogContent className="p-0 border-none shadow-none bg-transparent max-w-md w-full data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
-        {/* AnimatedBackground can be part of DialogContent or DialogOverlay for different effects */}
-        {/* For full coverage behind the card, it's better here. */}
-        <div className="relative min-h-screen flex items-center justify-center p-4">
-            <AnimatedBackground /> {/* This ensures the bg covers the modal viewport */}
-             <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setAuthModalType(null)}
-                className="absolute top-6 right-6 text-primary hover:text-accent z-[60]" // z-index ensures it's above AuthCard's gradient
-                aria-label="Close authentication modal"
-            >
-                <XIcon className="h-6 w-6 icon-glow-primary" />
-            </Button>
-            <AuthCard
-                title={title}
-                description={description}
-                showBackButton={false} // Important: Hide default back button
-            >
-                {authModalType === 'login' && <LoginForm />}
-                {authModalType === 'signup' && <SignupForm />}
-            </AuthCard>
-        </div>
+      <DialogContent 
+        className="p-0 border-none shadow-none bg-transparent max-w-md w-full data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
+      >
+        {/* AuthCard is now the direct content and visual body of the modal */}
+        <AuthCard
+            title={title}
+            description={description}
+            showBackButton={false}
+        >
+            {authModalType === 'login' && <LoginForm />}
+            {authModalType === 'signup' && <SignupForm />}
+        </AuthCard>
+        
+        {/* Custom Close Button, positioned absolutely relative to DialogContent */}
+        {/* Since DialogContent is max-w-md and centered, this button will appear at the top-right of the AuthCard. */}
+         <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setAuthModalType(null)}
+            // Adjust top/right to position it relative to the card.
+            // right-4 top-4 would be inside the DialogContent's original padding box.
+            // Since DialogContent is now p-0, to get it outside the card as in image,
+            // we might need to adjust based on card's actual rendering or use negative margins,
+            // or simply accept it at the very corner of the AuthCard.
+            // Let's place it slightly offset from the top-right corner of the max-w-md container.
+            // The image's X is more like top-2 right-2 of the viewport, or a bit further from the card.
+            // For simplicity and to ensure it's tied to the modal itself:
+            className="absolute top-2 right-2 text-primary hover:text-accent z-[70] rounded-full h-8 w-8 p-0"
+            aria-label="Close authentication modal"
+        >
+            <XIcon className="h-5 w-5 icon-glow-primary" />
+        </Button>
       </DialogContent>
     </Dialog>
   );
