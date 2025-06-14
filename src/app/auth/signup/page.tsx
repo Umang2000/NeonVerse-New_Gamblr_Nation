@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import Navbar from '@/components/layout/Navbar'; // Added Navbar import
 
 
 export default function SignupPage() {
@@ -22,7 +23,7 @@ export default function SignupPage() {
     }
   }, [user, loading, router]);
 
-  if (loading || (!loading && user)) {
+  if (loading || (!loading && user && router.pathname !== '/')) { // Ensure redirection doesn't cause loop if already on '/'
     return (
       <div className="relative min-h-screen flex items-center justify-center">
         <AnimatedBackground />
@@ -32,22 +33,25 @@ export default function SignupPage() {
   }
   
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4">
+    <div className="relative min-h-screen flex flex-col"> {/* Changed to flex-col */}
       <AnimatedBackground />
-      <AuthCard
-        title="Join NeonVerse"
-        description="Create your account to dive into the action."
-        footerContent={
-          <>
-            Already have an account?{' '}
-            <Link href="/auth/login" className="font-semibold text-primary hover:text-primary/80 hover:underline underline-offset-2 transition-colors">
-              Log In
-            </Link>
-          </>
-        }
-      >
-        <SignupForm />
-      </AuthCard>
+      <Navbar /> {/* Added Navbar */}
+      <main className="flex-grow flex items-center justify-center p-4 pt-20"> {/* Adjusted for Navbar height */}
+        <AuthCard
+          title="Join NeonVerse"
+          description="Create your account to dive into the action."
+          footerContent={
+            <>
+              Already have an account?{' '}
+              <Link href="/auth/login" className="font-semibold text-primary hover:text-primary/80 hover:underline underline-offset-2 transition-colors">
+                Log In
+              </Link>
+            </>
+          }
+        >
+          <SignupForm />
+        </AuthCard>
+      </main>
     </div>
   );
 }
