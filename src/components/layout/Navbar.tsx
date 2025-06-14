@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
               {/* You can place an <Image /> component or an icon here later */}
             </div>
             <span className="text-3xl font-headline font-bold">
-              Gamblr Nation
+            <span className="text-primary">Gamblr</span> <span className="text-accent">Nation</span>
             </span>
           </Link>
           <div className="hidden md:flex items-center space-x-1">
