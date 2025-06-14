@@ -63,6 +63,7 @@ function SiteLayout({ children }: { children: React.ReactNode }) {
           className={cn(
             "fixed top-0 left-0 h-full bg-card border-r border-border/50 shadow-xl z-30 transition-transform duration-300 ease-in-out flex flex-col rounded-r-lg",
             "w-full md:w-96 lg:w-[480px]",
+            "pt-20", // Added padding top to position below a fixed h-20 navbar
             isChatSidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
@@ -70,10 +71,7 @@ function SiteLayout({ children }: { children: React.ReactNode }) {
         </aside>
       </div>
 
-      <FloatingChatButton
-        onToggle={toggleChatSidebar}
-        isOpen={isChatSidebarOpen}
-      />
+      <FloatingChatButton />
     </>
   );
 }
