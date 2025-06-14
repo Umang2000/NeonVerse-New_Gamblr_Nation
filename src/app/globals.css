@@ -208,7 +208,7 @@
   .rocket-svg {
     transition: transform 0.3s ease-out; 
   }
-  .rocket-svg:hover {
+  .rocket-svg:hover { /* Subtle glow on rocket hover */
     filter: drop-shadow(0 0 5px currentColor); 
   }
   .theme-night-pulse .rocket-svg:hover {
@@ -218,17 +218,17 @@
   /* New Journey Path Styles for "Filling Progress Bar" */
   .journey-segment-container {
     @apply relative mx-auto my-8 md:my-12;
-    width: 4px; /* Width of the track/filler */
+    width: 6px; /* Width of the track/filler, increased for prominence */
   }
 
   .journey-track {
     @apply absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-transparent;
-    /* Dashed line effect using repeating gradient */
+    /* Dashed line effect using repeating gradient - more visible */
     background-image: repeating-linear-gradient(
       transparent,
-      transparent 8px,
-      hsl(var(--border) / 0.3), /* Fainter track color */
-      hsl(var(--border) / 0.3) 18px
+      transparent 7px, /* shorter transparent part */
+      hsl(var(--border) / 0.5), /* more visible track color */
+      hsl(var(--border) / 0.5) 15px /* shorter dash part */
     );
   }
 
@@ -237,11 +237,11 @@
     /* Color will be set by utility classes like bg-primary, bg-accent */
     height: 0%;
     transition: height 0.8s cubic-bezier(0.25, 0.1, 0.25, 1); /* Fill animation */
-    /* Add a subtle glow to the filler */
-    box-shadow: 0 0 6px currentColor, 0 0 10px currentColor; 
+    /* Add a stronger glow to the filler to match image */
+    box-shadow: 0 0 8px currentColor, 0 0 16px currentColor, 0 0 2px currentColor; /* Inner sharp glow */
   }
-  .theme-night-pulse .journey-filler {
-    box-shadow: 0 0 8px currentColor, 0 0 15px currentColor, 0 0 25px currentColor;
+  .theme-night-pulse .journey-filler { /* Even stronger glow for pulse theme */
+    box-shadow: 0 0 12px currentColor, 0 0 24px currentColor, 0 0 3px currentColor, 0 0 36px currentColor;
   }
 
 
@@ -251,15 +251,17 @@
 
   .journey-rocket-container { /* Wrapper for the vertical rocket */
     @apply absolute left-1/2 -translate-x-1/2;
-    top: 0; /* Positioned at the top end of the segment */
+    bottom: -8px; /* Start rocket slightly below the base of the track, adjust as needed */
     opacity: 0;
-    transform: translateY(-10px) scale(0.9); /* Start slightly above and smaller, for "landing" effect */
-    transition: opacity 0.6s ease-out 0.6s, transform 0.6s ease-out 0.6s; /* Appear after line has filled significantly */
+    /* Animate from bottom upwards with the line */
+    transform: translateY(100%) scale(0.9); /* Start at the bottom of where the line will fill */
+    transition: opacity 0.4s ease-out 0.3s, transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s; /* Rocket animation follows line fill */
   }
 
   .scroll-animated-item.is-visible .journey-rocket-container {
     opacity: 1;
-    transform: translateY(0px) scale(1);
+    transform: translateY(-100%) scale(1); /* Moves to the top of the 100% filled line */
+    /* If segment height is e.g. 120px, rocket moves up to effectively top:0 of that 120px line */
   }
 }
 

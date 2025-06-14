@@ -96,18 +96,21 @@ const TheNexusSVG = () => (
   </svg>
 );
 
-const VerticalRocketSVG = ({ className, rocketColor = "hsl(var(--foreground))", accentColor = "hsl(var(--destructive))" }: { className?: string; rocketColor?: string, accentColor?: string; }) => (
-  <svg viewBox="0 0 20 40" xmlns="http://www.w3.org/2000/svg" className={cn("w-5 h-10", className)}>
-    {/* Main Body */}
-    <path d="M10 0 L16 12 L13 12 L13 28 L7 28 L7 12 L4 12 Z" fill={rocketColor} />
-    {/* Nose Cone accent */}
-    <path d="M10 0 L13 6 L7 6 Z" fill={accentColor} />
+// Updated VerticalRocketSVG to better match the user-provided image
+const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))" }: { className?: string; accentColor?: string; }) => (
+  <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-6 h-[38px] rocket-svg", className)}>
     {/* Fins */}
-    <path d="M7 28 L2 35 L7 32 Z" fill={rocketColor} opacity="0.8" />
-    <path d="M13 28 L18 35 L13 32 Z" fill={rocketColor} opacity="0.8" />
-    {/* Engine Glow */}
-    <ellipse cx="10" cy="35" rx="4" ry="5" fill={accentColor} opacity="0.7" />
-    <ellipse cx="10" cy="35" rx="2" ry="3" fill="hsl(var(--background))" opacity="0.5" />
+    <path d="M4 28 L1 36 L5 34 Z" fill="#B0B0B0" /> 
+    <path d="M20 28 L23 36 L19 34 Z" fill="#B0B0B0" />
+    {/* Body */}
+    <path d="M6 32 C6 34, 8 36, 12 36 C16 36, 18 34, 18 32 L18 10 C18 4, 12 1, 12 1 C12 1, 6 4, 6 10 Z" fill="#D3D3D3" />
+    {/* Nose Cone */}
+    <path d="M12 1 C12 1, 15 5, 15 10 L9 10 C9 5, 12 1, 12 1 Z" fill="#FFFFFF" />
+    {/* Window (optional, small detail) */}
+    {/* <circle cx="12" cy="14" r="2" fill="#87CEEB" /> */}
+    {/* Thruster detail (circle at the bottom) */}
+    <circle cx="12" cy="33" r="3.5" fill={accentColor} stroke="#4A4A4A" strokeWidth="0.5" />
+    <circle cx="12" cy="33" r="1.5" fill="hsl(var(--background))" opacity="0.7"/>
   </svg>
 );
 
@@ -133,7 +136,7 @@ export default function HomePage() {
                 <div className="journey-track"></div>
                 <div className="journey-filler bg-primary"></div>
                 <div className="journey-rocket-container">
-                    <VerticalRocketSVG rocketColor="hsl(var(--primary-foreground))" accentColor="hsl(var(--primary))"/>
+                    <VerticalRocketSVG accentColor="hsl(var(--primary))"/>
                 </div>
             </div>
           </div>
@@ -165,7 +168,7 @@ export default function HomePage() {
                 <div className="journey-track"></div>
                 <div className="journey-filler bg-accent"></div>
                 <div className="journey-rocket-container">
-                    <VerticalRocketSVG rocketColor="hsl(var(--accent-foreground))" accentColor="hsl(var(--accent))"/>
+                    <VerticalRocketSVG accentColor="hsl(var(--accent))"/>
                 </div>
             </div>
         </ScrollAnimate>
@@ -191,7 +194,7 @@ export default function HomePage() {
                 <div className="journey-track"></div>
                 <div className="journey-filler bg-destructive"></div>
                 <div className="journey-rocket-container">
-                     <VerticalRocketSVG rocketColor="hsl(var(--destructive-foreground))" accentColor="hsl(var(--destructive))"/>
+                     <VerticalRocketSVG accentColor="hsl(var(--destructive))"/>
                 </div>
             </div>
         </ScrollAnimate>
@@ -217,7 +220,7 @@ export default function HomePage() {
                 <div className="journey-track"></div>
                 <div className="journey-filler bg-primary"></div>
                 <div className="journey-rocket-container">
-                    <VerticalRocketSVG rocketColor="hsl(var(--primary-foreground))" accentColor="hsl(var(--primary))"/>
+                    <VerticalRocketSVG accentColor="hsl(var(--primary))"/>
                 </div>
             </div>
         </ScrollAnimate>
@@ -255,6 +258,4 @@ export default function HomePage() {
     </div>
   );
 }
-    
-
     
