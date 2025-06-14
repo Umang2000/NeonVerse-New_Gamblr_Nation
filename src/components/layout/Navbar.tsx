@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation'; // Import useRouter
 import { Gamepad2Icon, HomeIcon, LogInIcon, LogOutIcon, UserCircle2Icon, TvIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
@@ -27,6 +27,7 @@ const navItems = [
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter(); // Initialize router
   const { user, loading, signOutUser, setAuthModalType } = useAuth();
   const [currentHash, setCurrentHash] = useState('');
 
@@ -35,27 +36,33 @@ const Navbar: React.FC = () => {
       setCurrentHash(window.location.hash);
     };
 
-    // Set initial hash
-    setCurrentHash(window.location.hash);
+    setCurrentHash(window.location.hash); // Set initial hash
 
     window.addEventListener('hashchange', handleHashChange, false);
     return () => {
       window.removeEventListener('hashchange', handleHashChange, false);
     };
-  }, []); // Runs once on mount to set initial hash and add listener
+  }, []);
 
-  // This effect updates currentHash if the pathname changes
-  // and the new page doesn't have a hash (or has a different one).
+  // Update currentHash if pathname changes, or if component re-renders
   useEffect(() => {
     setCurrentHash(window.location.hash);
   }, [pathname]);
 
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // If on homepage and there's a hash, clear it by navigating to '/'
+    if (pathname === '/' && window.location.hash && window.location.hash !== '#') {
+      e.preventDefault();
+      router.push('/', { shallow: true });
+    }
+    // Otherwise, allow default Link behavior
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md shadow-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="text-3xl font-headline font-bold text-primary hover:text-primary/80 transition-colors">
+          <Link href="/" className="text-3xl font-headline font-bold text-primary hover:text-primary/80 transition-colors" onClick={handleHomeClick}>
             NeonVerse
           </Link>
           <div className="hidden md:flex items-center space-x-1">
@@ -81,6 +88,7 @@ const Navbar: React.FC = () => {
                 <Link
                   key={item.name}
                   href={item.href}
+                  onClick={item.href === '/' ? handleHomeClick : undefined} // Add onClick for Home link
                   className={cn(
                     "relative px-3 py-2 text-lg font-medium text-foreground hover:text-primary transition-colors group",
                     isActive ? "text-primary" : ""
