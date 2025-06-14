@@ -118,7 +118,7 @@ export default function HomePage() {
           )}
         >
           {/* "Mission Start" - can be simple text or a small static visual */}
-          <div className="text-center pt-24 pb-8 md:pt-28 md:pb-12">
+          <div id="mission-start-anchor" className="text-center pt-24 pb-8 md:pt-28 md:pb-12">
             <h2 className="text-4xl md:text-5xl font-headline mb-4 text-gradient-purple-orange">Mission Start</h2>
           </div>
           
@@ -171,7 +171,7 @@ export default function HomePage() {
 
           {/* Planet 4: The Nexus (Footer section) */}
           {/* Footer itself acts as the Nexus content */}
-          <footer className="planet-section text-center text-muted-foreground border-t border-border/20 mt-12 pb-12 md:pb-16">
+          <footer id="page-footer" className="planet-section text-center text-muted-foreground border-t border-border/20 mt-12 pb-12 md:pb-16">
             <div className="planet-image-container w-32 h-32 md:w-36 md:h-36 opacity-80">
               <TheNexusSVG />
             </div>
