@@ -8,12 +8,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
+  // DialogDescription, // No longer needed for this design
   DialogFooter,
   DialogClose
 } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
-import { ShieldAlertIcon } from 'lucide-react';
+import { FileTextIcon } from 'lucide-react'; // Using FileTextIcon for a "rules document" feel
 import { ScrollArea } from '../ui/scroll-area';
 import { cn } from '@/lib/utils';
 
@@ -22,6 +22,7 @@ interface ChatRulesModalProps {
   onOpenChange: (isOpen: boolean) => void;
 }
 
+// Keeping the existing rules array, but they could be shortened to match the image if desired.
 const rules = [
     "Be respectful to all members. No harassment, hate speech, or bullying.",
     "Keep conversations civil. Disagreements are fine, personal attacks are not.",
@@ -40,32 +41,34 @@ const ChatRulesModal: React.FC<ChatRulesModalProps> = ({ isOpen, onOpenChange })
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent 
         className={cn(
-          "sm:max-w-md bg-card border-border/50 shadow-xl rounded-lg", // Card-like appearance
-          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95" // Standard modal animations
+          "sm:max-w-md bg-background/95 backdrop-blur-sm border border-primary/20 shadow-xl rounded-lg neon-shadow-primary p-0", 
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95" 
         )}
       >
-        <DialogHeader className="text-left pt-6 px-6"> {/* Adjusted padding */}
-          <DialogTitle className="flex items-center gap-2 text-xl font-headline text-primary"> {/* Themed title */}
-            <ShieldAlertIcon className="h-6 w-6 icon-glow-primary" />
-            Chat Rules
+        <DialogHeader className="flex flex-row justify-between items-center pt-6 px-6 pb-4 border-b border-border/30">
+          <DialogTitle className="font-headline text-3xl font-bold text-foreground">
+            CHAT RULES
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground pt-1">
-            Please follow these rules to maintain a friendly and positive chat environment.
-          </DialogDescription>
+          <FileTextIcon className="h-7 w-7 text-accent icon-glow-accent" />
         </DialogHeader>
         
-        <ScrollArea className="max-h-[50vh] my-4 px-6"> {/* Scrollable area for rules, added horizontal padding */}
-            <ul className="space-y-2.5 text-sm text-foreground/90 list-decimal list-inside pl-1"> {/* Numbered list */}
+        <ScrollArea className="max-h-[50vh] px-6 py-4"> 
+            <div className="space-y-3">
             {rules.map((rule, index) => (
-                <li key={index} className="leading-relaxed">{rule}</li>
+                <div key={index} className="bg-card p-3.5 rounded-lg shadow-md text-foreground/90 text-sm">
+                    {rule}
+                </div>
             ))}
-            </ul>
+            </div>
         </ScrollArea>
         
-        <DialogFooter className="sm:justify-end px-6 pb-6"> {/* Adjusted padding */}
+        <DialogFooter className="px-6 pb-6 pt-4 border-t border-border/30">
           <DialogClose asChild>
-            <Button type="button" variant="outline" className="shadow-neon-primary hover:shadow-neon-accent focus:shadow-neon-accent">
-              Got it
+            <Button 
+              type="button" 
+              className="w-full py-3 text-base bg-accent hover:bg-accent/90 text-accent-foreground shadow-neon-accent"
+            >
+              I Understand
             </Button>
           </DialogClose>
         </DialogFooter>
