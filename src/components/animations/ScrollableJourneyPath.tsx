@@ -6,18 +6,32 @@ import React, { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
 // Rocket SVG (points upwards by default)
+//ORIGINAL ROCKET SVG
+// const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))", rocketColor = "#D3D3D3", noseColor = "#FFFFFF", finColor = "#B0B0B0" }: { className?: string; accentColor?: string; rocketColor?: string; noseColor?: string; finColor?: string; }) => (
+//   <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-full h-auto overflow-visible", className)}> {/* Base size adjusted by scale in parent */}
+//     {/* Fins */}
+//     <path d={`M4 28 L1 36 L5 34 Z`} fill={finColor} />
+//     <path d={`M20 28 L23 36 L19 34 Z`} fill={finColor} />
+//     {/* Body */}
+//     <path d={`M6 32 C6 34, 8 36, 12 36 C16 36, 18 34, 18 32 L18 10 C18 4, 12 1, 12 1 C12 1, 6 4, 6 10 Z`} fill={rocketColor} />
+//     {/* Nose Cone */}
+//     <path d={`M12 1 C12 1, 15 5, 15 10 L9 10 C9 5, 12 1, 12 1 Z`} fill={noseColor} />
+//     {/* Thruster detail */}
+//     <circle cx="12" cy="33" r="3.5" fill={accentColor} stroke="#4A4A4A" strokeWidth="0.5" />
+//     <circle cx="12" cy="33" r="1.5" fill="hsl(var(--background))" opacity="0.7"/>
+//   </svg>
+// );
 const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))", rocketColor = "#D3D3D3", noseColor = "#FFFFFF", finColor = "#B0B0B0" }: { className?: string; accentColor?: string; rocketColor?: string; noseColor?: string; finColor?: string; }) => (
-  <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-full h-auto overflow-visible", className)}> {/* Base size adjusted by scale in parent */}
-    {/* Fins */}
-    <path d={`M4 28 L1 36 L5 34 Z`} fill={finColor} />
-    <path d={`M20 28 L23 36 L19 34 Z`} fill={finColor} />
-    {/* Body */}
-    <path d={`M6 32 C6 34, 8 36, 12 36 C16 36, 18 34, 18 32 L18 10 C18 4, 12 1, 12 1 C12 1, 6 4, 6 10 Z`} fill={rocketColor} />
-    {/* Nose Cone */}
-    <path d={`M12 1 C12 1, 15 5, 15 10 L9 10 C9 5, 12 1, 12 1 Z`} fill={noseColor} />
-    {/* Thruster detail */}
-    <circle cx="12" cy="33" r="3.5" fill={accentColor} stroke="#4A4A4A" strokeWidth="0.5" />
-    <circle cx="12" cy="33" r="1.5" fill="hsl(var(--background))" opacity="0.7"/>
+  <svg viewBox="378 173.024 22 63" xmlns="http://www.w3.org/2000/svg" className={cn("w-full h-full overflow-visible")}>
+    <path d="M383.099 201.658c-8 14-4.099 29.366 5.901 34.366 10-5 14.084-20.366 6.084-34.366z" fill="#D00000" style={{strokeWidth: 1}}/>
+    <path d="M384 202.024c-7 12-2 24 5 30 7-6 12-18 5-30z" fill="#FF5722" style={{strokeWidth: 1}}/>
+    <path d="M386 202.024c-5 9-2 19 3 25 5-6 8-16 3-25z" fill="#FFC107" style={{strokeWidth: 1}}/>
+    <path d="M387.5 202.024c-3.5 6-1.5 16 1.5 20 3-4 5-14 1.5-20z" fill="#FFFFE0" style={{strokeWidth: 1}}/>
+    <path d="m381 200.024-3 8 4-2c14.645-5.539 2.982-11.283-1-6m16.323-.024 2.677 8.024-5.832-2.733c-4.174-8.226 1.233-7.756 3.155-5.291" fill="#B0B0B0" style={{strokeWidth: 1}}/>
+    <path d="M383 204.024c0 2 2 4 6 4s6-2 6-4v-22c0-6-6-9-6-9s-6 3-6 9z" fill="#D3D3D3" style={{strokeWidth: 1}}/>
+    <path d="M389 173.024s3 4 3 9h-6c0-5 3-9 3-9" fill="#FFF" style={{strokeWidth: 1}}/>
+    <circle cx="389" cy="205.024" r="3.5" fill="hsl(192, 100%, 50%)" stroke="#4A4A4A" style={{strokeWidth: 1}}/>
+    <circle cx="389" cy="205.024" r="1.5" fill="hsl(0, 0%, 5.5%)" opacity=".7" style={{strokeWidth: 1}}/>
   </svg>
 );
 
