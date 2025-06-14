@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 // Rocket SVG (points upwards by default)
 const VerticalRocketSVG = ({ className, accentColor = "hsl(var(--accent))", rocketColor = "#D3D3D3", noseColor = "#FFFFFF", finColor = "#B0B0B0" }: { className?: string; accentColor?: string; rocketColor?: string; noseColor?: string; finColor?: string; }) => (
-  <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-5 h-[32px] overflow-visible", className)}> {/* Base size defined by classes */}
+  <svg viewBox="0 0 24 38" xmlns="http://www.w3.org/2000/svg" className={cn("w-full h-auto overflow-visible", className)}> {/* Base size adjusted by scale in parent */}
     {/* Fins */}
     <path d={`M4 28 L1 36 L5 34 Z`} fill={finColor} />
     <path d={`M20 28 L23 36 L19 34 Z`} fill={finColor} />
@@ -50,7 +50,7 @@ const ScrollableJourneyPath: React.FC = () => {
     
     // Correct rotationAdjustment for an upward-pointing SVG to follow the path's tangent
     const rotationAdjustment = 90; // Degrees to add to atan2 result
-    const scaleFactor = 0.75; // Factor to scale the rocket size
+    const scaleFactor = 0.4; // Factor to scale the rocket size (SHIT TON SMALLER)
 
     const handleScroll = () => {
       // Calculate scroll percentage (0 to 1)
@@ -64,11 +64,13 @@ const ScrollableJourneyPath: React.FC = () => {
       pathNode.style.strokeDashoffset = `${pathLength - drawLength}`;
 
       // Animate rocket position and rotation
-      const currentPointLength = Math.max(0, Math.min(drawLength, pathLength - 0.01)); // Subtract a tiny bit to avoid getPointAtLength error at exact end
+      // Ensure currentPointLength is slightly less than pathLength to avoid issues at the very end.
+      const currentPointLength = Math.max(0, Math.min(drawLength, pathLength - 0.01)); 
       const point = pathNode.getPointAtLength(currentPointLength);
       
       // For rotation, get a point slightly ahead to calculate the angle
-      const lookAheadLength = Math.min(currentPointLength + 1, pathLength); // Ensure lookAhead doesn't exceed pathLength
+      // Ensure lookAhead doesn't exceed pathLength.
+      const lookAheadLength = Math.min(currentPointLength + 1, pathLength); 
       const nextPoint = pathNode.getPointAtLength(lookAheadLength);
       
       let angle = 0;
@@ -114,7 +116,7 @@ const ScrollableJourneyPath: React.FC = () => {
           d={pathData}
           fill="none"
           stroke="hsl(var(--border) / 0.3)"
-          strokeWidth="3"
+          strokeWidth="3" // Adjusted stroke width for visibility with smaller rocket
           strokeDasharray="6 6" // Dashed appearance
         />
         {/* Path 2: Colored Revealed Trail */}
@@ -123,13 +125,14 @@ const ScrollableJourneyPath: React.FC = () => {
           d={pathData}
           fill="none"
           stroke="hsl(var(--primary))" // Theme color
-          strokeWidth="3.5" // Slightly thicker to overlay nicely
+          strokeWidth="3.5" // Slightly thicker to overlay nicely, adjusted for visibility
           strokeLinecap="round" // Nicer ends for dashes
           // strokeDasharray will be set by JS
         />
         {/* Rocket - pointing upwards by default, rotation and scale applied by JS */}
         <g ref={rocketRef} style={{ transformOrigin: 'center center' }}> {/* transform-origin for rocket itself */}
-          <VerticalRocketSVG accentColor="hsl(var(--primary))" />
+          {/* Rocket SVG takes full width/height of its <g> container, scaling is applied to <g> */}
+          <VerticalRocketSVG accentColor="hsl(var(--primary))" className="w-full h-full"/>
         </g>
       </svg>
     </div>
