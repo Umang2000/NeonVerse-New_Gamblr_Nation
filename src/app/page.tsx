@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from 'react';
+import Link from 'next/link'; // Added Link import
 import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import Navbar from '@/components/layout/Navbar';
 import GameCard from '@/components/game/GameCard';
@@ -54,8 +55,10 @@ export default function HomePage() {
             <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
               Dive into a universe of high-octane games, vibrant communities, and retro-futuristic vibes.
             </p>
-            <Button variant="cta" size="lg" className="text-lg px-8 py-4 group">
-              Join The Universe <ArrowRightIcon className="ml-2 h-5 w-5" />
+            <Button variant="cta" size="lg" className="text-lg px-8 py-4 group" asChild>
+              <Link href="/join">
+                Join The Universe <ArrowRightIcon className="ml-2 h-5 w-5" />
+              </Link>
             </Button>
           </section>
 
@@ -122,7 +125,7 @@ export default function HomePage() {
         >
            <button 
             onClick={() => setIsChatSidebarOpen(false)} 
-            className="absolute top-[calc(5rem+0.75rem)] right-3 p-2 text-primary hover:text-accent z-50 rounded-full hover:bg-primary/10 transition-colors h-8 w-8 flex items-center justify-center" // Made it rounder, smaller
+            className="absolute top-[calc(5rem+0.75rem)] right-3 p-2 text-primary hover:text-accent z-50 rounded-full hover:bg-primary/10 transition-colors h-8 w-8 flex items-center justify-center"
             aria-label="Close chat sidebar"
           >
             <XIcon className="h-5 w-5 icon-glow-primary" />
